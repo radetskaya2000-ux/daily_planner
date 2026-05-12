@@ -142,6 +142,9 @@
     </div>
     <div class="center-col">
       <div id="daily" class="tracker-page active">
+        <div style="text-align:center;margin-bottom:8px">
+  <button onclick="syncNow()" style="background:transparent;border:1px dashed #c8a1c0;border-radius:20px;padding:6px 20px;font-family:Georgia;color:#c8a1c0;cursor:pointer;font-size:13px">↻ Синхронизировать</button>
+</div>
         <div class="section-title">Привычки</div><div class="daily-habits-row"><div class="daily-habits-list" id="dailyHabitsList"></div><div class="daily-progress-bar-wrap"><span class="label" id="dailyProgressLabel">0%</span><div class="daily-progress-bar"><div class="daily-progress-fill" id="dailyProgressFill" style="height:0%"></div></div></div></div>
         <div class="section-title" onclick="toggleSection('beautySection')">🌸 Уход <span class="toggle-icon">▼</span></div><div class="daily-section-list" id="beautySection"><div id="dailyBeauty"></div></div>
         <div class="section-title">🏋️ Тренировка</div><div id="dailyTraining"></div>
@@ -319,6 +322,10 @@ function toggleSection(id){const el=document.getElementById(id);el.style.maxHeig
 function refreshCurrentPage(){if(currentPage==='habits')renderHabitsTracker();else if(currentPage==='beauty')renderBeautyTracker();else if(currentPage==='training')renderTrainingTracker();else if(currentPage==='cleaning')renderCleaningTracker();}
 function switchPage(page,sticker){currentPage=page;selectedTrainingDay=null;document.querySelectorAll('.sticker').forEach(s=>s.classList.remove('active'));sticker.classList.add('active');document.querySelectorAll('.tracker-page').forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');localStorage.setItem('currentPage',page);const lc=document.getElementById('leftCol'),tb=document.getElementById('topBar'),mc=document.getElementById('mainContent');if(page==='daily'){lc.classList.remove('hidden');tb.classList.remove('hidden');mc.classList.remove('full-width');loadDayData();}else{lc.classList.add('hidden');tb.classList.remove('hidden');mc.classList.add('full-width');refreshCurrentPage();}}
 
+  async function syncNow(){
+  await saveAllToFB();
+  alert('Данные сохранены в облако!');
+}
 // Старт
 async function start(){
   await loadAllFromFB();
