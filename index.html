@@ -8,9 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Ежедневник">
   <meta name="theme-color" content="#fffef9">
   <title>📔 Мой Ежедневник</title>
-  
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D0%9C%D0%BE%D0%B9%20%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22short_name%22%3A%22%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fffef9%22%2C%22theme_color%22%3A%22%23fffef9%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyMDAgMjAwJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2InIHgxPScwJScgeTE9JzAlJyB4Mj0nMTAwJScgeTI9JzEwMCUnPjxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyNmNWYwZTgnLz48c3RvcCBvZmZzZXQ9JzEwMCUnIHN0b3AtY29sb3I9JyNlOGQ1YzQnLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSczMCcgeT0nMTUnIHdpZHRoPScxNDAnIGhlaWdodD0nMTcwJyByeD0nMTInIGZpbGw9J3VybCgjYiknIHN0cm9rZT0nI2Q0Yjg5Nicgc3Ryb2tlLXdpZHRoPSczJy8%2BPHJlY3QgeD0nMzQnIHk9JzE5JyB3aWR0aD0nNTInIGhlaWdodD0nMTYyJyByeD0nMycgZmlsbD0nbm9uZScgc3Ryb2tlPScjZDJjNWFlJyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWRhc2hhcnJheT0nNCw0JyBvcGFjaXR5PScwLjUnLz48cmVjdCB4PSc5MCcgeT0nMTknIHdpZHRoPSc1MicgaGVpZ2h0PScxNjInIHJ4PSczJyBmaWxsPSdub25lJyBzdHJva2U9JyNkMmM1YWUnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtZGFzaGFycmF5PSc0LDQnIG9wYWNpdHk9JzAuNScvPjxjaXJjbGUgY3g9JzE2MCcgY3k9JzQwJyByPScxMCcgZmlsbD0nI2U4ZDRkNCcgc3Ryb2tlPScjZDJiOGI4JyBzdHJva2Utd2lkdGg9JzInLz48L3N2Zz4%3D%22%2C%22sizes%22%3A%22200x200%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
-  
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Georgia','Times New Roman',serif;background:#f5f0e8;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px}
@@ -122,32 +120,10 @@
     .cleaning-month-dot{width:16px;height:16px;border-radius:50%;cursor:pointer;transition:.2s;border:2px solid #c4b0d0;background:transparent}
     .cleaning-month-dot.done{background:#c4b0d0}
     .quote-bar{text-align:center;font-style:italic;color:#b8a590;padding:15px 30px;border-top:1px dashed #d4b896;font-size:14px;position:relative;z-index:11}
-    @media(max-width:768px){
-      body{padding:0;align-items:flex-start}
-      .notebook{width:100%;min-height:100vh;border-radius:0;box-shadow:none;margin:0;margin-top:20px;overflow:visible}
-      .notebook::after{display:none}
-      .stickers{left:8px;top:-18px;gap:2px}.sticker{padding:7px 7px 4px;font-size:9px}
-      .content{flex-direction:column;padding:8px;gap:10px}.left-col{width:100%}.center-col{width:100%}
-      .top-bar{padding:18px 12px 8px}.month-title{font-size:18px}
-      .daily-habits-row{flex-direction:column}
-      .daily-progress-bar-wrap{width:100%;flex-direction:row;align-items:center;gap:8px}
-      .daily-progress-bar{width:100%;height:12px;min-height:12px;flex:none}
-      .insight-blocks{flex-direction:column}
-      .day-bars-row{display:none}
-      .dots-grid{display:grid;grid-template-columns:30px repeat(auto-fill,1fr);gap:2px}
-      .dots-grid .dot-slot{min-width:auto}.dots-grid .dot-slot.separator{display:none}
-      .habit-card{padding:6px 8px}
-      .beauty-weeks-row{flex-direction:column;gap:6px}
-      .beauty-week-block{flex-direction:row;gap:8px;justify-content:space-between;padding:4px 8px}
-      .training-weekdays{gap:1px}.training-weekday{font-size:8px;padding:2px 1px}
-      .training-week-row{gap:1px}.training-day-cell{min-width:0;padding:3px 1px;min-height:40px;border-width:1px}
-      .training-day-num{font-size:10px}.training-dot{width:5px;height:5px}
-      .training-detail-item{font-size:10px}
-    }
+    @media(max-width:768px){body{padding:0;align-items:flex-start}.notebook{width:100%;min-height:100vh;border-radius:0;box-shadow:none;margin:0;margin-top:20px;overflow:visible}.notebook::after{display:none}.stickers{left:8px;top:-18px;gap:2px}.sticker{padding:7px 7px 4px;font-size:9px}.content{flex-direction:column;padding:8px;gap:10px}.left-col{width:100%}.center-col{width:100%}.top-bar{padding:18px 12px 8px}.month-title{font-size:18px}.daily-habits-row{flex-direction:column}.daily-progress-bar-wrap{width:100%;flex-direction:row;align-items:center;gap:8px}.daily-progress-bar{width:100%;height:12px;min-height:12px;flex:none}.insight-blocks{flex-direction:column}.day-bars-row{display:none}.dots-grid{display:grid;grid-template-columns:30px repeat(auto-fill,1fr);gap:2px}.dots-grid .dot-slot{min-width:auto}.dots-grid .dot-slot.separator{display:none}.habit-card{padding:6px 8px}.beauty-weeks-row{flex-direction:column;gap:6px}.beauty-week-block{flex-direction:row;gap:8px;justify-content:space-between;padding:4px 8px}.training-weekdays{gap:1px}.training-weekday{font-size:8px;padding:2px 1px}.training-week-row{gap:1px}.training-day-cell{min-width:0;padding:3px 1px;min-height:40px;border-width:1px}.training-day-num{font-size:10px}.training-dot{width:5px;height:5px}.training-detail-item{font-size:10px}}
   </style>
 </head>
 <body>
-
 <div class="notebook">
   <div class="sakura-bg"></div>
   <div class="stickers">
@@ -157,7 +133,6 @@
     <div class="sticker" data-page="training">Тренировки</div>
     <div class="sticker" data-page="cleaning">Уборка</div>
   </div>
-
   <div class="top-bar" id="topBar">
     <div class="month-selector">
       <button onclick="changeMonth(-1)">◀</button>
@@ -165,15 +140,12 @@
       <button onclick="changeMonth(1)">▶</button>
     </div>
   </div>
-
   <div class="content" id="mainContent">
     <div class="left-col" id="leftCol">
       <div class="calendar-widget"><h4 id="calMonthTitle"></h4><table><thead><tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr></thead><tbody id="calendarBody"></tbody></table></div>
       <div class="tasks-block"><h4>Дела на сегодня</h4><div id="dailyTasks"></div><input type="text" id="newDailyTask" placeholder="+ добавить..." style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;"></div>
-      <div class="tasks-block"><h4>Дела на неделю</h4><div id="weekTasks"></div><input type="text" id="newWeekTask" placeholder="+ добавить..." style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;">
-      <div class="notes-block"><textarea id="dailyNotes" placeholder="📝 Заметки..."></textarea></div></div>
+      <div class="tasks-block"><h4>Дела на неделю</h4><div id="weekTasks"></div><input type="text" id="newWeekTask" placeholder="+ добавить..." style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;"><div class="notes-block"><textarea id="dailyNotes" placeholder="📝 Заметки..."></textarea></div></div>
     </div>
-
     <div class="center-col">
       <div id="daily" class="tracker-page active">
         <div class="section-title">Привычки</div>
@@ -192,172 +164,152 @@
   </div>
   <div class="quote-bar" id="quote"></div>
 </div>
-
 <script>
-// ==================== КОНФИГУРАЦИЯ ====================
+// PWA
+if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(resp){return caches.open('daily-v6').then(function(cache){cache.put(e.request,resp.clone());return resp})})}).catch(function(){return new Response('',{status:502})})})`],{type:'application/javascript'}))).catch(()=>{});}
+
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyIbUDKXx8lBHaVEIK0GaDrf6x1NWRhp8RRL8HYGQUbI05EnMrZ5qyYuV1xKod1Ejs36A/exec';
-
-// ==================== PWA ====================
-if('serviceWorker' in navigator){
-  const swCode=`self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(resp){return caches.open('daily-v5').then(function(cache){cache.put(e.request,resp.clone());return resp})})}).catch(function(){return new Response('',{status:502})})})`;
-  navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode],{type:'application/javascript'}))).catch(()=>{});
-}
-
-// ==================== УТИЛИТЫ ====================
 const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const WCLS=['w1','w2','w3','w4','w5'];const WCOLORS=['#b8956a','#6a9e6a','#c47a7a','#6a8eb8','#b8a83a'];const WBEAUTY=['#d4c4a8','#a8c8a0','#e0b8b8','#a8c0d8','#d8d0a0'];
 const QUOTES=['"Маленькие шаги каждый день приводят к большим результатам."','"То, что мы делаем сегодня, определяет наше завтра."','"Дисциплина — это мост между целями и достижениями."','"Не обязательно быть идеальной, достаточно быть настоящей."','"Забота о себе — это не роскошь, а необходимость."','"Каждый день — это новая возможность."','"Магия происходит за пределами зоны комфорта."','"Тишина и покой — лучшее лекарство для души."','"Твой дом — это продолжение твоего внутреннего мира."','"Сила не в том, чтобы никогда не падать, а в том, чтобы всегда подниматься."','"Будь добрее к себе — ты делаешь достаточно."','"Порядок вокруг — порядок внутри."','"Лучшее время начать — сейчас."','"Сначала забота о себе, потом всё остальное."'];
 
-// Данные
 const now=new Date();let currentMonth=now.getMonth()+1,currentYear=now.getFullYear(),selectedDay=now.getDate(),currentPage='daily',selectedTrainingDay=null;
 let habitDefs=[],beautyDefs=[],cleaningDefs=[],trainingDefs=JSON.parse(localStorage.getItem('trainingDefs')||'{}');
 let habitsData={},beautyData={},cleaningData={},syncQueue=[];
 
-// Ключи
-const getHKey=(hi,d)=>`${currentYear}-${currentMonth}-${d}-h${hi}`;
-const getBKey=(bi,w,sub)=>`${currentYear}-${currentMonth}-b${bi}-w${w}${sub||''}`;
-const getCKey=(ci,d)=>`${currentYear}-${currentMonth}-c${ci}-${d}`;
-const getHD=(hi,d)=>habitsData[getHKey(hi,d)]===true;
-const cntHD=hi=>{let c=0;for(let d=1;d<=new Date(currentYear,currentMonth,0).getDate();d++)if(getHD(hi,d))c++;return c;};
-const cntDD=d=>{let c=0;for(let h=0;h<habitDefs.length;h++)if(getHD(h,d))c++;return c;};
+const HK=(hi,d)=>`${currentYear}-${currentMonth}-${d}-h${hi}`;
+const BK=(bi,w,sub)=>`${currentYear}-${currentMonth}-b${bi}-w${w}${sub||''}`;
+const CK=(ci,d)=>`${currentYear}-${currentMonth}-c${ci}-${d}`;
+const HD=(hi,d)=>habitsData[HK(hi,d)]===true;
+const cntHD=hi=>{let c=0;for(let d=1;d<=new Date(currentYear,currentMonth,0).getDate();d++)if(HD(hi,d))c++;return c;};
+const cntDD=d=>{let c=0;for(let h=0;h<habitDefs.length;h++)if(HD(h,d))c++;return c;};
 
 function getWeekRanges(dim){const fd=new Date(currentYear,currentMonth-1,1).getDay(),so=fd===0?7:fd;const wks=[];let cur=1,wn=1;if(so>1){wks.push({w:wn,start:1,end:Math.min(8-so,dim)});cur=(8-so)+1;wn++;}while(cur<=dim){wks.push({w:wn,start:cur,end:Math.min(cur+6,dim)});cur+=7;wn++;}return wks;}
 function getWeekForDay(day){const dim=new Date(currentYear,currentMonth,0).getDate();return getWeekRanges(dim).find(w=>day>=w.start&&day<=w.end);}
+function getMonday(ds){const d=new Date(ds),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 
-// ==================== СИНХРОНИЗАЦИЯ ====================
-async function syncToSheet(sheetName,row,col,value){
+// Синхронизация — фоновая, с таймаутом
+function syncToSheet(sheetName,row,col,value){
   const url=`${SCRIPT_URL}?action=saveCheck&sheet=${encodeURIComponent(sheetName)}&row=${row}&col=${col}&value=${value}`;
-  try{await fetch(url);}catch(e){syncQueue.push({sheet:sheetName,row,col,value});}
+  try{const img=new Image();img.src=url;}catch(e){}
 }
 
-async function processSyncQueue(){
-  if(!syncQueue.length)return;
-  const batch=[...syncQueue];syncQueue=[];
-  for(const item of batch){await syncToSheet(item.sheet,item.row,item.col,item.value);}
-}
-
-async function loadFromSheets(){
-  try{
-    const[hr,br,cr]=await Promise.all([
-      fetch(`${SCRIPT_URL}?action=getHabits`).then(r=>r.json()),
-      fetch(`${SCRIPT_URL}?action=getBeauty`).then(r=>r.json()),
-      fetch(`${SCRIPT_URL}?action=getCleaning`).then(r=>r.json())
-    ]);
-    if(hr.values)habitDefs=parseHabits(hr.values);
-    if(br.values)beautyDefs=parseBeauty(br.values);
-    if(cr.values)cleaningDefs=parseCleaning(cr.values);
-  }catch(e){loadLocalFallback();}
-  if(!habitDefs.length)loadLocalFallback();
-  localStorage.setItem('habitDefs',JSON.stringify(habitDefs));
-  localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));
-  localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));
-}
-
-function loadLocalFallback(){
-  habitDefs=JSON.parse(localStorage.getItem('habitDefs')||'[{"name":"Утренняя зарядка","goal":31}]');
-  beautyDefs=JSON.parse(localStorage.getItem('beautyDefs')||'[{"name":"Маска для лица","freq":2}]');
-  cleaningDefs=JSON.parse(localStorage.getItem('cleaningDefs')||'[{"name":"Застелить постель","type":"daily","goal":31}]');
-}
-
-function parseHabits(rows){
-  const d=[];for(let i=1;i<rows.length;i++){const r=rows[i];if(r[0]&&r[0].trim())d.push({name:r[0].trim(),goal:parseInt(r[1])||31});}
-  return d.length?d:null;
-}
-function parseBeauty(rows){
-  const d=[];for(let i=1;i<rows.length;i++){const r=rows[i];if(r[0]&&r[0].trim())d.push({name:r[0].trim(),freq:parseInt(r[1])||1});}
-  return d.length?d:null;
-}
-function parseCleaning(rows){
-  const d=[];for(let i=1;i<rows.length;i++){const r=rows[i];if(r[0]&&r[0].trim()&&r[1])d.push({name:r[0].trim(),type:r[1].trim(),goal:parseInt(r[2])||(r[1]==='daily'?31:r[1]==='weekly'?5:1)});
-  return d.length?d:null;
-}
-
-function loadAllData(){
-  const dim=new Date(currentYear,currentMonth,0).getDate();
-  habitsData={};beautyData={};cleaningData={};
-  for(let h=0;h<habitDefs.length;h++)for(let d=1;d<=dim;d++)habitsData[getHKey(h,d)]=localStorage.getItem(getHKey(h,d))==='true';
-  for(let b=0;b<beautyDefs.length;b++)for(let w=1;w<=5;w++){beautyData[getBKey(b,w)]=localStorage.getItem(getBKey(b,w))==='true';beautyData[getBKey(b,w,'b')]=localStorage.getItem(getBKey(b,w,'b'))==='true';}
-  for(let c=0;c<cleaningDefs.length;c++)for(let d=1;d<=dim;d++)cleaningData[getCKey(c,d)]=localStorage.getItem(getCKey(c,d))==='true';
-}
-
-function saveAndSync(key,value,sheetName,row,col){
+function SAVE(key,value,sheetName,row,col){
   localStorage.setItem(key,value?'true':'false');
   syncToSheet(sheetName,row,col,value?'TRUE':'FALSE');
 }
 
-// ==================== ЦИТАТА / КАЛЕНДАРЬ ====================
-function getDailyQuote(){const today=new Date().toDateString(),s=localStorage.getItem('quoteDate');if(s===today)return localStorage.getItem('quoteText')||QUOTES[0];const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];localStorage.setItem('quoteDate',today);localStorage.setItem('quoteText',q);return q;}
+// Загрузка из таблицы — с коротким таймаутом
+async function loadFromSheets(){
+  try{
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),5000);
+    const[hr,br,cr]=await Promise.all([
+      fetch(`${SCRIPT_URL}?action=getHabits`,{signal:controller.signal}).then(r=>r.json()).catch(()=>({})),
+      fetch(`${SCRIPT_URL}?action=getBeauty`,{signal:controller.signal}).then(r=>r.json()).catch(()=>({})),
+      fetch(`${SCRIPT_URL}?action=getCleaning`,{signal:controller.signal}).then(r=>r.json()).catch(()=>({}))
+    ]);
+    clearTimeout(timeout);
+    if(hr.values)habitDefs=parseHabits(hr.values);
+    if(br.values)beautyDefs=parseBeauty(br.values);
+    if(cr.values)cleaningDefs=parseCleaning(cr.values);
+    if(habitDefs.length){localStorage.setItem('habitDefs',JSON.stringify(habitDefs));}
+    if(beautyDefs.length){localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));}
+    if(cleaningDefs.length){localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));}
+  }catch(e){}
+  if(!habitDefs.length)loadLocalFallback();
+}
+
+function loadLocalFallback(){
+  habitDefs=JSON.parse(localStorage.getItem('habitDefs')||'[{"name":"Утренняя зарядка","goal":31},{"name":"Душ","goal":31},{"name":"Английский язык 25 минут","goal":15},{"name":"Макияж","goal":31},{"name":"3 жеста","goal":20},{"name":"Тренировка 15+ мин","goal":20},{"name":"1 фрукт + 1 овощ","goal":31},{"name":"Звонок маме","goal":31},{"name":"Поиск заработка","goal":20},{"name":"Отказ от мучного","goal":25},{"name":"Минимум сахара","goal":25},{"name":"Снятие макияжа","goal":31},{"name":"Массаж лица","goal":31},{"name":"Список дел на завтра","goal":31}]');
+  beautyDefs=JSON.parse(localStorage.getItem('beautyDefs')||'[{"name":"Маска для лица","freq":2},{"name":"Скраб для лица","freq":1},{"name":"Скраб для тела","freq":1},{"name":"Маска для волос","freq":1},{"name":"Эпиляция","freq":1},{"name":"Маникюр","freq":1},{"name":"Педикюр","freq":1},{"name":"Коррекция бровей","freq":1}]');
+  cleaningDefs=JSON.parse(localStorage.getItem('cleaningDefs')||'[{"name":"Застелить постель","type":"daily","goal":31},{"name":"Помыть посуду","type":"daily","goal":31},{"name":"Помыть раковины","type":"daily","goal":31},{"name":"Вынести мусор","type":"daily","goal":31},{"name":"Убрать вещи","type":"daily","goal":31},{"name":"Протереть стол","type":"daily","goal":31},{"name":"Подмести","type":"daily","goal":31},{"name":"Помыть пол","type":"weekly","goal":5},{"name":"Вытереть пыль","type":"weekly","goal":5},{"name":"Помыть зеркала","type":"weekly","goal":5},{"name":"Уборка ванной","type":"weekly","goal":5},{"name":"Помыть унитаз","type":"weekly","goal":5},{"name":"Убрать кошачью шерсть","type":"weekly","goal":5},{"name":"Помыть кошачий лоток","type":"weekly","goal":5},{"name":"Смена белья","type":"monthly","goal":1},{"name":"Уборка стола","type":"monthly","goal":1},{"name":"Помыть холодильник","type":"monthly","goal":1},{"name":"Перевернуть матрас","type":"monthly","goal":1}]');
+}
+
+function parseHabits(rows){const d=[];for(let i=1;i<rows.length;i++){const r=rows[i];if(r[0]&&r[0].trim())d.push({name:r[0].trim(),goal:parseInt(r[1])||31});}return d;}
+function parseBeauty(rows){const d=[];for(let i=1;i<rows.length;i++){const r=rows[i];if(r[0]&&r[0].trim())d.push({name:r[0].trim(),freq:parseInt(r[1])||1});}return d;}
+function parseCleaning(rows){const d=[];for(let i=1;i<rows.length;i++){const r=rows[i];if(r[0]&&r[0].trim()&&r[1])d.push({name:r[0].trim(),type:r[1].trim(),goal:parseInt(r[2])||(r[1]==='daily'?31:r[1]==='weekly'?5:1)});return d;}
+
+function loadAllData(){const dim=new Date(currentYear,currentMonth,0).getDate();habitsData={};beautyData={};cleaningData={};for(let h=0;h<habitDefs.length;h++)for(let d=1;d<=dim;d++)habitsData[HK(h,d)]=localStorage.getItem(HK(h,d))==='true';for(let b=0;b<beautyDefs.length;b++)for(let w=1;w<=5;w++){beautyData[BK(b,w)]=localStorage.getItem(BK(b,w))==='true';beautyData[BK(b,w,'b')]=localStorage.getItem(BK(b,w,'b'))==='true';}for(let c=0;c<cleaningDefs.length;c++)for(let d=1;d<=dim;d++)cleaningData[CK(c,d)]=localStorage.getItem(CK(c,d))==='true';}
+
+// Календарь
 function buildCalendar(){const body=document.getElementById('calendarBody');body.innerHTML='';const t=`${MONTHS[currentMonth-1]} ${currentYear}`;document.getElementById('calMonthTitle').textContent=t;document.getElementById('monthTitle').textContent=t;const dim=new Date(currentYear,currentMonth,0).getDate(),fd=new Date(currentYear,currentMonth-1,1).getDay(),sd=fd===0?7:fd;if(selectedDay>dim)selectedDay=dim;let row=document.createElement('tr');for(let i=1;i<sd;i++)row.appendChild(document.createElement('td'));for(let d=1;d<=dim;d++){const cell=document.createElement('td');cell.textContent=d;cell.addEventListener('click',function(){selectDay(d,cell);});if(d===now.getDate()&&currentMonth===now.getMonth()+1&&currentYear===now.getFullYear())cell.classList.add('today');if(d===selectedDay)cell.classList.add('selected');row.appendChild(cell);if((d+sd-1)%7===0||d===dim){body.appendChild(row);row=document.createElement('tr');}}}
 function selectDay(day,cell){selectedDay=day;document.querySelectorAll('.calendar-widget td').forEach(td=>td.classList.remove('selected'));if(cell)cell.classList.add('selected');loadDayData();}
 function changeMonth(dir){currentMonth+=dir;if(currentMonth>12){currentMonth=1;currentYear++;}if(currentMonth<1){currentMonth=12;currentYear--;}localStorage.setItem('selectedMonth',currentMonth);localStorage.setItem('selectedYear',currentYear);loadAllData();buildCalendar();if(currentPage==='daily')loadDayData();else refreshCurrentPage();}
 
-// ==================== ЕЖЕДНЕВНИК ====================
+// Ежедневник
 function loadDayData(){const dk=`${currentYear}-${currentMonth}-${selectedDay}`;document.getElementById('dailyTasks').innerHTML=JSON.parse(localStorage.getItem('daily_'+dk)||'[]').map((t,i)=>`<div class="task-item"><input type="checkbox" id="dt${i}" ${t.done?'checked':''} onchange="saveDailyTask(${i},this.checked)"><label for="dt${i}">${t.text}</label></div>`).join('');const ws=getMonday(dk);document.getElementById('weekTasks').innerHTML=JSON.parse(localStorage.getItem('week_'+ws)||'[]').map((t,i)=>`<div class="task-item"><input type="checkbox" id="wt${i}" ${t.done?'checked':''} onchange="saveWeekTask(${i},this.checked)"><label for="wt${i}">${t.text}</label></div>`).join('');document.getElementById('dailyNotes').value=localStorage.getItem('notes_'+dk)||'';document.getElementById('dailyNotes').oninput=function(){localStorage.setItem('notes_'+dk,this.value);};renderDailyHabits();renderDailyBeauty();renderDailyTraining();renderDailyCleaning();}
-function renderDailyHabits(){const list=document.getElementById('dailyHabitsList');list.innerHTML='';let done=0;habitDefs.forEach((h,i)=>{const ch=getHD(i,selectedDay);if(ch)done++;const row=document.createElement('div');row.className='habit-row';row.innerHTML=`<input type="checkbox" id="dh${i}" ${ch?'checked':''} onchange="toggleDailyHabit(${i},this.checked)"><label for="dh${i}">${h.name}</label>`;list.appendChild(row);});const pct=habitDefs.length?Math.round((done/habitDefs.length)*100):0;document.getElementById('dailyProgressFill').style.height=pct+'%';document.getElementById('dailyProgressLabel').textContent=pct+'%';}
-function renderDailyBeauty(){const container=document.getElementById('dailyBeauty');container.innerHTML='';const wr=getWeekForDay(selectedDay);if(!wr)return;const wdk=`beauty_week_done_${currentYear}-${currentMonth}-w${wr.w}`,wd=JSON.parse(localStorage.getItem(wdk)||'{}');beautyDefs.forEach((b,bi)=>{const k1=getBKey(bi,wr.w),k2=getBKey(bi,wr.w,'b'),d1=beautyData[k1],d2=beautyData[k2],done=(b.freq===2)?(d1&&d2):d1;if((!done||wd[bi])&&(b.freq===1||!d1||!d2)){const sub=(b.freq===2&&!d1)?'':((b.freq===2&&d1&&!d2)?'b':'');const row=document.createElement('div');row.className='habit-row';row.innerHTML=`<input type="checkbox" ${wd[bi]||done?'checked':''} onchange="markBeautyDaily(${bi},${wr.w},this.checked,'${sub}')"><label>${b.name}${!d1&&b.freq===2?' (1/2)':''}${d1&&!d2&&b.freq===2?' (2/2)':''}</label>`;if(wd[bi]||done)row.querySelector('label').style.textDecoration='line-through';container.appendChild(row);}});}
-function markBeautyDaily(bi,w,checked,sub){const key=getBKey(bi,w,sub);beautyData[key]=checked;localStorage.setItem(key,checked?'true':'false');saveAndSync(key,checked,'Уход',bi+2,(w-1)*2+(sub?1:0));const wk=`beauty_week_done_${currentYear}-${currentMonth}-w${w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');if(checked)wd[bi]=true;else delete wd[bi];localStorage.setItem(wk,JSON.stringify(wd));renderDailyBeauty();renderBeautyTracker();}
+function renderDailyHabits(){const list=document.getElementById('dailyHabitsList');list.innerHTML='';let done=0;habitDefs.forEach((h,i)=>{const ch=HD(i,selectedDay);if(ch)done++;const row=document.createElement('div');row.className='habit-row';row.innerHTML=`<input type="checkbox" id="dh${i}" ${ch?'checked':''} onchange="toggleDailyHabit(${i},this.checked)"><label for="dh${i}">${h.name}</label>`;list.appendChild(row);});const pct=habitDefs.length?Math.round((done/habitDefs.length)*100):0;document.getElementById('dailyProgressFill').style.height=pct+'%';document.getElementById('dailyProgressLabel').textContent=pct+'%';}
+function renderDailyBeauty(){const container=document.getElementById('dailyBeauty');container.innerHTML='';const wr=getWeekForDay(selectedDay);if(!wr)return;const wdk=`beauty_week_done_${currentYear}-${currentMonth}-w${wr.w}`,wd=JSON.parse(localStorage.getItem(wdk)||'{}');beautyDefs.forEach((b,bi)=>{const k1=BK(bi,wr.w),k2=BK(bi,wr.w,'b'),d1=beautyData[k1],d2=beautyData[k2],done=(b.freq===2)?(d1&&d2):d1;if((!done||wd[bi])&&(b.freq===1||!d1||!d2)){const sub=(b.freq===2&&!d1)?'':((b.freq===2&&d1&&!d2)?'b':'');const row=document.createElement('div');row.className='habit-row';row.innerHTML=`<input type="checkbox" ${wd[bi]||done?'checked':''} onchange="markBeautyDaily(${bi},${wr.w},this.checked,'${sub}')"><label>${b.name}${!d1&&b.freq===2?' (1/2)':''}${d1&&!d2&&b.freq===2?' (2/2)':''}</label>`;if(wd[bi]||done)row.querySelector('label').style.textDecoration='line-through';container.appendChild(row);}});}
+function markBeautyDaily(bi,w,checked,sub){const key=BK(bi,w,sub);beautyData[key]=checked;SAVE(key,checked,'Уход',bi+2,(w-1)*2+(sub?1:0));const wk=`beauty_week_done_${currentYear}-${currentMonth}-w${w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');if(checked)wd[bi]=true;else delete wd[bi];localStorage.setItem(wk,JSON.stringify(wd));renderDailyBeauty();renderBeautyTracker();}
 function renderDailyTraining(){document.getElementById('dailyTraining').innerHTML=getTrainingList(selectedDay).filter(n=>n&&n.trim()).map((n,i)=>`<div class="habit-row"><input type="checkbox" ${localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedDay}_${i}`)==='true'?'checked':''} onchange="saveTrainingCheck(${selectedDay},${i},this.checked)"><label>${n}</label>${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`)?`<a href="${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`)}" target="_blank" style="font-size:11px;color:#8aa8c8;margin-left:4px">▶</a>`:''}</div>`).join('');}
-function renderDailyCleaning(){const container=document.getElementById('dailyCleaning');container.innerHTML='';const wr=getWeekForDay(selectedDay);if(!wr)return;const wdk=`clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`,wd=JSON.parse(localStorage.getItem(wdk)||'{}');cleaningDefs.forEach((c,ci)=>{if(c.type==='daily'){const ch=cleaningData[getCKey(ci,selectedDay)];container.innerHTML+=`<div class="habit-row"><input type="checkbox" ${ch?'checked':''} onchange="toggleDailyCleaning(${ci},${selectedDay},this.checked)"><label>${c.name}</label></div>`;}else if(c.type==='weekly'){const ch=cleaningData[getCKey(ci,wr.start)];if(!ch||wd[ci]){const r=document.createElement('div');r.className='habit-row';r.innerHTML=`<input type="checkbox" ${wd[ci]||ch?'checked':''} onchange="markWeeklyCleaning(${ci},${wr.start},this.checked)"><label>${c.name}</label>`;if(wd[ci]||ch)r.querySelector('label').style.textDecoration='line-through';container.appendChild(r);}}else if(c.type==='monthly'){if(!cleaningData[getCKey(ci,1)]){container.innerHTML+=`<div class="habit-row"><input type="checkbox" onchange="markMonthlyCleaning(${ci},this.checked)"><label>${c.name}</label></div>`;}}});}
-function toggleDailyCleaning(ci,day,checked){cleaningData[getCKey(ci,day)]=checked;saveAndSync(getCKey(ci,day),checked,'Уборка',ci+2,day+1);renderCleaningTracker();}
-function markWeeklyCleaning(ci,startDay,checked){cleaningData[getCKey(ci,startDay)]=checked;saveAndSync(getCKey(ci,startDay),checked,'Уборка',ci+2,startDay+1);const wr=getWeekForDay(startDay),wk=`clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');if(checked)wd[ci]=true;else delete wd[ci];localStorage.setItem(wk,JSON.stringify(wd));loadDayData();renderCleaningTracker();}
-function markMonthlyCleaning(ci,checked){cleaningData[getCKey(ci,1)]=checked;saveAndSync(getCKey(ci,1),checked,'Уборка',ci+2,1);loadDayData();renderCleaningTracker();}
-function toggleDailyHabit(hi,checked){habitsData[getHKey(hi,selectedDay)]=checked;saveAndSync(getHKey(hi,selectedDay),checked,'Привычки',hi+2,selectedDay+1);renderDailyHabits();renderHabitsTracker();}
-function getMonday(ds){const d=new Date(ds),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function renderDailyCleaning(){const container=document.getElementById('dailyCleaning');container.innerHTML='';const wr=getWeekForDay(selectedDay);if(!wr)return;const wdk=`clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`,wd=JSON.parse(localStorage.getItem(wdk)||'{}');cleaningDefs.forEach((c,ci)=>{if(c.type==='daily'){const ch=cleaningData[CK(ci,selectedDay)];container.innerHTML+=`<div class="habit-row"><input type="checkbox" ${ch?'checked':''} onchange="toggleDailyCleaning(${ci},${selectedDay},this.checked)"><label>${c.name}</label></div>`;}else if(c.type==='weekly'){const ch=cleaningData[CK(ci,wr.start)];if(!ch||wd[ci]){const r=document.createElement('div');r.className='habit-row';r.innerHTML=`<input type="checkbox" ${wd[ci]||ch?'checked':''} onchange="markWeeklyCleaning(${ci},${wr.start},this.checked)"><label>${c.name}</label>`;if(wd[ci]||ch)r.querySelector('label').style.textDecoration='line-through';container.appendChild(r);}}else if(c.type==='monthly'){if(!cleaningData[CK(ci,1)]){container.innerHTML+=`<div class="habit-row"><input type="checkbox" onchange="markMonthlyCleaning(${ci},this.checked)"><label>${c.name}</label></div>`;}}});}
+function toggleDailyCleaning(ci,day,checked){cleaningData[CK(ci,day)]=checked;SAVE(CK(ci,day),checked,'Уборка',ci+2,day+1);}
+function markWeeklyCleaning(ci,startDay,checked){cleaningData[CK(ci,startDay)]=checked;SAVE(CK(ci,startDay),checked,'Уборка',ci+2,startDay+1);const wr=getWeekForDay(startDay),wk=`clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');if(checked)wd[ci]=true;else delete wd[ci];localStorage.setItem(wk,JSON.stringify(wd));loadDayData();}
+function markMonthlyCleaning(ci,checked){cleaningData[CK(ci,1)]=checked;SAVE(CK(ci,1),checked,'Уборка',ci+2,1);loadDayData();}
+function toggleDailyHabit(hi,checked){habitsData[HK(hi,selectedDay)]=checked;SAVE(HK(hi,selectedDay),checked,'Привычки',hi+2,selectedDay+1);renderDailyHabits();renderHabitsTracker();}
 
 document.getElementById('newDailyTask').addEventListener('keypress',function(e){if(e.key==='Enter'&&this.value.trim()){const dk=`${currentYear}-${currentMonth}-${selectedDay}`,t=JSON.parse(localStorage.getItem('daily_'+dk)||'[]');t.push({text:this.value.trim(),done:false});localStorage.setItem('daily_'+dk,JSON.stringify(t));this.value='';loadDayData();}});
 document.getElementById('newWeekTask').addEventListener('keypress',function(e){if(e.key==='Enter'&&this.value.trim()){const ws=getMonday(`${currentYear}-${currentMonth}-${selectedDay}`),t=JSON.parse(localStorage.getItem('week_'+ws)||'[]');t.push({text:this.value.trim(),done:false});localStorage.setItem('week_'+ws,JSON.stringify(t));this.value='';loadDayData();}});
 function saveDailyTask(idx,checked){const dk=`${currentYear}-${currentMonth}-${selectedDay}`,t=JSON.parse(localStorage.getItem('daily_'+dk)||'[]');if(t[idx])t[idx].done=checked;localStorage.setItem('daily_'+dk,JSON.stringify(t));loadDayData();}
 function saveWeekTask(idx,checked){const ws=getMonday(`${currentYear}-${currentMonth}-${selectedDay}`),t=JSON.parse(localStorage.getItem('week_'+ws)||'[]');if(t[idx])t[idx].done=checked;localStorage.setItem('week_'+ws,JSON.stringify(t));loadDayData();}
 
-// ==================== ПРИВЫЧКИ ====================
-function buildDotsGrid(dim,weeks,hi){const grid=document.createElement('div');grid.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';grid.appendChild(sp);}if(w)pw=w.w;const slot=document.createElement('div');slot.className='dot-slot';const dot=document.createElement('div');dot.className='habit-dot';if(getHD(hi,d)){dot.classList.add('done');dot.classList.add(WCLS[hi%5]);}dot.addEventListener('click',function(){const v=!getHD(hi,d);habitsData[getHKey(hi,d)]=v;saveAndSync(getHKey(hi,d),v,'Привычки',hi+2,d+1);renderHabitsTracker();if(selectedDay===d)renderDailyHabits();});slot.appendChild(dot);grid.appendChild(slot);}return grid;}
-function renderHabitsTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('dayBarsRow').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;const pct=habitDefs.length>0?(cntDD(d)/habitDefs.length)*100:0;h+=`<div class="day-bar-item"><div class="day-bar-fill" style="height:${Math.max(2,pct*1.5)}px"></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const cards=document.getElementById('habitsCardsContainer');cards.innerHTML='';habitDefs.forEach((h,hi)=>{const dc=cntHD(hi),pct=Math.round((dc/h.goal)*100);const card=document.createElement('div');card.className=`habit-card ${WCLS[hi%5]}`;card.innerHTML=`<div class="habit-card-header"><span class="habit-card-name">${h.name}</span><span class="habit-card-goal">${dc}/${h.goal} <button class="habit-edit-btn" onclick="editHabit(${hi})">✎</button><button class="habit-delete-btn" onclick="deleteHabit(${hi})">✕</button></span></div><div class="habit-progress-bar"><div class="habit-progress-fill ${WCLS[hi%5]}" style="width:${pct}%"></div></div>`;card.appendChild(buildDotsGrid(dim,weeks,hi));cards.appendChild(card);});renderWeekCircles('weekCirclesContainer',dim,weeks,(wr)=>{let t=0,d=0;for(let dd=wr.start;dd<=wr.end;dd++)for(let h=0;h<habitDefs.length;h++){t++;if(getHD(h,dd))d++;}return t>0?Math.round((d/t)*100):0;});renderInsightBlocks();}
-function addHabit(){const name=prompt('Название:');if(!name||!name.trim())return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;habitDefs.push({name:name.trim(),goal});saveAllDefs();loadAllData();renderHabitsTracker();}
-function editHabit(hi){const name=prompt('Название:',habitDefs[hi].name);if(name===null)return;const goal=parseInt(prompt('Цель:',habitDefs[hi].goal));if(isNaN(goal)||goal<1)return;habitDefs[hi]={name:name.trim()||habitDefs[hi].name,goal};saveAllDefs();renderHabitsTracker();}
-function deleteHabit(hi){if(!confirm(`Удалить «${habitDefs[hi].name}»?`))return;habitDefs.splice(hi,1);saveAllDefs();loadAllData();renderHabitsTracker();if(currentPage==='daily')loadDayData();}
-function saveAllDefs(){localStorage.setItem('habitDefs',JSON.stringify(habitDefs));localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));}
+// Привычки
+function buildDotsGrid(dim,weeks,hi){const grid=document.createElement('div');grid.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';grid.appendChild(sp);}if(w)pw=w.w;const slot=document.createElement('div');slot.className='dot-slot';const dot=document.createElement('div');dot.className='habit-dot';if(HD(hi,d)){dot.classList.add('done');dot.classList.add(WCLS[hi%5]);}dot.addEventListener('click',function(){const v=!HD(hi,d);habitsData[HK(hi,d)]=v;SAVE(HK(hi,d),v,'Привычки',hi+2,d+1);renderHabitsTracker();if(selectedDay===d)renderDailyHabits();});slot.appendChild(dot);grid.appendChild(slot);}return grid;}
+function renderHabitsTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('dayBarsRow').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;const pct=habitDefs.length>0?(cntDD(d)/habitDefs.length)*100:0;h+=`<div class="day-bar-item"><div class="day-bar-fill" style="height:${Math.max(2,pct*1.5)}px"></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const cards=document.getElementById('habitsCardsContainer');cards.innerHTML='';habitDefs.forEach((h,hi)=>{const dc=cntHD(hi),pct=Math.round((dc/h.goal)*100);const card=document.createElement('div');card.className=`habit-card ${WCLS[hi%5]}`;card.innerHTML=`<div class="habit-card-header"><span class="habit-card-name">${h.name}</span><span class="habit-card-goal">${dc}/${h.goal} <button class="habit-edit-btn" onclick="editHabit(${hi})">✎</button><button class="habit-delete-btn" onclick="deleteHabit(${hi})">✕</button></span></div><div class="habit-progress-bar"><div class="habit-progress-fill ${WCLS[hi%5]}" style="width:${pct}%"></div></div>`;card.appendChild(buildDotsGrid(dim,weeks,hi));cards.appendChild(card);});renderWeekCircles('weekCirclesContainer',dim,weeks,(wr)=>{let t=0,d=0;for(let dd=wr.start;dd<=wr.end;dd++)for(let h=0;h<habitDefs.length;h++){t++;if(HD(h,dd))d++;}return t>0?Math.round((d/t)*100):0;});renderInsightBlocks();}
+function addHabit(){const name=prompt('Название:');if(!name||!name.trim())return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;habitDefs.push({name:name.trim(),goal});localStorage.setItem('habitDefs',JSON.stringify(habitDefs));loadAllData();renderHabitsTracker();}
+function editHabit(hi){const name=prompt('Название:',habitDefs[hi].name);if(name===null)return;const goal=parseInt(prompt('Цель:',habitDefs[hi].goal));if(isNaN(goal)||goal<1)return;habitDefs[hi]={name:name.trim()||habitDefs[hi].name,goal};localStorage.setItem('habitDefs',JSON.stringify(habitDefs));renderHabitsTracker();}
+function deleteHabit(hi){if(!confirm(`Удалить «${habitDefs[hi].name}»?`))return;habitDefs.splice(hi,1);localStorage.setItem('habitDefs',JSON.stringify(habitDefs));loadAllData();renderHabitsTracker();if(currentPage==='daily')loadDayData();}
 function renderWeekCircles(id,dim,weeks,pctFn){document.getElementById(id).innerHTML=weeks.map(wr=>{const p=pctFn(wr);return`<div class="week-circle-wrap"><div class="week-circle" style="background:conic-gradient(${WCOLORS[(wr.w-1)%5]} ${p*3.6}deg,#e0d8cc 0deg)"><span>${p}%</span></div><div class="week-circle-label">Нед.${wr.w}</div></div>`;}).join('');}
 function renderInsightBlocks(){const stats=habitDefs.map((h,i)=>({name:h.name,pct:Math.round((cntHD(i)/h.goal)*100)})).sort((a,b)=>a.pct-b.pct);document.getElementById('attentionList').innerHTML=stats.slice(0,3).map(h=>`<div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>`).join('');document.getElementById('successList').innerHTML=stats.slice(-3).reverse().map(h=>`<div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>`).join('');}
 
-// ==================== УХОД ====================
-function renderBeautyTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('beautyDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const container=document.getElementById('beautyCardsContainer');container.innerHTML='';beautyDefs.forEach((b,bi)=>{const card=document.createElement('div');card.className=`beauty-card ${WCLS[bi%5]}`;card.innerHTML=`<div class="beauty-card-header"><span class="beauty-card-name">${b.name} (${b.freq}р/нед)</span><span><button class="habit-edit-btn" onclick="editBeauty(${bi})">✎</button><button class="habit-delete-btn" onclick="deleteBeauty(${bi})">✕</button></span></div>`;const wr=document.createElement('div');wr.className='beauty-weeks-row';weeks.forEach(ww=>{const k1=getBKey(bi,ww.w),k2=getBKey(bi,ww.w,'b');wr.innerHTML+=`<div class="beauty-week-block" style="background:${WBEAUTY[(ww.w-1)%5]}22;border-color:${WBEAUTY[(ww.w-1)%5]}"><div class="beauty-week-label">Нед.${ww.w}${ww.start===ww.end?'('+ww.start+')':''}</div><div class="beauty-week-dots"><div class="beauty-week-dot ${WCLS[bi%5]}${beautyData[k1]?' done':''}" onclick="beautyData['${k1}']=!beautyData['${k1}'];localStorage.setItem('${k1}',beautyData['${k1}']?'true':'false');saveAndSync('${k1}',beautyData['${k1}'],'Уход',${bi+2},${(ww.w-1)*2});renderBeautyTracker();"></div>${b.freq===2?`<div class="beauty-week-dot ${WCLS[bi%5]}${beautyData[k2]?' done':''}" onclick="beautyData['${k2}']=!beautyData['${k2}'];localStorage.setItem('${k2}',beautyData['${k2}']?'true':'false');saveAndSync('${k2}',beautyData['${k2}'],'Уход',${bi+2},${(ww.w-1)*2+1});renderBeautyTracker();"></div>`:''}</div></div>`;});card.appendChild(wr);container.appendChild(card);});renderWeekCircles('beautyWeekCircles',dim,weeks,(wr)=>{let ts=0,f=0;beautyDefs.forEach((b,bi)=>{ts+=b.freq;if(beautyData[getBKey(bi,wr.w)])f++;if(b.freq===2&&beautyData[getBKey(bi,wr.w,'b')])f++;});return ts>0?Math.round((f/ts)*100):0;});}
-function addBeauty(){const name=prompt('Название:');if(!name||!name.trim())return;const freq=parseInt(prompt('Частота (1 или 2):'));if(freq!==1&&freq!==2)return;beautyDefs.push({name:name.trim(),freq});saveAllDefs();loadAllData();renderBeautyTracker();}
-function editBeauty(bi){const name=prompt('Название:',beautyDefs[bi].name);if(name===null)return;const freq=parseInt(prompt('Частота:',beautyDefs[bi].freq));if(freq!==1&&freq!==2)return;beautyDefs[bi]={name:name.trim()||beautyDefs[bi].name,freq};saveAllDefs();renderBeautyTracker();}
-function deleteBeauty(bi){if(!confirm(`Удалить «${beautyDefs[bi].name}»?`))return;beautyDefs.splice(bi,1);saveAllDefs();loadAllData();renderBeautyTracker();}
+// Уход
+function renderBeautyTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('beautyDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();document.getElementById('beautyCardsContainer').innerHTML=beautyDefs.map((b,bi)=>{let wh='';weeks.forEach(ww=>{const k1=BK(bi,ww.w),k2=BK(bi,ww.w,'b');wh+=`<div class="beauty-week-block" style="background:${WBEAUTY[(ww.w-1)%5]}22;border-color:${WBEAUTY[(ww.w-1)%5]}"><div class="beauty-week-label">Нед.${ww.w}</div><div class="beauty-week-dots"><div class="beauty-week-dot ${WCLS[bi%5]}${beautyData[k1]?' done':''}" onclick="beautyData['${k1}']=!beautyData['${k1}'];SAVE('${k1}',beautyData['${k1}'],'Уход',${bi+2},${(ww.w-1)*2});renderBeautyTracker();"></div>${b.freq===2?`<div class="beauty-week-dot ${WCLS[bi%5]}${beautyData[k2]?' done':''}" onclick="beautyData['${k2}']=!beautyData['${k2}'];SAVE('${k2}',beautyData['${k2}'],'Уход',${bi+2},${(ww.w-1)*2+1});renderBeautyTracker();"></div>`:''}</div></div>`;});return`<div class="beauty-card ${WCLS[bi%5]}"><div class="beauty-card-header"><span class="beauty-card-name">${b.name} (${b.freq}р/нед)</span><span><button class="habit-edit-btn" onclick="editBeauty(${bi})">✎</button><button class="habit-delete-btn" onclick="deleteBeauty(${bi})">✕</button></span></div><div class="beauty-weeks-row">${wh}</div></div>`;}).join('');renderWeekCircles('beautyWeekCircles',dim,weeks,(wr)=>{let ts=0,f=0;beautyDefs.forEach((b,bi)=>{ts+=b.freq;if(beautyData[BK(bi,wr.w)])f++;if(b.freq===2&&beautyData[BK(bi,wr.w,'b')])f++;});return ts>0?Math.round((f/ts)*100):0;});}
+function addBeauty(){const name=prompt('Название:');if(!name||!name.trim())return;const freq=parseInt(prompt('Частота (1 или 2):'));if(freq!==1&&freq!==2)return;beautyDefs.push({name:name.trim(),freq});localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));loadAllData();renderBeautyTracker();}
+function editBeauty(bi){const name=prompt('Название:',beautyDefs[bi].name);if(name===null)return;const freq=parseInt(prompt('Частота:',beautyDefs[bi].freq));if(freq!==1&&freq!==2)return;beautyDefs[bi]={name:name.trim()||beautyDefs[bi].name,freq};localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));renderBeautyTracker();}
+function deleteBeauty(bi){if(!confirm(`Удалить «${beautyDefs[bi].name}»?`))return;beautyDefs.splice(bi,1);localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));loadAllData();renderBeautyTracker();}
 
-// ==================== ТРЕНИРОВКИ ====================
+// Тренировки
 function getTrainingList(d){const key=`${currentYear}-${currentMonth}-${d}`;if(trainingDefs[key])return trainingDefs[key];const def={1:['Flat Belly Pilates','Anti-Cellulite Thigh','Lower Belly Fat','Tired Body Stretch'],2:['Inner & Outer Thigh','Booty Burn','Core & Abs Band','Full Body Stretch'],3:['Morning Stretch','Tired Body Stretch','Daily Mobility Flow','Yoga for Better Posture'],4:['Morning Energy Workout','Flat Abs & Waist','Daily Stretch',''],5:['Pilates Arms','Lower Abs & Waist','Toned Arms Quickie','Evening Deep Stretch'],6:['Booty & Thigh Burn','Inner Thigh','Neck & Upper Back','Yoga for Back Pain'],7:['Standing Pilates Sculpt','Slim & Sculpt Pilates','Standing Abs','Hip & Lower Back Relief'],8:['Flat Belly Pilates','Anti-Cellulite Thigh','Lower Belly Fat','Tired Body Stretch'],9:['Inner & Outer Thigh','Booty Burn','Core & Abs Band','Full Body Stretch'],10:['Daily Mobility Flow','Morning Stretch','Tired Body Stretch','Yoga for Better Posture'],11:['Morning Pilates Weight Loss','Flat Abs & Waist','Daily Stretch',''],12:['Resistance Band Booty','Inner Thigh','Anti-Cellulite Thigh','Evening Deep Stretch'],13:['Pilates Arms','Standing Abs','Posture Care Routine','Yoga for Back Pain'],14:['Lower Abs & Waist','Booty Burn','Neck & Upper Back','Hip & Lower Back Relief'],15:['Standing Full Body','Standing Pilates Sculpt','Lower Belly Fat','Tired Body Stretch'],16:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],17:['Daily Mobility Flow','Tired Body Stretch','Neck & Upper Back','Yoga for Better Posture'],18:['Full Body Toning Band','Slim & Sculpt Pilates','Daily Stretch','Evening Deep Stretch'],19:['Glutes & Legs Dumbbells','Inner Thigh','Booty Burn','Yoga for Back Pain'],20:['Pilates Arms','Lower Belly Fat','Posture Care Routine','Hip & Lower Back Relief'],21:['Morning Standing Band','Flat Abs & Waist','Neck & Upper Back','Tired Body Stretch'],22:['Slim & Sculpt Pilates','Anti-Cellulite Thigh','Standing Abs','Daily Stretch'],23:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],24:['Daily Mobility Flow','Tired Body Stretch','Neck & Upper Back','Yoga for Better Posture'],25:['Morning Energy Workout','Flat Abs & Waist','Lower Belly Fat','Evening Deep Stretch'],26:['Lower-Body Pilates','Inner Thigh','Anti-Cellulite Thigh','Yoga for Back Pain'],27:['Flat Belly Pilates','Pilates Arms','Posture Care Routine','Hip & Lower Back Relief'],28:['Standing Pilates Sculpt','Slim & Sculpt Pilates','Neck & Upper Back','Tired Body Stretch'],29:['Standing Full Body','Morning Standing Band','Booty Burn','Daily Stretch'],30:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],31:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch']};return def[d]||[];}
 function saveTrainingCheck(day,idx,checked){localStorage.setItem(`td_${currentYear}-${currentMonth}-${day}_${idx}`,checked?'true':'false');renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
 function deleteTraining(day,idx){const list=getTrainingList(day);if(!confirm(`Удалить «${list[idx]}»?`))return;list.splice(idx,1);trainingDefs[`${currentYear}-${currentMonth}-${day}`]=list;localStorage.setItem('trainingDefs',JSON.stringify(trainingDefs));renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
 function editTrainingLink(day,idx){const key=`tl_${currentYear}-${currentMonth}-${day}_${idx}`;const link=prompt('Ссылка:',localStorage.getItem(key)||'');if(link===null)return;if(link.trim())localStorage.setItem(key,link.trim());else localStorage.removeItem(key);renderTrainingTracker();}
 function addTrainingDay(day){const name=prompt('Название:');if(!name||!name.trim())return;const link=prompt('Ссылка на YouTube:');const key=`${currentYear}-${currentMonth}-${day}`;if(!trainingDefs[key])trainingDefs[key]=getTrainingList(day).filter(x=>x);trainingDefs[key].push(name.trim());localStorage.setItem('trainingDefs',JSON.stringify(trainingDefs));if(link&&link.trim())localStorage.setItem(`tl_${key}_${trainingDefs[key].length-1}`,link.trim());renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
-function renderTrainingTracker(){const dim=new Date(currentYear,currentMonth,0).getDate();const grid=document.getElementById('trainingGrid');grid.innerHTML='';const fd=new Date(currentYear,currentMonth-1,1).getDay(),so=fd===0?7:fd;let day=1,fr=true;while(day<=dim){let rh='<div class="training-week-row">';for(let col=1;col<=7;col++){if(fr&&col<so){rh+='<div class="training-day-cell empty"></div>';continue;}if(day>dim){rh+='<div class="training-day-cell empty"></div>';day++;continue;}const dow=new Date(currentYear,currentMonth-1,day).getDay();const list=getTrainingList(day);let total=0,done=0;list.forEach((n,i)=>{if(!n||!n.trim())return;total++;if(localStorage.getItem(`td_${currentYear}-${currentMonth}-${day}_${i}`)==='true')done++;});rh+=`<div class="training-day-cell${dow===0||dow===6?' weekend':''}${selectedTrainingDay===day?' selected':''}" onclick="selectedTrainingDay=selectedTrainingDay===${day}?null:${day};renderTrainingTracker();"><div class="training-day-num">${day}</div><div class="training-day-bar"><div class="training-day-bar-fill" style="width:${total>0?Math.round((done/total)*100):0}%"></div></div><div class="training-day-indicators">${list.filter(n=>n&&n.trim()).map((n,i)=>`<div class="training-dot${localStorage.getItem('td_'+currentYear+'-'+currentMonth+'-'+day+'_'+i)==='true'?' done':''}"></div>`).join('')}</div></div>`;day++;}rh+='</div>';grid.innerHTML+=rh;fr=false;}const detail=document.getElementById('trainingDetail');detail.innerHTML='';if(selectedTrainingDay){const list=getTrainingList(selectedTrainingDay);detail.className='training-detail';let html=`<div class="training-detail-date">${selectedTrainingDay} мая</div>`;list.forEach((n,i)=>{if(!n||!n.trim())return;const c=localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`)==='true';const l=localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`);html+=`<div class="training-detail-item"><input type="checkbox" ${c?'checked':''} onchange="saveTrainingCheck(${selectedTrainingDay},${i},this.checked)"><label>${n}</label><span class="training-link-icon" onclick="event.stopPropagation();editTrainingLink(${selectedTrainingDay},${i})">🔗</span><span class="training-delete-icon" onclick="event.stopPropagation();deleteTraining(${selectedTrainingDay},${i})">✕</span>${l?`<a href="${l}" target="_blank" style="font-size:10px;color:#8aa8c8">▶</a>`:''}</div>`;});html+='<span class="training-detail-add" onclick="addTrainingDay('+selectedTrainingDay+')">+ Добавить</span>';detail.innerHTML=html;}}
+function renderTrainingTracker(){const dim=new Date(currentYear,currentMonth,0).getDate();let html='';const fd=new Date(currentYear,currentMonth-1,1).getDay(),so=fd===0?7:fd;let day=1,fr=true;while(day<=dim){let rh='<div class="training-week-row">';for(let col=1;col<=7;col++){if(fr&&col<so){rh+='<div class="training-day-cell empty"></div>';continue;}if(day>dim){rh+='<div class="training-day-cell empty"></div>';day++;continue;}const dow=new Date(currentYear,currentMonth-1,day).getDay();const list=getTrainingList(day);let total=0,done=0;list.forEach((n,i)=>{if(!n||!n.trim())return;total++;if(localStorage.getItem(`td_${currentYear}-${currentMonth}-${day}_${i}`)==='true')done++;});rh+=`<div class="training-day-cell${dow===0||dow===6?' weekend':''}${selectedTrainingDay===day?' selected':''}" onclick="selectedTrainingDay=selectedTrainingDay===${day}?null:${day};renderTrainingTracker();"><div class="training-day-num">${day}</div><div class="training-day-bar"><div class="training-day-bar-fill" style="width:${total>0?Math.round((done/total)*100):0}%"></div></div><div class="training-day-indicators">${list.filter(n=>n&&n.trim()).map((n,i)=>`<div class="training-dot${localStorage.getItem('td_'+currentYear+'-'+currentMonth+'-'+day+'_'+i)==='true'?' done':''}"></div>`).join('')}</div></div>`;day++;}rh+='</div>';html+=rh;fr=false;}document.getElementById('trainingGrid').innerHTML=html;const detail=document.getElementById('trainingDetail');detail.innerHTML='';if(selectedTrainingDay){const list=getTrainingList(selectedTrainingDay);detail.className='training-detail';let dh=`<div class="training-detail-date">${selectedTrainingDay} мая</div>`;list.forEach((n,i)=>{if(!n||!n.trim())return;const c=localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`)==='true';const l=localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`);dh+=`<div class="training-detail-item"><input type="checkbox" ${c?'checked':''} onchange="saveTrainingCheck(${selectedTrainingDay},${i},this.checked)"><label>${n}</label><span class="training-link-icon" onclick="event.stopPropagation();editTrainingLink(${selectedTrainingDay},${i})">🔗</span><span class="training-delete-icon" onclick="event.stopPropagation();deleteTraining(${selectedTrainingDay},${i})">✕</span>${l?`<a href="${l}" target="_blank" style="font-size:10px;color:#8aa8c8">▶</a>`:''}</div>`;});dh+='<span class="training-detail-add" onclick="addTrainingDay('+selectedTrainingDay+')">+ Добавить</span>';detail.innerHTML=dh;}}
 
-// ==================== УБОРКА ====================
-function buildCleaningDotsGrid(dim,weeks,ci,type){const grid=document.createElement('div');grid.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';grid.appendChild(sp);}if(w)pw=w.w;const slot=document.createElement('div');slot.className='dot-slot';const dot=document.createElement('div');dot.className=`cleaning-dot ${type}`;if(cleaningData[getCKey(ci,d)])dot.classList.add('done');dot.addEventListener('click',function(){const v=!cleaningData[getCKey(ci,d)];cleaningData[getCKey(ci,d)]=v;saveAndSync(getCKey(ci,d),v,'Уборка',ci+2,d+1);renderCleaningTracker();if(selectedDay===d)renderDailyCleaning();});slot.appendChild(dot);grid.appendChild(slot);}return grid;}
-function renderCleaningTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('cleaningDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const container=document.getElementById('cleaningCardsContainer');container.innerHTML='';cleaningDefs.forEach((c,ci)=>{let dc=0;if(c.type==='daily'){for(let d=1;d<=dim;d++)if(cleaningData[getCKey(ci,d)])dc++;}else if(c.type==='weekly'){weeks.forEach(wr=>{if(cleaningData[getCKey(ci,wr.start)])dc++;});}else{for(let d=1;d<=dim;d++)if(cleaningData[getCKey(ci,d)])dc++;}const card=document.createElement('div');card.className=`cleaning-card ${c.type}`;card.innerHTML=`<div class="cleaning-card-header"><span class="cleaning-card-name">${c.name}</span><span style="font-size:11px;color:#8b7355">${dc}/${c.goal} <button class="habit-edit-btn" onclick="editCleaning(${ci})">✎</button><button class="habit-delete-btn" onclick="deleteCleaning(${ci})">✕</button></span></div>`;if(c.type==='daily'){card.appendChild(buildCleaningDotsGrid(dim,weeks,ci,'daily'));}else if(c.type==='weekly'){const wrr=document.createElement('div');wrr.className='beauty-weeks-row';weeks.forEach(wr=>{wrr.innerHTML+=`<div class="cleaning-week-block"><div class="cleaning-week-label">Нед.${wr.w}</div><div class="cleaning-week-dots"><div class="cleaning-week-dot${cleaningData[getCKey(ci,wr.start)]?' done':''}" onclick="const v=!cleaningData['${getCKey(ci,wr.start)}'];cleaningData['${getCKey(ci,wr.start)}']=v;saveAndSync('${getCKey(ci,wr.start)}',v,'Уборка',${ci+2},${wr.start+1});renderCleaningTracker();"></div></div></div>`;});card.appendChild(wrr);}else if(c.type==='monthly'){card.innerHTML+=`<div class="cleaning-month-dots"><div class="cleaning-month-dot${cleaningData[getCKey(ci,1)]?' done':''}" onclick="const v=!cleaningData['${getCKey(ci,1)}'];cleaningData['${getCKey(ci,1)}']=v;saveAndSync('${getCKey(ci,1)}',v,'Уборка',${ci+2},1);renderCleaningTracker();"></div></div>`;}container.appendChild(card);});renderWeekCircles('cleaningWeekCircles',dim,weeks,(wr)=>{let t=0,f=0;cleaningDefs.forEach((c,ci)=>{if(c.type==='daily'){for(let d=wr.start;d<=wr.end;d++){t++;if(cleaningData[getCKey(ci,d)])f++;}}else if(c.type==='weekly'){t++;if(cleaningData[getCKey(ci,wr.start)])f++;}});return t>0?Math.round((f/t)*100):0;});}
-function addCleaning(){const name=prompt('Название:');if(!name||!name.trim())return;const type=prompt('Тип (daily/weekly/monthly):');if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;cleaningDefs.push({name:name.trim(),type,goal});saveAllDefs();loadAllData();renderCleaningTracker();}
-function editCleaning(ci){const name=prompt('Название:',cleaningDefs[ci].name);if(name===null)return;const type=prompt('Тип:',cleaningDefs[ci].type);if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:',cleaningDefs[ci].goal));if(isNaN(goal)||goal<1)return;cleaningDefs[ci]={name:name.trim()||cleaningDefs[ci].name,type,goal};saveAllDefs();renderCleaningTracker();}
-function deleteCleaning(ci){if(!confirm(`Удалить «${cleaningDefs[ci].name}»?`))return;cleaningDefs.splice(ci,1);saveAllDefs();loadAllData();renderCleaningTracker();}
+// Уборка
+function buildCleaningDotsGrid(dim,weeks,ci,type){const grid=document.createElement('div');grid.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';grid.appendChild(sp);}if(w)pw=w.w;const slot=document.createElement('div');slot.className='dot-slot';const dot=document.createElement('div');dot.className=`cleaning-dot ${type}`;if(cleaningData[CK(ci,d)])dot.classList.add('done');dot.addEventListener('click',function(){const v=!cleaningData[CK(ci,d)];cleaningData[CK(ci,d)]=v;SAVE(CK(ci,d),v,'Уборка',ci+2,d+1);renderCleaningTracker();if(selectedDay===d)renderDailyCleaning();});slot.appendChild(dot);grid.appendChild(slot);}return grid;}
+function renderCleaningTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('cleaningDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const container=document.getElementById('cleaningCardsContainer');container.innerHTML='';cleaningDefs.forEach((c,ci)=>{let dc=0;if(c.type==='daily'){for(let d=1;d<=dim;d++)if(cleaningData[CK(ci,d)])dc++;}else if(c.type==='weekly'){weeks.forEach(wr=>{if(cleaningData[CK(ci,wr.start)])dc++;});}else{for(let d=1;d<=dim;d++)if(cleaningData[CK(ci,d)])dc++;}const card=document.createElement('div');card.className=`cleaning-card ${c.type}`;card.innerHTML=`<div class="cleaning-card-header"><span class="cleaning-card-name">${c.name}</span><span style="font-size:11px;color:#8b7355">${dc}/${c.goal} <button class="habit-edit-btn" onclick="editCleaning(${ci})">✎</button><button class="habit-delete-btn" onclick="deleteCleaning(${ci})">✕</button></span></div>`;if(c.type==='daily'){card.appendChild(buildCleaningDotsGrid(dim,weeks,ci,'daily'));}else if(c.type==='weekly'){const wrr=document.createElement('div');wrr.className='beauty-weeks-row';weeks.forEach(wr=>{wrr.innerHTML+=`<div class="cleaning-week-block"><div class="cleaning-week-label">Нед.${wr.w}</div><div class="cleaning-week-dots"><div class="cleaning-week-dot${cleaningData[CK(ci,wr.start)]?' done':''}" onclick="const v=!cleaningData['${CK(ci,wr.start)}'];cleaningData['${CK(ci,wr.start)}']=v;SAVE('${CK(ci,wr.start)}',v,'Уборка',${ci+2},${wr.start+1});renderCleaningTracker();"></div></div></div>`;});card.appendChild(wrr);}else if(c.type==='monthly'){card.innerHTML+=`<div class="cleaning-month-dots"><div class="cleaning-month-dot${cleaningData[CK(ci,1)]?' done':''}" onclick="const v=!cleaningData['${CK(ci,1)}'];cleaningData['${CK(ci,1)}']=v;SAVE('${CK(ci,1)}',v,'Уборка',${ci+2},1);renderCleaningTracker();"></div></div>`;}container.appendChild(card);});renderWeekCircles('cleaningWeekCircles',dim,weeks,(wr)=>{let t=0,f=0;cleaningDefs.forEach((c,ci)=>{if(c.type==='daily'){for(let d=wr.start;d<=wr.end;d++){t++;if(cleaningData[CK(ci,d)])f++;}}else if(c.type==='weekly'){t++;if(cleaningData[CK(ci,wr.start)])f++;}});return t>0?Math.round((f/t)*100):0;});}
+function addCleaning(){const name=prompt('Название:');if(!name||!name.trim())return;const type=prompt('Тип (daily/weekly/monthly):');if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;cleaningDefs.push({name:name.trim(),type,goal});localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));loadAllData();renderCleaningTracker();}
+function editCleaning(ci){const name=prompt('Название:',cleaningDefs[ci].name);if(name===null)return;const type=prompt('Тип:',cleaningDefs[ci].type);if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:',cleaningDefs[ci].goal));if(isNaN(goal)||goal<1)return;cleaningDefs[ci]={name:name.trim()||cleaningDefs[ci].name,type,goal};localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));renderCleaningTracker();}
+function deleteCleaning(ci){if(!confirm(`Удалить «${cleaningDefs[ci].name}»?`))return;cleaningDefs.splice(ci,1);localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));loadAllData();renderCleaningTracker();}
 
-// ==================== НАВИГАЦИЯ ====================
+// Навигация
 function toggleSection(id){const el=document.getElementById(id);el.style.maxHeight=el.style.maxHeight?null:'140px';el.style.overflow=el.style.overflow?null:'hidden';}
 function refreshCurrentPage(){if(currentPage==='habits')renderHabitsTracker();else if(currentPage==='beauty')renderBeautyTracker();else if(currentPage==='training')renderTrainingTracker();else if(currentPage==='cleaning')renderCleaningTracker();}
 function switchPage(page,sticker){currentPage=page;selectedTrainingDay=null;document.querySelectorAll('.sticker').forEach(s=>s.classList.remove('active'));sticker.classList.add('active');document.querySelectorAll('.tracker-page').forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');localStorage.setItem('currentPage',page);const lc=document.getElementById('leftCol'),tb=document.getElementById('topBar'),mc=document.getElementById('mainContent');if(page==='daily'){lc.classList.remove('hidden');tb.classList.remove('hidden');mc.classList.remove('full-width');loadDayData();}else{lc.classList.add('hidden');tb.classList.remove('hidden');mc.classList.add('full-width');refreshCurrentPage();}}
 
-// ==================== СТАРТ ====================
-async function init(){
-  document.getElementById('quote').textContent=getDailyQuote();
-  await loadFromSheets();
-  loadAllData();buildCalendar();loadDayData();
-  const pn={daily:'Ежедневник',habits:'Привычки',beauty:'Уход',training:'Тренировки',cleaning:'Уборка'};
-  document.querySelectorAll('.sticker').forEach(s=>{s.addEventListener('click',function(){switchPage(this.dataset.page,this);});s.classList.toggle('active',s.textContent===pn[currentPage]);});
-  document.getElementById(currentPage).classList.add('active');
-  if(currentPage!=='daily'){document.getElementById('leftCol').classList.add('hidden');refreshCurrentPage();}
-  setInterval(processSyncQueue,5000);
-}
-init();
-</script>
+// Старт — сначала локально, потом фон
+function getDailyQuote(){const today=new Date().toDateString(),s=localStorage.getItem('quoteDate');if(s===today)return localStorage.getItem('quoteText')||QUOTES[0];const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];localStorage.setItem('quoteDate',today);localStorage.setItem('quoteText',q);return q;}
 
+loadLocalFallback();
+loadAllData();
+buildCalendar();
+loadDayData();
+document.getElementById('quote').textContent=getDailyQuote();
+
+const pn={daily:'Ежедневник',habits:'Привычки',beauty:'Уход',training:'Тренировки',cleaning:'Уборка'};
+document.querySelectorAll('.sticker').forEach(s=>{s.addEventListener('click',function(){switchPage(this.dataset.page,this);});s.classList.toggle('active',s.textContent===pn[currentPage]);});
+document.getElementById(currentPage).classList.add('active');
+if(currentPage!=='daily'){document.getElementById('leftCol').classList.add('hidden');refreshCurrentPage();}
+
+// Фоновое обновление из таблицы
+setTimeout(async()=>{
+  await loadFromSheets();
+  loadAllData();
+  if(currentPage==='daily')loadDayData();
+  else refreshCurrentPage();
+},500);
+</script>
 </body>
 </html>
