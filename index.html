@@ -303,13 +303,14 @@ document.querySelectorAll('.sticker').forEach(s=>{s.addEventListener('click',fun
 document.getElementById(currentPage).classList.add('active');
 if(currentPage!=='daily'){document.getElementById('leftCol').classList.add('hidden');refreshCurrentPage();}
 
-// Фоновое обновление из таблицы
-setTimeout(async()=>{
-  await loadFromSheets();
-  loadAllData();
-  if(currentPage==='daily')loadDayData();
-  else refreshCurrentPage();
-},500);
+// Фоновое обновление из таблицы (не блокирует загрузку)
+setTimeout(()=>{
+  loadFromSheets().catch(()=>{}).then(()=>{
+    loadAllData();
+    if(currentPage==='daily')loadDayData();
+    else refreshCurrentPage();
+  });
+},1000);
 </script>
 </body>
 </html>
