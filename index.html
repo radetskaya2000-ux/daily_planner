@@ -8,9 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Ежедневник">
   <meta name="theme-color" content="#fffef9">
   <title>📔 Мой Ежедневник</title>
-  
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D0%9C%D0%BE%D0%B9%20%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22short_name%22%3A%22%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fffef9%22%2C%22theme_color%22%3A%22%23fffef9%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyMDAgMjAwJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2InIHgxPScwJScgeTE9JzAlJyB4Mj0nMTAwJScgeTI9JzEwMCUnPjxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyNmNWYwZTgnLz48c3RvcCBvZmZzZXQ9JzEwMCUnIHN0b3AtY29sb3I9JyNlOGQ1YzQnLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSczMCcgeT0nMTUnIHdpZHRoPScxNDAnIGhlaWdodD0nMTcwJyByeD0nMTInIGZpbGw9J3VybCgjYiknIHN0cm9rZT0nI2Q0Yjg5Nicgc3Ryb2tlLXdpZHRoPSczJy8%2BPHJlY3QgeD0nMzQnIHk9JzE5JyB3aWR0aD0nNTInIGhlaWdodD0nMTYyJyByeD0nMycgZmlsbD0nbm9uZScgc3Ryb2tlPScjZDJjNWFlJyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWRhc2hhcnJheT0nNCw0JyBvcGFjaXR5PScwLjUnLz48cmVjdCB4PSc5MCcgeT0nMTknIHdpZHRoPSc1MicgaGVpZ2h0PScxNjInIHJ4PSczJyBmaWxsPSdub25lJyBzdHJva2U9JyNkMmM1YWUnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtZGFzaGFycmF5PSc0LDQnIG9wYWNpdHk9JzAuNScvPjxjaXJjbGUgY3g9JzE2MCcgY3k9JzQwJyByPScxMCcgZmlsbD0nI2U4ZDRkNCcgc3Ryb2tlPScjZDJiOGI4JyBzdHJva2Utd2lkdGg9JzInLz48L3N2Zz4%3D%22%2C%22sizes%22%3A%22200x200%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
-  
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Georgia','Times New Roman',serif;background:#f5f0e8;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px}
@@ -157,15 +155,39 @@
   </div>
   <div class="quote-bar" id="quote"></div>
 </div>
-<script>
-if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(resp){return caches.open('daily-v7').then(function(cache){cache.put(e.request,resp.clone());return resp})})}).catch(function(){return new Response('',{status:502})})})`],{type:'application/javascript'}))).catch(()=>{});}
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB43tm_XPrIU4lD1uWLZ7Yt1W41utbqP1w",
+  authDomain: "mydiary-8ac7c.firebaseapp.com",
+  databaseURL: "https://mydiary-8ac7c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "mydiary-8ac7c",
+  storageBucket: "mydiary-8ac7c.firebasestorage.app",
+  messagingSenderId: "815333022536",
+  appId: "1:815333022536:web:f04b91a6e9a5538075b17d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Защита от дублирования вкладок
+if (window.sessionStorage.getItem('dailyAppOpen') === 'true' && window.matchMedia('(display-mode: standalone)').matches) {
+  window.close();
+}
+window.sessionStorage.setItem('dailyAppOpen', 'true');
+
+// PWA
+if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(resp){return caches.open('daily-firebase').then(function(cache){cache.put(e.request,resp.clone());return resp})})}).catch(function(){return new Response('',{status:502})})})`],{type:'application/javascript'}))).catch(()=>{});}
 
 const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const WCLS=['w1','w2','w3','w4','w5'];const WCOLORS=['#b8956a','#6a9e6a','#c47a7a','#6a8eb8','#b8a83a'];const WBEAUTY=['#d4c4a8','#a8c8a0','#e0b8b8','#a8c0d8','#d8d0a0'];
 const QUOTES=['"Маленькие шаги каждый день приводят к большим результатам."','"То, что мы делаем сегодня, определяет наше завтра."','"Дисциплина — это мост между целями и достижениями."','"Не обязательно быть идеальной, достаточно быть настоящей."','"Забота о себе — это не роскошь, а необходимость."','"Каждый день — это новая возможность."','"Магия происходит за пределами зоны комфорта."','"Тишина и покой — лучшее лекарство для души."','"Твой дом — это продолжение твоего внутреннего мира."','"Сила не в том, чтобы никогда не падать, а в том, чтобы всегда подниматься."','"Будь добрее к себе — ты делаешь достаточно."','"Порядок вокруг — порядок внутри."','"Лучшее время начать — сейчас."','"Сначала забота о себе, потом всё остальное."'];
 
 const now=new Date();let currentMonth=now.getMonth()+1,currentYear=now.getFullYear(),selectedDay=now.getDate(),currentPage='daily',selectedTrainingDay=null;
-let habitDefs=[],beautyDefs=[],cleaningDefs=[],trainingDefs=JSON.parse(localStorage.getItem('trainingDefs')||'{}');
+let habitDefs=[],beautyDefs=[],cleaningDefs=[],trainingDefs={};
 let habitsData={},beautyData={},cleaningData={};
 
 const HK=(hi,d)=>`${currentYear}-${currentMonth}-${d}-h${hi}`;
@@ -179,13 +201,71 @@ function getWeekRanges(dim){const fd=new Date(currentYear,currentMonth-1,1).getD
 function getWeekForDay(day){const dim=new Date(currentYear,currentMonth,0).getDate();return getWeekRanges(dim).find(w=>day>=w.start&&day<=w.end);}
 function getMonday(ds){const d=new Date(ds),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 
-function loadLocalFallback(){
-  habitDefs=JSON.parse(localStorage.getItem('habitDefs')||'[{"name":"Утренняя зарядка","goal":31},{"name":"Душ","goal":31},{"name":"Английский язык 25 минут","goal":15},{"name":"Макияж","goal":31},{"name":"3 жеста","goal":20},{"name":"Тренировка 15+ мин","goal":20},{"name":"1 фрукт + 1 овощ","goal":31},{"name":"Звонок маме","goal":31},{"name":"Поиск заработка","goal":20},{"name":"Отказ от мучного","goal":25},{"name":"Минимум сахара","goal":25},{"name":"Снятие макияжа","goal":31},{"name":"Массаж лица","goal":31},{"name":"Список дел на завтра","goal":31}]');
-  beautyDefs=JSON.parse(localStorage.getItem('beautyDefs')||'[{"name":"Маска для лица","freq":2},{"name":"Скраб для лица","freq":1},{"name":"Скраб для тела","freq":1},{"name":"Маска для волос","freq":1},{"name":"Эпиляция","freq":1},{"name":"Маникюр","freq":1},{"name":"Педикюр","freq":1},{"name":"Коррекция бровей","freq":1}]');
-  cleaningDefs=JSON.parse(localStorage.getItem('cleaningDefs')||'[{"name":"Застелить постель","type":"daily","goal":31},{"name":"Помыть посуду","type":"daily","goal":31},{"name":"Помыть раковины","type":"daily","goal":31},{"name":"Вынести мусор","type":"daily","goal":31},{"name":"Убрать вещи","type":"daily","goal":31},{"name":"Протереть стол","type":"daily","goal":31},{"name":"Подмести","type":"daily","goal":31},{"name":"Помыть пол","type":"weekly","goal":5},{"name":"Вытереть пыль","type":"weekly","goal":5},{"name":"Помыть зеркала","type":"weekly","goal":5},{"name":"Уборка ванной","type":"weekly","goal":5},{"name":"Помыть унитаз","type":"weekly","goal":5},{"name":"Убрать кошачью шерсть","type":"weekly","goal":5},{"name":"Помыть кошачий лоток","type":"weekly","goal":5},{"name":"Смена белья","type":"monthly","goal":1},{"name":"Уборка стола","type":"monthly","goal":1},{"name":"Помыть холодильник","type":"monthly","goal":1},{"name":"Перевернуть матрас","type":"monthly","goal":1}]');
+// Firebase: сохранить + локально
+async function FBset(path,value){
+  try{await set(ref(db,path),value);}catch(e){}
+  localStorage.setItem('fb_'+path,JSON.stringify(value));
 }
 
-function loadAllData(){const dim=new Date(currentYear,currentMonth,0).getDate();habitsData={};beautyData={};cleaningData={};for(let h=0;h<habitDefs.length;h++)for(let d=1;d<=dim;d++)habitsData[HK(h,d)]=localStorage.getItem(HK(h,d))==='true';for(let b=0;b<beautyDefs.length;b++)for(let w=1;w<=5;w++){beautyData[BK(b,w)]=localStorage.getItem(BK(b,w))==='true';beautyData[BK(b,w,'b')]=localStorage.getItem(BK(b,w,'b'))==='true';}for(let c=0;c<cleaningDefs.length;c++)for(let d=1;d<=dim;d++)cleaningData[CK(c,d)]=localStorage.getItem(CK(c,d))==='true';}
+// Firebase: загрузить
+async function FBget(path){
+  try{const snap=await get(child(ref(db),path));if(snap.exists()){const v=snap.val();localStorage.setItem('fb_'+path,JSON.stringify(v));return v;}}catch(e){}
+  const local=localStorage.getItem('fb_'+path);
+  return local?JSON.parse(local):null;
+}
+
+// Загрузка ВСЕХ данных из Firebase
+async function loadAllFromFB(){
+  const data=await FBget('habitDefs');
+  if(data){habitDefs=data;localStorage.setItem('habitDefs',JSON.stringify(data));}
+  else{habitDefs=JSON.parse(localStorage.getItem('habitDefs')||'[{"name":"Утренняя зарядка","goal":31}]');}
+
+  const bdata=await FBget('beautyDefs');
+  if(bdata){beautyDefs=bdata;localStorage.setItem('beautyDefs',JSON.stringify(bdata));}
+  else{beautyDefs=JSON.parse(localStorage.getItem('beautyDefs')||'[{"name":"Маска для лица","freq":2}]');}
+
+  const cdata=await FBget('cleaningDefs');
+  if(cdata){cleaningDefs=cdata;localStorage.setItem('cleaningDefs',JSON.stringify(cdata));}
+  else{cleaningDefs=JSON.parse(localStorage.getItem('cleaningDefs')||'[{"name":"Застелить постель","type":"daily","goal":31}]');}
+
+  const tdata=await FBget('trainingDefs');
+  if(tdata){trainingDefs=tdata;localStorage.setItem('trainingDefs',JSON.stringify(tdata));}
+  else{trainingDefs=JSON.parse(localStorage.getItem('trainingDefs')||'{}');}
+
+  // Данные отметок
+  const hdata=await FBget('habitsData');
+  if(hdata){for(const k in hdata){habitsData[k]=hdata[k];localStorage.setItem(k,hdata[k]?'true':'false');}}
+
+  const bedata=await FBget('beautyData');
+  if(bedata){for(const k in bedata){beautyData[k]=bedata[k];localStorage.setItem(k,bedata[k]?'true':'false');}}
+
+  const cldata=await FBget('cleaningData');
+  if(cldata){for(const k in cldata){cleaningData[k]=cldata[k];localStorage.setItem(k,cldata[k]?'true':'false');}}
+
+  const notes=await FBget('dailyNotes');
+  if(notes){for(const k in notes){localStorage.setItem('notes_'+k,notes[k]);}}
+}
+
+function loadAllData(){
+  const dim=new Date(currentYear,currentMonth,0).getDate();
+  habitsData={};beautyData={};cleaningData={};
+  for(let h=0;h<habitDefs.length;h++)for(let d=1;d<=dim;d++)habitsData[HK(h,d)]=localStorage.getItem(HK(h,d))==='true';
+  for(let b=0;b<beautyDefs.length;b++)for(let w=1;w<=5;w++){beautyData[BK(b,w)]=localStorage.getItem(BK(b,w))==='true';beautyData[BK(b,w,'b')]=localStorage.getItem(BK(b,w,'b'))==='true';}
+  for(let c=0;c<cleaningDefs.length;c++)for(let d=1;d<=dim;d++)cleaningData[CK(c,d)]=localStorage.getItem(CK(c,d))==='true';
+}
+
+async function saveAllToFB(){
+  await FBset('habitDefs',habitDefs);
+  await FBset('beautyDefs',beautyDefs);
+  await FBset('cleaningDefs',cleaningDefs);
+  await FBset('trainingDefs',trainingDefs);
+  await FBset('habitsData',habitsData);
+  await FBset('beautyData',beautyData);
+  await FBset('cleaningData',cleaningData);
+  const notes={};
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('notes_')){notes[k.replace('notes_','')]=localStorage.getItem(k);}}
+  await FBset('dailyNotes',notes);
+}
 
 function getDailyQuote(){const today=new Date().toDateString(),s=localStorage.getItem('quoteDate');if(s===today)return localStorage.getItem('quoteText')||QUOTES[0];const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];localStorage.setItem('quoteDate',today);localStorage.setItem('quoteText',q);return q;}
 
@@ -211,43 +291,47 @@ function saveWeekTask(idx,checked){const ws=getMonday(`${currentYear}-${currentM
 
 function buildDotsGrid(dim,weeks,hi){const grid=document.createElement('div');grid.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';grid.appendChild(sp);}if(w)pw=w.w;const slot=document.createElement('div');slot.className='dot-slot';const dot=document.createElement('div');dot.className='habit-dot';if(HD(hi,d)){dot.classList.add('done');dot.classList.add(WCLS[hi%5]);}dot.addEventListener('click',function(){const v=!HD(hi,d);habitsData[HK(hi,d)]=v;localStorage.setItem(HK(hi,d),v?'true':'false');renderHabitsTracker();if(selectedDay===d)renderDailyHabits();});slot.appendChild(dot);grid.appendChild(slot);}return grid;}
 function renderHabitsTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('dayBarsRow').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;const pct=habitDefs.length>0?(cntDD(d)/habitDefs.length)*100:0;h+=`<div class="day-bar-item"><div class="day-bar-fill" style="height:${Math.max(2,pct*1.5)}px"></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const cards=document.getElementById('habitsCardsContainer');cards.innerHTML='';habitDefs.forEach((h,hi)=>{const dc=cntHD(hi),pct=Math.round((dc/h.goal)*100);const card=document.createElement('div');card.className=`habit-card ${WCLS[hi%5]}`;card.innerHTML=`<div class="habit-card-header"><span class="habit-card-name">${h.name}</span><span class="habit-card-goal">${dc}/${h.goal} <button class="habit-edit-btn" onclick="editHabit(${hi})">✎</button><button class="habit-delete-btn" onclick="deleteHabit(${hi})">✕</button></span></div><div class="habit-progress-bar"><div class="habit-progress-fill ${WCLS[hi%5]}" style="width:${pct}%"></div></div>`;card.appendChild(buildDotsGrid(dim,weeks,hi));cards.appendChild(card);});renderWeekCircles('weekCirclesContainer',dim,weeks,(wr)=>{let t=0,d=0;for(let dd=wr.start;dd<=wr.end;dd++)for(let h=0;h<habitDefs.length;h++){t++;if(HD(h,dd))d++;}return t>0?Math.round((d/t)*100):0;});renderInsightBlocks();}
-function addHabit(){const name=prompt('Название:');if(!name||!name.trim())return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;habitDefs.push({name:name.trim(),goal});localStorage.setItem('habitDefs',JSON.stringify(habitDefs));loadAllData();renderHabitsTracker();}
-function editHabit(hi){const name=prompt('Название:',habitDefs[hi].name);if(name===null)return;const goal=parseInt(prompt('Цель:',habitDefs[hi].goal));if(isNaN(goal)||goal<1)return;habitDefs[hi]={name:name.trim()||habitDefs[hi].name,goal};localStorage.setItem('habitDefs',JSON.stringify(habitDefs));renderHabitsTracker();}
-function deleteHabit(hi){if(!confirm(`Удалить «${habitDefs[hi].name}»?`))return;habitDefs.splice(hi,1);localStorage.setItem('habitDefs',JSON.stringify(habitDefs));loadAllData();renderHabitsTracker();if(currentPage==='daily')loadDayData();}
+function addHabit(){const name=prompt('Название:');if(!name||!name.trim())return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;habitDefs.push({name:name.trim(),goal});localStorage.setItem('habitDefs',JSON.stringify(habitDefs));saveAllToFB();renderHabitsTracker();}
+function editHabit(hi){const name=prompt('Название:',habitDefs[hi].name);if(name===null)return;const goal=parseInt(prompt('Цель:',habitDefs[hi].goal));if(isNaN(goal)||goal<1)return;habitDefs[hi]={name:name.trim()||habitDefs[hi].name,goal};localStorage.setItem('habitDefs',JSON.stringify(habitDefs));saveAllToFB();renderHabitsTracker();}
+function deleteHabit(hi){if(!confirm(`Удалить «${habitDefs[hi].name}»?`))return;habitDefs.splice(hi,1);localStorage.setItem('habitDefs',JSON.stringify(habitDefs));saveAllToFB();loadAllData();renderHabitsTracker();if(currentPage==='daily')loadDayData();}
 function renderWeekCircles(id,dim,weeks,pctFn){document.getElementById(id).innerHTML=weeks.map(wr=>{const p=pctFn(wr);return`<div class="week-circle-wrap"><div class="week-circle" style="background:conic-gradient(${WCOLORS[(wr.w-1)%5]} ${p*3.6}deg,#e0d8cc 0deg)"><span>${p}%</span></div><div class="week-circle-label">Нед.${wr.w}</div></div>`;}).join('');}
 function renderInsightBlocks(){const stats=habitDefs.map((h,i)=>({name:h.name,pct:Math.round((cntHD(i)/h.goal)*100)})).sort((a,b)=>a.pct-b.pct);document.getElementById('attentionList').innerHTML=stats.slice(0,3).map(h=>`<div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>`).join('');document.getElementById('successList').innerHTML=stats.slice(-3).reverse().map(h=>`<div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>`).join('');}
 
 function renderBeautyTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('beautyDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();document.getElementById('beautyCardsContainer').innerHTML=beautyDefs.map((b,bi)=>{let wh='';weeks.forEach(ww=>{const k1=BK(bi,ww.w),k2=BK(bi,ww.w,'b');wh+=`<div class="beauty-week-block" style="background:${WBEAUTY[(ww.w-1)%5]}22;border-color:${WBEAUTY[(ww.w-1)%5]}"><div class="beauty-week-label">Нед.${ww.w}</div><div class="beauty-week-dots"><div class="beauty-week-dot ${WCLS[bi%5]}${beautyData[k1]?' done':''}" onclick="beautyData['${k1}']=!beautyData['${k1}'];localStorage.setItem('${k1}',beautyData['${k1}']?'true':'false');renderBeautyTracker();"></div>${b.freq===2?`<div class="beauty-week-dot ${WCLS[bi%5]}${beautyData[k2]?' done':''}" onclick="beautyData['${k2}']=!beautyData['${k2}'];localStorage.setItem('${k2}',beautyData['${k2}']?'true':'false');renderBeautyTracker();"></div>`:''}</div></div>`;});return`<div class="beauty-card ${WCLS[bi%5]}"><div class="beauty-card-header"><span class="beauty-card-name">${b.name} (${b.freq}р/нед)</span><span><button class="habit-edit-btn" onclick="editBeauty(${bi})">✎</button><button class="habit-delete-btn" onclick="deleteBeauty(${bi})">✕</button></span></div><div class="beauty-weeks-row">${wh}</div></div>`;}).join('');renderWeekCircles('beautyWeekCircles',dim,weeks,(wr)=>{let ts=0,f=0;beautyDefs.forEach((b,bi)=>{ts+=b.freq;if(beautyData[BK(bi,wr.w)])f++;if(b.freq===2&&beautyData[BK(bi,wr.w,'b')])f++;});return ts>0?Math.round((f/ts)*100):0;});}
-function addBeauty(){const name=prompt('Название:');if(!name||!name.trim())return;const freq=parseInt(prompt('Частота (1 или 2):'));if(freq!==1&&freq!==2)return;beautyDefs.push({name:name.trim(),freq});localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));loadAllData();renderBeautyTracker();}
-function editBeauty(bi){const name=prompt('Название:',beautyDefs[bi].name);if(name===null)return;const freq=parseInt(prompt('Частота:',beautyDefs[bi].freq));if(freq!==1&&freq!==2)return;beautyDefs[bi]={name:name.trim()||beautyDefs[bi].name,freq};localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));renderBeautyTracker();}
-function deleteBeauty(bi){if(!confirm(`Удалить «${beautyDefs[bi].name}»?`))return;beautyDefs.splice(bi,1);localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));loadAllData();renderBeautyTracker();}
+function addBeauty(){const name=prompt('Название:');if(!name||!name.trim())return;const freq=parseInt(prompt('Частота (1 или 2):'));if(freq!==1&&freq!==2)return;beautyDefs.push({name:name.trim(),freq});localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));saveAllToFB();renderBeautyTracker();}
+function editBeauty(bi){const name=prompt('Название:',beautyDefs[bi].name);if(name===null)return;const freq=parseInt(prompt('Частота:',beautyDefs[bi].freq));if(freq!==1&&freq!==2)return;beautyDefs[bi]={name:name.trim()||beautyDefs[bi].name,freq};localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));saveAllToFB();renderBeautyTracker();}
+function deleteBeauty(bi){if(!confirm(`Удалить «${beautyDefs[bi].name}»?`))return;beautyDefs.splice(bi,1);localStorage.setItem('beautyDefs',JSON.stringify(beautyDefs));saveAllToFB();renderBeautyTracker();}
 
 function getTrainingList(d){const key=`${currentYear}-${currentMonth}-${d}`;if(trainingDefs[key])return trainingDefs[key];const def={1:['Flat Belly Pilates','Anti-Cellulite Thigh','Lower Belly Fat','Tired Body Stretch'],2:['Inner & Outer Thigh','Booty Burn','Core & Abs Band','Full Body Stretch'],3:['Morning Stretch','Tired Body Stretch','Daily Mobility Flow','Yoga for Better Posture'],4:['Morning Energy Workout','Flat Abs & Waist','Daily Stretch',''],5:['Pilates Arms','Lower Abs & Waist','Toned Arms Quickie','Evening Deep Stretch'],6:['Booty & Thigh Burn','Inner Thigh','Neck & Upper Back','Yoga for Back Pain'],7:['Standing Pilates Sculpt','Slim & Sculpt Pilates','Standing Abs','Hip & Lower Back Relief'],8:['Flat Belly Pilates','Anti-Cellulite Thigh','Lower Belly Fat','Tired Body Stretch'],9:['Inner & Outer Thigh','Booty Burn','Core & Abs Band','Full Body Stretch'],10:['Daily Mobility Flow','Morning Stretch','Tired Body Stretch','Yoga for Better Posture'],11:['Morning Pilates Weight Loss','Flat Abs & Waist','Daily Stretch',''],12:['Resistance Band Booty','Inner Thigh','Anti-Cellulite Thigh','Evening Deep Stretch'],13:['Pilates Arms','Standing Abs','Posture Care Routine','Yoga for Back Pain'],14:['Lower Abs & Waist','Booty Burn','Neck & Upper Back','Hip & Lower Back Relief'],15:['Standing Full Body','Standing Pilates Sculpt','Lower Belly Fat','Tired Body Stretch'],16:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],17:['Daily Mobility Flow','Tired Body Stretch','Neck & Upper Back','Yoga for Better Posture'],18:['Full Body Toning Band','Slim & Sculpt Pilates','Daily Stretch','Evening Deep Stretch'],19:['Glutes & Legs Dumbbells','Inner Thigh','Booty Burn','Yoga for Back Pain'],20:['Pilates Arms','Lower Belly Fat','Posture Care Routine','Hip & Lower Back Relief'],21:['Morning Standing Band','Flat Abs & Waist','Neck & Upper Back','Tired Body Stretch'],22:['Slim & Sculpt Pilates','Anti-Cellulite Thigh','Standing Abs','Daily Stretch'],23:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],24:['Daily Mobility Flow','Tired Body Stretch','Neck & Upper Back','Yoga for Better Posture'],25:['Morning Energy Workout','Flat Abs & Waist','Lower Belly Fat','Evening Deep Stretch'],26:['Lower-Body Pilates','Inner Thigh','Anti-Cellulite Thigh','Yoga for Back Pain'],27:['Flat Belly Pilates','Pilates Arms','Posture Care Routine','Hip & Lower Back Relief'],28:['Standing Pilates Sculpt','Slim & Sculpt Pilates','Neck & Upper Back','Tired Body Stretch'],29:['Standing Full Body','Morning Standing Band','Booty Burn','Daily Stretch'],30:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],31:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch']};return def[d]||[];}
 function saveTrainingCheck(day,idx,checked){localStorage.setItem(`td_${currentYear}-${currentMonth}-${day}_${idx}`,checked?'true':'false');renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
-function deleteTraining(day,idx){const list=getTrainingList(day);if(!confirm(`Удалить «${list[idx]}»?`))return;list.splice(idx,1);trainingDefs[`${currentYear}-${currentMonth}-${day}`]=list;localStorage.setItem('trainingDefs',JSON.stringify(trainingDefs));renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
+function deleteTraining(day,idx){const list=getTrainingList(day);if(!confirm(`Удалить «${list[idx]}»?`))return;list.splice(idx,1);trainingDefs[`${currentYear}-${currentMonth}-${day}`]=list;localStorage.setItem('trainingDefs',JSON.stringify(trainingDefs));saveAllToFB();renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
 function editTrainingLink(day,idx){const key=`tl_${currentYear}-${currentMonth}-${day}_${idx}`;const link=prompt('Ссылка:',localStorage.getItem(key)||'');if(link===null)return;if(link.trim())localStorage.setItem(key,link.trim());else localStorage.removeItem(key);renderTrainingTracker();}
-function addTrainingDay(day){const name=prompt('Название:');if(!name||!name.trim())return;const link=prompt('Ссылка на YouTube:');const key=`${currentYear}-${currentMonth}-${day}`;if(!trainingDefs[key])trainingDefs[key]=getTrainingList(day).filter(x=>x);trainingDefs[key].push(name.trim());localStorage.setItem('trainingDefs',JSON.stringify(trainingDefs));if(link&&link.trim())localStorage.setItem(`tl_${key}_${trainingDefs[key].length-1}`,link.trim());renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
+function addTrainingDay(day){const name=prompt('Название:');if(!name||!name.trim())return;const link=prompt('Ссылка на YouTube:');const key=`${currentYear}-${currentMonth}-${day}`;if(!trainingDefs[key])trainingDefs[key]=getTrainingList(day).filter(x=>x);trainingDefs[key].push(name.trim());localStorage.setItem('trainingDefs',JSON.stringify(trainingDefs));saveAllToFB();if(link&&link.trim())localStorage.setItem(`tl_${key}_${trainingDefs[key].length-1}`,link.trim());renderTrainingTracker();if(day===selectedDay)renderDailyTraining();}
 function renderTrainingTracker(){const dim=new Date(currentYear,currentMonth,0).getDate();let html='';const fd=new Date(currentYear,currentMonth-1,1).getDay(),so=fd===0?7:fd;let day=1,fr=true;while(day<=dim){let rh='<div class="training-week-row">';for(let col=1;col<=7;col++){if(fr&&col<so){rh+='<div class="training-day-cell empty"></div>';continue;}if(day>dim){rh+='<div class="training-day-cell empty"></div>';day++;continue;}const dow=new Date(currentYear,currentMonth-1,day).getDay();const list=getTrainingList(day);let total=0,done=0;list.forEach((n,i)=>{if(!n||!n.trim())return;total++;if(localStorage.getItem(`td_${currentYear}-${currentMonth}-${day}_${i}`)==='true')done++;});rh+=`<div class="training-day-cell${dow===0||dow===6?' weekend':''}${selectedTrainingDay===day?' selected':''}" onclick="selectedTrainingDay=selectedTrainingDay===${day}?null:${day};renderTrainingTracker();"><div class="training-day-num">${day}</div><div class="training-day-bar"><div class="training-day-bar-fill" style="width:${total>0?Math.round((done/total)*100):0}%"></div></div><div class="training-day-indicators">${list.filter(n=>n&&n.trim()).map((n,i)=>`<div class="training-dot${localStorage.getItem('td_'+currentYear+'-'+currentMonth+'-'+day+'_'+i)==='true'?' done':''}"></div>`).join('')}</div></div>`;day++;}rh+='</div>';html+=rh;fr=false;}document.getElementById('trainingGrid').innerHTML=html;const detail=document.getElementById('trainingDetail');detail.innerHTML='';if(selectedTrainingDay){const list=getTrainingList(selectedTrainingDay);detail.className='training-detail';let dh=`<div class="training-detail-date">${selectedTrainingDay} мая</div>`;list.forEach((n,i)=>{if(!n||!n.trim())return;const c=localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`)==='true';const l=localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`);dh+=`<div class="training-detail-item"><input type="checkbox" ${c?'checked':''} onchange="saveTrainingCheck(${selectedTrainingDay},${i},this.checked)"><label>${n}</label><span class="training-link-icon" onclick="event.stopPropagation();editTrainingLink(${selectedTrainingDay},${i})">🔗</span><span class="training-delete-icon" onclick="event.stopPropagation();deleteTraining(${selectedTrainingDay},${i})">✕</span>${l?`<a href="${l}" target="_blank" style="font-size:10px;color:#8aa8c8">▶</a>`:''}</div>`;});dh+='<span class="training-detail-add" onclick="addTrainingDay('+selectedTrainingDay+')">+ Добавить</span>';detail.innerHTML=dh;}}
 
 function buildCleaningDotsGrid(dim,weeks,ci,type){const grid=document.createElement('div');grid.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';grid.appendChild(sp);}if(w)pw=w.w;const slot=document.createElement('div');slot.className='dot-slot';const dot=document.createElement('div');dot.className=`cleaning-dot ${type}`;if(cleaningData[CK(ci,d)])dot.classList.add('done');dot.addEventListener('click',function(){const v=!cleaningData[CK(ci,d)];cleaningData[CK(ci,d)]=v;localStorage.setItem(CK(ci,d),v?'true':'false');renderCleaningTracker();if(selectedDay===d)renderDailyCleaning();});slot.appendChild(dot);grid.appendChild(slot);}return grid;}
 function renderCleaningTracker(){const dim=new Date(currentYear,currentMonth,0).getDate(),weeks=getWeekRanges(dim);document.getElementById('cleaningDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.start&&d<=wr.end);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const container=document.getElementById('cleaningCardsContainer');container.innerHTML='';cleaningDefs.forEach((c,ci)=>{let dc=0;if(c.type==='daily'){for(let d=1;d<=dim;d++)if(cleaningData[CK(ci,d)])dc++;}else if(c.type==='weekly'){weeks.forEach(wr=>{if(cleaningData[CK(ci,wr.start)])dc++;});}else{for(let d=1;d<=dim;d++)if(cleaningData[CK(ci,d)])dc++;}const card=document.createElement('div');card.className=`cleaning-card ${c.type}`;card.innerHTML=`<div class="cleaning-card-header"><span class="cleaning-card-name">${c.name}</span><span style="font-size:11px;color:#8b7355">${dc}/${c.goal} <button class="habit-edit-btn" onclick="editCleaning(${ci})">✎</button><button class="habit-delete-btn" onclick="deleteCleaning(${ci})">✕</button></span></div>`;if(c.type==='daily'){card.appendChild(buildCleaningDotsGrid(dim,weeks,ci,'daily'));}else if(c.type==='weekly'){const wrr=document.createElement('div');wrr.className='beauty-weeks-row';weeks.forEach(wr=>{wrr.innerHTML+=`<div class="cleaning-week-block"><div class="cleaning-week-label">Нед.${wr.w}</div><div class="cleaning-week-dots"><div class="cleaning-week-dot${cleaningData[CK(ci,wr.start)]?' done':''}" onclick="const v=!cleaningData['${CK(ci,wr.start)}'];cleaningData['${CK(ci,wr.start)}']=v;localStorage.setItem('${CK(ci,wr.start)}',v?'true':'false');renderCleaningTracker();"></div></div></div>`;});card.appendChild(wrr);}else if(c.type==='monthly'){card.innerHTML+=`<div class="cleaning-month-dots"><div class="cleaning-month-dot${cleaningData[CK(ci,1)]?' done':''}" onclick="const v=!cleaningData['${CK(ci,1)}'];cleaningData['${CK(ci,1)}']=v;localStorage.setItem('${CK(ci,1)}',v?'true':'false');renderCleaningTracker();"></div></div>`;}container.appendChild(card);});renderWeekCircles('cleaningWeekCircles',dim,weeks,(wr)=>{let t=0,f=0;cleaningDefs.forEach((c,ci)=>{if(c.type==='daily'){for(let d=wr.start;d<=wr.end;d++){t++;if(cleaningData[CK(ci,d)])f++;}}else if(c.type==='weekly'){t++;if(cleaningData[CK(ci,wr.start)])f++;}});return t>0?Math.round((f/t)*100):0;});}
-function addCleaning(){const name=prompt('Название:');if(!name||!name.trim())return;const type=prompt('Тип (daily/weekly/monthly):');if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;cleaningDefs.push({name:name.trim(),type,goal});localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));loadAllData();renderCleaningTracker();}
-function editCleaning(ci){const name=prompt('Название:',cleaningDefs[ci].name);if(name===null)return;const type=prompt('Тип:',cleaningDefs[ci].type);if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:',cleaningDefs[ci].goal));if(isNaN(goal)||goal<1)return;cleaningDefs[ci]={name:name.trim()||cleaningDefs[ci].name,type,goal};localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));renderCleaningTracker();}
-function deleteCleaning(ci){if(!confirm(`Удалить «${cleaningDefs[ci].name}»?`))return;cleaningDefs.splice(ci,1);localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));loadAllData();renderCleaningTracker();}
+function addCleaning(){const name=prompt('Название:');if(!name||!name.trim())return;const type=prompt('Тип (daily/weekly/monthly):');if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:'));if(isNaN(goal)||goal<1)return;cleaningDefs.push({name:name.trim(),type,goal});localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));saveAllToFB();renderCleaningTracker();}
+function editCleaning(ci){const name=prompt('Название:',cleaningDefs[ci].name);if(name===null)return;const type=prompt('Тип:',cleaningDefs[ci].type);if(!['daily','weekly','monthly'].includes(type))return;const goal=parseInt(prompt('Цель:',cleaningDefs[ci].goal));if(isNaN(goal)||goal<1)return;cleaningDefs[ci]={name:name.trim()||cleaningDefs[ci].name,type,goal};localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));saveAllToFB();renderCleaningTracker();}
+function deleteCleaning(ci){if(!confirm(`Удалить «${cleaningDefs[ci].name}»?`))return;cleaningDefs.splice(ci,1);localStorage.setItem('cleaningDefs',JSON.stringify(cleaningDefs));saveAllToFB();renderCleaningTracker();}
 
 function toggleSection(id){const el=document.getElementById(id);el.style.maxHeight=el.style.maxHeight?null:'140px';el.style.overflow=el.style.overflow?null:'hidden';}
 function refreshCurrentPage(){if(currentPage==='habits')renderHabitsTracker();else if(currentPage==='beauty')renderBeautyTracker();else if(currentPage==='training')renderTrainingTracker();else if(currentPage==='cleaning')renderCleaningTracker();}
 function switchPage(page,sticker){currentPage=page;selectedTrainingDay=null;document.querySelectorAll('.sticker').forEach(s=>s.classList.remove('active'));sticker.classList.add('active');document.querySelectorAll('.tracker-page').forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');localStorage.setItem('currentPage',page);const lc=document.getElementById('leftCol'),tb=document.getElementById('topBar'),mc=document.getElementById('mainContent');if(page==='daily'){lc.classList.remove('hidden');tb.classList.remove('hidden');mc.classList.remove('full-width');loadDayData();}else{lc.classList.add('hidden');tb.classList.remove('hidden');mc.classList.add('full-width');refreshCurrentPage();}}
 
-loadLocalFallback();
-loadAllData();
-buildCalendar();
-loadDayData();
-document.getElementById('quote').textContent=getDailyQuote();
-const pn={daily:'Ежедневник',habits:'Привычки',beauty:'Уход',training:'Тренировки',cleaning:'Уборка'};
-document.querySelectorAll('.sticker').forEach(s=>{s.addEventListener('click',function(){switchPage(this.dataset.page,this);});s.classList.toggle('active',s.textContent===pn[currentPage]);});
-document.getElementById(currentPage).classList.add('active');
-if(currentPage!=='daily'){document.getElementById('leftCol').classList.add('hidden');refreshCurrentPage();}
+// Старт
+async function start(){
+  await loadAllFromFB();
+  loadAllData();
+  buildCalendar();
+  loadDayData();
+  document.getElementById('quote').textContent=getDailyQuote();
+  const pn={daily:'Ежедневник',habits:'Привычки',beauty:'Уход',training:'Тренировки',cleaning:'Уборка'};
+  document.querySelectorAll('.sticker').forEach(s=>{s.addEventListener('click',function(){switchPage(this.dataset.page,this);});s.classList.toggle('active',s.textContent===pn[currentPage]);});
+  document.getElementById(currentPage).classList.add('active');
+  if(currentPage!=='daily'){document.getElementById('leftCol').classList.add('hidden');refreshCurrentPage();}
+}
+start();
 </script>
 </body>
 </html>
