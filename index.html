@@ -187,14 +187,9 @@ function WFD(d){return WR(new Date(Y,M,0).getDate()).find(w=>d>=w.s&&d<=w.e);}
 function GM(ds){const d=new Date(ds),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 
 function loadFallback(){
-  const dim=new Date(Y,M,0).getDate();
-  // Если это будущий месяц и нет сохранённых данных — оставить пустым
-  const isFuture=(Y>D.getFullYear())||(Y===D.getFullYear()&&M>D.getMonth()+1);
-  if(isFuture&&!localStorage.getItem('HDs_'+Y+'-'+M)&&!localStorage.getItem('HDs')){HDs=[];}
-  else{HDs=JSON.parse(localStorage.getItem('HDs')||'[{"name":"Утренняя зарядка","goal":31}]');}
-  if(isFuture&&!localStorage.getItem('BDs_'+Y+'-'+M)&&!localStorage.getItem('BDs')){BDs=[];}
-  else{BDs=JSON.parse(localStorage.getItem('BDs')||'[{"name":"Маска для лица","freq":2}]');}
-  CDs=JSON.parse(localStorage.getItem('CDs')||'[{"name":"Застелить постель","type":"daily","goal":31},{"name":"Помыть посуду","type":"daily","goal":31}]');
+  HDs=JSON.parse(localStorage.getItem('HDs')||'[{"name":"Утренняя зарядка","goal":31},{"name":"Душ","goal":31},{"name":"Английский язык 25 минут","goal":15},{"name":"Макияж","goal":31},{"name":"3 жеста","goal":20},{"name":"Тренировка 15+ мин","goal":20},{"name":"1 фрукт + 1 овощ","goal":31},{"name":"Звонок маме","goal":31},{"name":"Поиск заработка","goal":20},{"name":"Отказ от мучного","goal":25},{"name":"Минимум сахара","goal":25},{"name":"Снятие макияжа","goal":31},{"name":"Массаж лица","goal":31},{"name":"Список дел на завтра","goal":31}]');
+  BDs=JSON.parse(localStorage.getItem('BDs')||'[{"name":"Маска для лица","freq":2},{"name":"Скраб для лица","freq":1},{"name":"Скраб для тела","freq":1},{"name":"Маска для волос","freq":1},{"name":"Эпиляция","freq":1},{"name":"Маникюр","freq":1},{"name":"Педикюр","freq":1},{"name":"Коррекция бровей","freq":1}]');
+  CDs=JSON.parse(localStorage.getItem('CDs')||'[{"name":"Застелить постель","type":"daily","goal":31},{"name":"Помыть посуду","type":"daily","goal":31},{"name":"Помыть раковины","type":"daily","goal":31},{"name":"Вынести мусор","type":"daily","goal":31},{"name":"Убрать вещи","type":"daily","goal":31},{"name":"Протереть стол","type":"daily","goal":31},{"name":"Подмести","type":"daily","goal":31},{"name":"Помыть пол","type":"weekly","goal":5},{"name":"Вытереть пыль","type":"weekly","goal":5},{"name":"Помыть зеркала","type":"weekly","goal":5},{"name":"Уборка ванной","type":"weekly","goal":5},{"name":"Помыть унитаз","type":"weekly","goal":5},{"name":"Убрать кошачью шерсть","type":"weekly","goal":5},{"name":"Помыть кошачий лоток","type":"weekly","goal":5},{"name":"Смена белья","type":"monthly","goal":1},{"name":"Уборка стола","type":"monthly","goal":1},{"name":"Помыть холодильник","type":"monthly","goal":1},{"name":"Перевернуть матрас","type":"monthly","goal":1}]');
   TD=JSON.parse(localStorage.getItem('TD')||'{}');
 }
 function loadData(){const dim=new Date(Y,M,0).getDate();H={};B={};C={};for(let h=0;h<HDs.length;h++)for(let d=1;d<=dim;d++)H[HK(h,d)]=localStorage.getItem(HK(h,d))==='true';for(let b=0;b<BDs.length;b++)for(let w=1;w<=5;w++){B[BK(b,w)]=localStorage.getItem(BK(b,w))==='true';B[BK(b,w,'b')]=localStorage.getItem(BK(b,w,'b'))==='true';}for(let c=0;c<CDs.length;c++)for(let d=1;d<=dim;d++)C[CK(c,d)]=localStorage.getItem(CK(c,d))==='true';}
@@ -261,13 +256,13 @@ function refP(){if(P==='habits')rHT();else if(P==='beauty')rBT();else if(P==='tr
 function sP(p,st){P=p;ST=null;document.querySelectorAll('.sticker').forEach(s=>s.classList.remove('active'));st.classList.add('active');document.querySelectorAll('.tracker-page').forEach(pg=>pg.classList.remove('active'));document.getElementById(p).classList.add('active');localStorage.setItem('P',p);const lc=document.getElementById('leftCol'),tb=document.getElementById('topBar'),mc=document.getElementById('mainContent');if(p==='daily'){lc.classList.remove('hidden');tb.classList.remove('hidden');mc.classList.remove('full-width');loadDay();}else{lc.classList.add('hidden');tb.classList.remove('hidden');mc.classList.add('full-width');refP();}}
 
 function start(){
-  const savedH=localStorage.getItem('HDs_'+Y+'-'+M);
-  const savedB=localStorage.getItem('BDs_'+Y+'-'+M);
-  const savedT=localStorage.getItem('TD_'+Y+'-'+M);
-  if(savedH){HDs=JSON.parse(savedH);localStorage.setItem('HDs',savedH);}
-  if(savedB){BDs=JSON.parse(savedB);localStorage.setItem('BDs',savedB);}
-  if(savedT){TD=JSON.parse(savedT);localStorage.setItem('TD',savedT);}
-  if(!HDs.length&&!savedH)loadFallback();
+  if(!localStorage.getItem('HDs')){loadFallback();}
+  else{
+    HDs=JSON.parse(localStorage.getItem('HDs'));
+    BDs=JSON.parse(localStorage.getItem('BDs'));
+    CDs=JSON.parse(localStorage.getItem('CDs'));
+    TD=JSON.parse(localStorage.getItem('TD')||'{}');
+  }
   loadData();cal();loadDay();
   document.getElementById('quote').textContent=getQuote();
   const pn={daily:'Ежедневник',habits:'Привычки',beauty:'Уход',training:'Тренировки',cleaning:'Уборка'};
