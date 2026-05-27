@@ -1,276 +1,2723 @@
+<!--
+============================================================
+БЛОК 1: КОММЕНТАРИИ
+Всё что между символами слева и справа браузер игнорирует.
+Я буду использовать их для пояснений.
+============================================================
+-->
+
+<!-- Объявление типа документа. Говорит браузеру: "это HTML5" -->
 <!DOCTYPE html>
+<!-- 3: Открывающий тег html. lang="ru" — язык страницы русский (нужно для поисковиков и скринридеров) -->
 <html lang="ru">
+
+<!-- 4: Открывающий тег head. В head находится "невидимая" информация о странице: настройки, шрифты, стили -->
 <head>
+
+  <!-- 5: meta charset — кодировка UTF-8. Без неё русские буквы превратятся в "кракозябры" -->
   <meta charset="UTF-8">
+
+  <!-- 6-7: viewport — как страница ведёт себя на телефоне.
+       width=device-width — ширина = ширина экрана
+       initial-scale=1.0 — без увеличения
+       user-scalable=no — пальцами нельзя приближать
+       viewport-fit=cover — заходит под "чёлку" на iPhone X и новее -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+  <!-- 8-9: Настройки для iPhone когда сайт открыт как PWA (приложение с иконкой на рабочем столе)
+       apple-mobile-web-app-capable — можно открыть как полноценное приложение (без адресной строки)
+       status-bar-style default — строка состояния обычного цвета -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- 10: Название приложения на iPhone (когда сохраняешь на рабочий стол) -->
   <meta name="apple-mobile-web-app-title" content="Ежедневник">
+
+  <!-- 11: Цвет верхней панели браузера на Android (телефоны Samsung, Xiaomi и т.д.) -->
   <meta name="theme-color" content="#fffef9">
+
+  <!-- 12: Заголовок вкладки (то, что видно на вкладке в браузере) -->
   <title>📔 Мой Ежедневник</title>
-  <link rel="icon" href="https://github.com/radetskaya2000-ux/daily_planner/blob/main/f6e0ab10802af4af904717634fd1906c.jpg?raw=true">
-  <link rel="apple-touch-icon" href="https://github.com/radetskaya2000-ux/daily_planner/blob/main/f6e0ab10802af4af904717634fd1906c.jpg?raw=true">
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D0%9C%D0%BE%D0%B9%20%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22short_name%22%3A%22%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fffef9%22%2C%22theme_color%22%3A%22%23fffef9%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fgithub.com%2Fradetskaya2000-ux%2Fdaily_planner%2Fblob%2Fmain%2Ff6e0ab10802af4af904717634fd1906c.jpg%3Fraw%3Dtrue%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fjpeg%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+
+  <!-- 13-14: Ссылка на иконку (favicon), которая показывается на вкладке браузера.
+       Это обычная иконка для компьютера -->
+  <link rel="icon" href="data:image/svg+xml;base64,...ЗДЕСЬ_ДЛИННЫЙ_BASE64...">
+
+  <!-- 15-17: PWA-манифест. Это "паспорт" приложения для телефона.
+       Говорит: "вот название, вот иконка, открывай как отдельное приложение".
+       Зашит прямо в HTML через data: URI чтобы не нужен был отдельный файл -->
+ <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22short_name%22%3A%22%D0%95%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D0%B8%D0%BA%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fffef9%22%2C%22theme_color%22%3A%22%23fffef9%22%7D">
+
+  <!-- 18: Открывающий тег style — здесь начинаются ВСЕ стили (CSS) -->
   <style>
+
+    /* ============================================================
+    СТРОКИ 19-350: CSS-СТИЛИ
+    CSS (Cascading Style Sheets) — "каскадные таблицы стилей".
+    Это язык, который говорит браузеру КАК выглядит страница:
+    цвета, шрифты, отступы, размеры.
+
+    Синтаксис CSS:
+    селектор { свойство: значение; свойство: значение; }
+
+    Селектор — К ЧЕМУ применить стиль (например, body — вся страница)
+    Свойство — ЧТО меняем (например, color — цвет текста)
+    Значение — НА ЧТО меняем (например, red — красный)
+
+    /* ========== ПРАВИЛО: СБРОС ВСЕХ ОТСТУПОВ ==========
+    * — звёздочка значит "ВСЕ элементы на странице"
+    margin — внешний отступ
+    padding — внутренний отступ
+    box-sizing: border-box — чтобы ширина элемента включала padding и border
+    Это нужно чтобы всё считать было проще */
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Georgia','Times New Roman',serif;background:#f5f0e8;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;overflow-x:hidden}
-    .notebook{width:900px;min-height:650px;background:#fffef9;border-radius:15px;position:relative;margin-top:25px;box-shadow:0 0 0 15px #e8d5c4,0 0 0 17px #d4b896,8px 0 30px rgba(0,0,0,0.2);display:flex;flex-direction:column;overflow:visible;max-width:100%}
-    .notebook::after{content:'';position:absolute;top:0;right:0;width:20px;height:100%;background:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,0.03),rgba(0,0,0,0.06));border-radius:0 15px 15px 0;pointer-events:none;z-index:5}
-    .sakura-bg{position:absolute;top:-10px;right:30px;width:380px;height:450px;pointer-events:none;z-index:100;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Cdefs%3E%3CradialGradient id='p' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23f8e8e8'/%3E%3Cstop offset='100%25' stop-color='%23e8c0c0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='none' stroke='%2399826b' stroke-width='1.3'%3E%3Cpath d='M260,10 Q230,70 250,140 Q265,200 240,260 Q215,320 230,390'/%3E%3Cpath d='M250,140 Q280,125 285,148'/%3E%3Cpath d='M250,140 Q255,115 248,100'/%3E%3Cpath d='M250,140 Q230,155 225,170'/%3E%3Cpath d='M240,260 Q265,245 270,262'/%3E%3Cpath d='M240,260 Q220,275 215,290'/%3E%3Cpath d='M240,260 Q255,280 248,300'/%3E%3Cpath d='M230,390 Q215,375 208,390'/%3E%3Cpath d='M230,390 Q245,400 240,415'/%3E%3Cpath d='M200,180 Q185,170 178,185'/%3E%3Cpath d='M178,185 Q165,180 158,195'/%3E%3Cpath d='M225,170 Q210,185 195,180'/%3E%3Cpath d='M248,300 Q260,310 255,325'/%3E%3C/g%3E%3Cg fill='url(%23p)' opacity='0.9'%3E%3Ccircle cx='285' cy='148' r='8'/%3E%3Ccircle cx='248' cy='100' r='6'/%3E%3Ccircle cx='270' cy='262' r='9'/%3E%3Ccircle cx='215' cy='290' r='7'/%3E%3Ccircle cx='225' cy='170' r='8'/%3E%3Ccircle cx='208' cy='390' r='6'/%3E%3Ccircle cx='240' cy='415' r='5'/%3E%3Ccircle cx='178' cy='185' r='7'/%3E%3Ccircle cx='158' cy='195' r='5'/%3E%3Ccircle cx='255' cy='325' r='6'/%3E%3Ccircle cx='200' cy='180' r='8'/%3E%3Ccircle cx='195' cy='180' r='5'/%3E%3Ccircle cx='290' cy='130' r='5'/%3E%3Ccircle cx='245' cy='350' r='7'/%3E%3C/g%3E%3C/svg%3E");background-repeat:no-repeat;background-position:top right;background-size:contain}
-    .stickers{display:flex;gap:6px;position:absolute;top:-23px;left:25px;z-index:110}
-    .sticker{padding:10px 16px 6px;border-radius:6px 6px 0 0;font-size:12px;cursor:pointer;transition:.3s;box-shadow:2px -2px 8px rgba(0,0,0,0.08);font-family:'Segoe UI',sans-serif;letter-spacing:.5px;color:#5a4a3a}
-    .sticker:nth-child(1){background:#f5f0e8}.sticker:nth-child(2){background:#d9ead3}.sticker:nth-child(3){background:#f4cccc}.sticker:nth-child(4){background:#cfe2f3}.sticker:nth-child(5){background:#fff2cc}
-    .sticker:hover{transform:translateY(-4px)}.sticker.active{transform:translateY(-6px);box-shadow:4px -4px 12px rgba(0,0,0,0.12);font-weight:bold}
-    .top-bar{display:flex;justify-content:space-between;align-items:center;padding:25px 30px 15px;border-bottom:1px dashed #d4b896;position:relative;z-index:11}
-    .month-selector{display:flex;align-items:center;gap:15px}.month-selector button{background:none;border:none;font-size:22px;cursor:pointer;color:#8b7355;transition:.2s}.month-selector button:hover{color:#c8a1c0;transform:scale(1.2)}
-    .month-title{font-size:24px;font-weight:normal;color:#5a4a3a}
-    .content{display:flex;flex:1;padding:5px 25px 25px;gap:25px;position:relative;z-index:11}
-    .left-col{width:280px;display:flex;flex-direction:column;gap:20px}.left-col.hidden{display:none}
-    .calendar-widget{background:#fdfaf5;border-radius:12px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);border:1px solid #f0e8d8}
-    .tasks-block{background:#fdfaf5;border-radius:12px;padding:15px;box-shadow:0 1px 3px rgba(0,0,0,0.04);border:1px solid #f0e8d8}
-    .tasks-block h4{color:#8b7355;font-weight:normal;margin-bottom:12px;font-size:14px;border-bottom:1px dotted #d4b896;padding-bottom:8px}
-    .task-item{display:flex;align-items:center;gap:10px;padding:5px 0}
-    .task-item input[type="checkbox"]{width:18px;height:18px;accent-color:#c8a1c0;cursor:pointer}
-    .task-item label{font-size:15px;color:#5a4a3a;cursor:pointer;flex:1}.task-item input:checked+label{text-decoration:line-through;color:#c8b8a8;opacity:.6}
-    .task-del-btn{font-size:10px;color:#c09090;cursor:pointer;background:none;border:none}
-    .top3-block{background:#fdfaf5;border-radius:12px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);border:1px solid #f0e8d8}
-    .top3-block h4{color:#8b7355;font-weight:normal;margin-bottom:8px;font-size:13px;border-bottom:1px dotted #d4b896;padding-bottom:6px}
-    .top3-block input{width:100%;border:1px dashed #d4b896;padding:6px 8px;border-radius:6px;margin-bottom:4px;font-family:Georgia;background:transparent;font-size:12px;color:#5a4a3a}
-    .notes-block{background:#fdfaf5;border-radius:12px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);border:1px solid #f0e8d8}
-    .notes-block h4{color:#8b7355;font-weight:normal;margin-bottom:8px;font-size:13px;border-bottom:1px dotted #d4b896;padding-bottom:6px}
-    .notes-block textarea{width:100%;min-height:80px;background:transparent;border:1px dashed #d4b896;border-radius:8px;padding:8px;font-family:Georgia;font-size:12px;color:#5a4a3a;resize:vertical}
-    .center-col{flex:1;background:#fdfaf5;border-radius:12px;padding:20px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,0.04);border:1px solid #f0e8d8}
-    .content.full-width .center-col{max-height:none;border:none;box-shadow:none}
-    .tracker-page{display:none}.tracker-page.active{display:block}
-    .section-block{background:#fefdfa;border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid #f0e8d8;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
-    .section-title{font-size:14px;color:#8b7355;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dotted #d4b896;font-weight:normal;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-    .section-title .toggle-icon{font-size:12px;color:#b8a590;transition:.3s}
-    .daily-section-list{overflow:hidden;max-height:140px}
-    .daily-section-list.expanded{max-height:none}
-    .daily-habits-row{display:flex;gap:15px;align-items:stretch}.daily-habits-list{flex:1}
-    .daily-progress-bar-wrap{width:28px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px}
-    .daily-progress-bar-wrap .label{font-size:11px;color:#b8a590;text-align:center;font-weight:bold}
-    .daily-progress-bar{width:18px;flex:1;min-height:100px;background:#f0e8f0;border-radius:9px;overflow:hidden;position:relative}
-    .daily-progress-fill{position:absolute;bottom:0;left:0;width:100%;background:linear-gradient(to top,#c8a1c0,#e8d0e8);border-radius:9px;transition:height .5s}
-    .habit-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px dotted #f0e8d8}
-    .habit-row input[type="checkbox"]{width:16px;height:16px;accent-color:#c8a1c0;cursor:pointer}
-    .habit-row label{font-size:13px;color:#5a4a3a;cursor:pointer}.habit-row input:checked+label{text-decoration:line-through;color:#c8b8a8;opacity:.6}
-    .tracker-section-header{font-size:15px;color:#8b7355;margin:14px 0 10px;font-weight:normal;border-bottom:1px dotted #d4b896;padding-bottom:4px}
-    .day-bars-row{display:flex;align-items:flex-end;margin-bottom:6px;padding:4px 2px;background:#fdfaf5;border-radius:8px}
-    .day-bar-item{display:flex;flex-direction:column;align-items:center;flex:1;min-width:8px}.day-bar-spacer{flex:.4}
-    .day-bar-fill{width:12px;background:linear-gradient(to top,#c8a1c0,#e0c8e0);border-radius:3px 3px 0 0;min-height:2px;transition:height .3s}
-    .day-bar-num{font-size:9px;color:#8b7355;margin-top:2px;font-weight:bold}
-    .dots-grid{display:flex;gap:2px;width:100%}.dots-grid .dot-slot{flex:1;display:flex;justify-content:center;align-items:center}.dots-grid .dot-slot.separator{flex:.4}
-    .habit-card{background:#fdfaf5;border-radius:8px;padding:8px 12px;margin-bottom:6px;border-left:4px solid transparent}
-    .habit-card.w1{border-left-color:#b8956a}.habit-card.w2{border-left-color:#6a9e6a}.habit-card.w3{border-left-color:#c47a7a}.habit-card.w4{border-left-color:#6a8eb8}.habit-card.w5{border-left-color:#b8a83a}
-    .habit-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}.habit-card-name{font-size:13px;color:#5a4a3a}.habit-card-goal{font-size:11px;color:#8b7355;font-weight:bold}
-    .habit-edit-btn,.habit-delete-btn{font-size:10px;cursor:pointer;background:none;border:none;font-family:Georgia,serif;margin-left:4px}.habit-edit-btn{color:#b8a590}.habit-delete-btn{color:#c09090}
-    .habit-progress-bar{width:100%;height:10px;background:#e0d8cc;border-radius:5px;overflow:hidden;margin-bottom:5px}
-    .habit-progress-fill{height:100%;border-radius:5px;transition:width .5s}.habit-progress-fill.w1{background:#b8956a}.habit-progress-fill.w2{background:#6a9e6a}.habit-progress-fill.w3{background:#c47a7a}.habit-progress-fill.w4{background:#6a8eb8}.habit-progress-fill.w5{background:#b8a83a}
-    .habit-dot{width:11px;height:11px;border-radius:50%;background:#ddd6cc;cursor:pointer;transition:.2s}.habit-dot:hover{transform:scale(1.3)}
-    .habit-dot.done.w1{background:#b8956a}.habit-dot.done.w2{background:#6a9e6a}.habit-dot.done.w3{background:#c47a7a}.habit-dot.done.w4{background:#6a8eb8}.habit-dot.done.w5{background:#b8a83a}
-    .add-btn{display:block;width:100%;padding:8px;margin-top:8px;background:transparent;border:1px dashed #c8b8a8;border-radius:8px;color:#8b7355;font-family:Georgia,serif;font-size:13px;cursor:pointer;transition:.3s}.add-btn:hover{background:#fdf5f0}
-    .copy-btn{display:block;width:100%;padding:8px;margin-top:8px;background:#fdf5f0;border:1px dashed #c8a1c0;border-radius:8px;color:#c8a1c0;font-family:Georgia,serif;font-size:13px;cursor:pointer;transition:.3s;text-align:center}.copy-btn:hover{background:#f8e8f0}
-    .week-circles{display:flex;justify-content:space-between;margin:16px 0;padding:0 4px}
-    .week-circle-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;max-width:60px}.week-circle-label{font-size:10px;color:#8b7355;text-align:center}
-    .week-circle{width:48px;height:48px;border-radius:50%;position:relative}.week-circle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;font-weight:bold;color:#5a4a3a}
-    .insight-blocks{display:flex;gap:15px;margin-top:12px}.insight-block{flex:1;border-radius:10px;padding:12px}.insight-block h4{font-size:12px;margin-bottom:8px;font-weight:normal;padding-bottom:5px}
-    .insight-block.attention{background:#fff0f0;border:1px solid #f0d0d0}.insight-block.attention h4{color:#b05050;border-bottom:1px solid #f0d0d0}
-    .insight-block.success{background:#f0fff0;border:1px solid #c0e0c0}.insight-block.success h4{color:#508050;border-bottom:1px solid #c0e0c0}
-    .insight-item{display:flex;justify-content:space-between;font-size:12px;color:#5a4a3a;padding:3px 0}.insight-item .percent{color:#8b7355;font-size:11px;font-weight:bold}
-    .beauty-card{background:#fdfaf5;border-radius:8px;padding:8px 12px;margin-bottom:6px;border-left:4px solid transparent}
-    .beauty-card.w1{border-left-color:#b8956a}.beauty-card.w2{border-left-color:#6a9e6a}.beauty-card.w3{border-left-color:#c47a7a}.beauty-card.w4{border-left-color:#6a8eb8}.beauty-card.w5{border-left-color:#b8a83a}
-    .beauty-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.beauty-card-name{font-size:13px;color:#5a4a3a}
-    .beauty-weeks-row{display:flex;gap:0}.beauty-week-block{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;border-radius:6px;margin:0 1px;border:1px solid transparent}
-    .beauty-week-label{font-size:10px;color:#6a5a4a;font-weight:bold}.beauty-week-dots{display:flex;gap:4px}
-    .beauty-week-dot{width:14px;height:14px;border-radius:50%;cursor:pointer;transition:.2s;border:1.5px solid;background:transparent}.beauty-week-dot:hover{transform:scale(1.3)}
-    .training-grid{display:flex;flex-direction:column;gap:4px}.training-weekdays{display:flex;margin-bottom:2px}.training-weekday{flex:1;text-align:center;font-size:11px;color:#8b7355;padding:4px 0;font-weight:bold}
-    .training-week-row{display:flex;gap:3px}.training-day-cell{flex:1;min-width:0;background:#fdfaf5;border-radius:8px;padding:8px 4px;border:2px solid #e8e0d4;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:.2s;min-height:60px}
-    .training-day-cell.empty{background:transparent;border:none;cursor:default;min-height:0}.training-day-cell.weekend{background:#f5f8fc;border-color:#d0dce8}
-    .training-day-cell:hover:not(.empty){background:#faf5f0;border-color:#c8a1c0}.training-day-cell.selected{border-color:#8aa8c8;background:#f0f4f8;box-shadow:0 0 0 2px #c0d4e8}
-    .training-day-num{font-size:14px;font-weight:bold;color:#5a4a3a}.training-day-indicators{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
-    .training-dot{width:7px;height:7px;border-radius:50%;background:#e0d8cc}.training-dot.done{background:#8aa8c8}
-    .training-day-bar{width:100%;height:3px;background:#e8e0d8;border-radius:2px;overflow:hidden}.training-day-bar-fill{height:100%;background:#8aa8c8;border-radius:2px;transition:width .3s}
-    .training-detail{margin-top:10px;padding:10px;background:#fdfaf5;border-radius:8px;border:1px solid #e8e0d4}
+
+    /* ========== ПРАВИЛО: ТЕЛО СТРАНИЦЫ (body) ==========
+    font-family — какой шрифт использовать
+    Georgia — "бумажный" шрифт с засечками (как в книгах)
+    'Times New Roman' — запасной, если Georgia нет
+    serif — любой шрифт с засечками, если вообще ничего нет */
+    body{
+      font-family:'Georgia','Times New Roman',serif;
+      background:#f5f0e8; /* цвет фона: тёплый бежевый */
+      display:flex; /* flexbox — умное расположение элементов */
+      justify-content:center; /* по горизонтали — по центру */
+      align-items:flex-start; /* по вертикали — прижать к верху */
+      min-height:100vh; /* минимум 100% высоты экрана (vh = viewport height) */
+      padding:20px /* отступ 20px со всех сторон */
+    }
+
+    /* ========== ПРАВИЛО: БЛОКНОТ (основной контейнер) ==========
+    Это "бумажный блокнот" — белый прямоугольник с тенями
+    .notebook — точка значит "класс" (class="notebook" в HTML) */
+    .notebook{
+      width:900px; /* ширина */
+      min-height:650px; /* минимальная высота */
+      background:#fffef9; /* цвет "бумаги" */
+      border-radius:15px; /* скругление углов */
+      position:relative; /* чтобы дочерние элементы могли позиционироваться */
+      margin-top:25px; /* отступ сверху */
+      /* box-shadow — тени (создают эффект обложки):
+         0 0 0 15px #e8d5c4 — первый слой 15px толщиной
+         0 0 0 17px #d4b896 — второй слой
+         8px 0 30px rgba(0,0,0,0.2) — настоящая тень */
+      box-shadow:0 0 0 15px #e8d5c4,0 0 0 17px #d4b896,8px 0 30px rgba(0,0,0,0.2);
+      display:flex;
+      flex-direction:column; /* дети располагаются сверху вниз */
+      overflow:visible /* содержимое может выходить за край (нужно для закладок) */
+    }
+
+    /* ========== ПРАВИЛО: ДЕКОРАТИВНАЯ ТЕНЬ СПРАВА ==========
+    ::after — псевдоэлемент (создаёт "виртуальный" элемент после содержимого .notebook)
+    Имитирует тень книжного переплёта */
+    .notebook::after{
+      content:''; /* без текста */
+      position:absolute; /* позиционируется относительно .notebook */
+      top:0;
+      right:0;
+      width:20px;
+      height:100%;
+      background:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,0.03),rgba(0,0,0,0.06));
+      border-radius:0 15px 15px 0;
+      pointer-events:none; /* не реагирует на клики мышкой */
+      z-index:5 /* слой 5 (чем больше, тем "выше") */
+    }
+
+    /* ========== ПРАВИЛО: САКУРА (фоновая веточка) ==========
+    z-index: 100 — очень высоко, НО opacity: 0.07 делает её почти прозрачной */
+    .sakura-bg{
+      position:absolute;
+      top:-10px;
+      right:30px;
+      width:380px;
+      height:450px;
+      pointer-events:none;
+      z-index:100;
+      opacity:.07; /* 7% непрозрачности = еле видно */
+      /* background-image содержит SVG-рисунок прямо в тексте */
+      background-image:url("data:image/svg+xml,...ДЛИННЫЙ_SVG...");
+      background-repeat:no-repeat;
+      background-position:top right;
+      background-size:contain
+    }
+
+    /* ========== ПРАВИЛО: ЗАКЛАДКИ-СТИКЕРЫ ==========
+    display:flex — элементы в ряд
+    gap:6px — расстояние между ними
+    position:absolute — можно поместить в любое место
+    top:-23px — торчат НАД блокнотом */
+    .stickers{
+      display:flex;
+      gap:6px;
+      position:absolute;
+      top:-23px;
+      left:25px;
+      z-index:110
+    }
+
+    /* Одна закладка */
+    .sticker{
+      padding:10px 16px 6px; /* внутренние отступы: сверху 10, по бокам 16, снизу 6 */
+      border-radius:6px 6px 0 0; /* скругление только верхних углов */
+      font-size:12px;
+      cursor:pointer; /* курсор-рука при наведении */
+      transition:.3s; /* анимация длится 0.3 секунды */
+      box-shadow:2px -2px 8px rgba(0,0,0,0.08);
+      font-family:'Segoe UI',sans-serif;
+      letter-spacing:.5px; /* расстояние между буквами */
+      color:#5a4a3a
+    }
+
+    /* nth-child(1) — первая закладка
+       nth-child(2) — вторая, и так далее */
+    .sticker:nth-child(1){background:#f5f0e8}  /* Ежедневник */
+    .sticker:nth-child(2){background:#d9ead3}  /* Привычки */
+    .sticker:nth-child(3){background:#f4cccc}  /* Уход */
+    .sticker:nth-child(4){background:#cfe2f3}  /* Тренировки */
+    .sticker:nth-child(5){background:#fff2cc}  /* Уборка */
+
+    /* :hover — когда мышка наведена
+       transform:translateY(-4px) — сдвинуть вверх на 4 пикселя */
+    .sticker:hover{transform:translateY(-4px)}
+
+    /* .active — когда закладка активна (открыта её страница)
+       translateY(-6px) — ещё выше
+       font-weight:bold — жирный шрифт */
+    .sticker.active{
+      transform:translateY(-6px);
+      box-shadow:4px -4px 12px rgba(0,0,0,0.12);
+      font-weight:bold
+    }
+
+    /* ========== ПРАВИЛО: ВЕРХНЯЯ ПАНЕЛЬ ==========
+    justify-content:space-between — элементы по краям
+    border-bottom — пунктирная линия снизу */
+    .top-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:25px 30px 15px;
+      border-bottom:1px dashed #d4b896;
+      position:relative;
+      z-index:11
+    }
+
+    /* Выбор месяца (стрелки + название) */
+    .month-selector{
+      display:flex;
+      align-items:center;
+      gap:15px /* расстояние между стрелкой и названием */;
+    }
+
+    /* Кнопки-стрелки ◀ ▶ */
+    .month-selector button{
+      background:none; /* без фона */
+      border:none; /* без рамки */
+      font-size:22px;
+      cursor:pointer;
+      color:#8b7355;
+      transition:.2s
+    }
+
+    /* При наведении на стрелку — розовый цвет и увеличение */
+    .month-selector button:hover{
+      color:#c8a1c0;
+      transform:scale(1.2)
+    }
+
+    /* Название месяца (например "Май 2026") */
+    .month-title{
+      font-size:24px;
+      font-weight:normal; /* не жирный */
+      color:#5a4a3a
+    }
+
+    /* ========== ПРАВИЛО: ОСНОВНОЙ КОНТЕНТ ==========
+    flex:1 — занимает всё доступное место */
+    .content{
+      display:flex;
+      flex:1;
+      padding:5px 25px 25px;
+      gap:25px;
+      position:relative;
+      z-index:11
+    }
+
+    /* Левая колонка (календарь, задачи) */
+    .left-col{
+      width:280px;
+      display:flex;
+      flex-direction:column; /* сверху вниз */
+      gap:20px /* расстояние между блоками */;
+    }
+
+    /* .hidden — скрывает элемент (display:none) */
+    .left-col.hidden{display:none}
+
+    /* Центральная колонка */
+    .center-col{
+      flex:1;
+      background:#faf5ed;
+      border-radius:12px;
+      padding:20px;
+      position:relative
+    }
+
+    /* Когда левая колонка скрыта — центр расширяется */
+    .content.full-width .center-col{max-height:none}
+
+    /* ========== ПРАВИЛО: СТРАНИЦЫ (переключение) ==========
+    По умолчанию все страницы скрыты
+    .active — та, которую видно */
+    .tracker-page{display:none}
+    .tracker-page.active{display:block}
+
+    /* ========== ПРАВИЛО: ЗАГОЛОВКИ СЕКЦИЙ ========== */
+    .section-title{
+      font-size:14px;
+      color:#8b7355;
+      margin-top:16px;
+      margin-bottom:6px;
+      padding-bottom:4px;
+      border-bottom:1px dotted #d4b896;
+      font-weight:normal;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:center
+    }
+
+    .section-title .toggle-icon{
+      font-size:12px;
+      color:#b8a590;
+      transition:.3s
+    }
+
+    /* Сворачиваемая секция */
+    .daily-section-list{
+      transition:max-height .4s ease;
+      overflow:hidden
+    }
+
+    /* ========== ПРАВИЛО: ПРИВЫЧКИ В ЕЖЕДНЕВНИКЕ ========== */
+    .daily-habits-row{
+      display:flex;
+      gap:15px;
+      align-items:stretch /* растянуть по высоте */;
+    }
+    .daily-habits-list{flex:1}
+
+    /* Вертикальный прогресс-бар справа */
+    .daily-progress-bar-wrap{
+      width:28px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-end;
+      gap:4px
+    }
+
+    .daily-progress-bar-wrap .label{
+      font-size:11px;
+      color:#b8a590;
+      text-align:center;
+      font-weight:bold
+    }
+
+    .daily-progress-bar{
+      width:18px;
+      flex:1;
+      min-height:100px;
+      background:#f0e8f0;
+      border-radius:9px;
+      overflow:hidden;
+      position:relative
+    }
+
+    /* Заполнение прогресс-бара (меняется через JS, свойство height) */
+    .daily-progress-fill{
+      position:absolute;
+      bottom:0; /* начинается снизу */
+      left:0;
+      width:100%;
+      background:linear-gradient(to top,#c8a1c0,#e8d0e8); /* градиент: снизу темнее */
+      border-radius:9px;
+      transition:height .5s /* плавное изменение высоты */;
+    }
+
+    /* ========== ПРАВИЛО: СТРОКА С ГАЛОЧКОЙ (привычка/задача) ========== */
+    .habit-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:4px 0;
+      border-bottom:1px dotted #f0e8d8
+    }
+
+    .habit-row input[type="checkbox"]{
+      width:16px;
+      height:16px;
+      accent-color:#c8a1c0; /* цвет галочки (работает в Chrome) */
+      cursor:pointer
+    }
+
+    .habit-row label{
+      font-size:13px;
+      color:#5a4a3a;
+      cursor:pointer
+    }
+
+    /* Когда галочка отмечена — зачеркнуть текст
+       input:checked + label — "соседний label после отмеченного input" */
+    .habit-row input:checked+label{
+      text-decoration:line-through;
+      color:#c8b8a8;
+      opacity:.6
+    }
+
+    /* ========== ПРАВИЛО: ЗАГОЛОВКИ СТРАНИЦ ========== */
+    .tracker-section-header{
+      font-size:15px;
+      color:#8b7355;
+      margin:14px 0 10px;
+      font-weight:normal;
+      border-bottom:1px dotted #d4b896;
+      padding-bottom:4px
+    }
+
+    /* ========== ПРАВИЛО: ПОЛОСЫ ПО ДНЯМ (общий прогресс за каждый день) ========== */
+    .day-bars-row{
+      display:flex;
+      align-items:flex-end; /* выровнять по низу */
+      margin-bottom:6px;
+      padding:4px 2px;
+      background:#fdfaf5;
+      border-radius:8px
+    }
+
+    .day-bar-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      flex:1;
+      min-width:8px
+    }
+
+    .day-bar-spacer{flex:.4} /* разделитель между неделями */
+
+    .day-bar-fill{
+      width:12px;
+      background:linear-gradient(to top,#c8a1c0,#e0c8e0);
+      border-radius:3px 3px 0 0;
+      min-height:2px;
+      transition:height .3s
+    }
+
+    .day-bar-num{
+      font-size:9px;
+      color:#8b7355;
+      margin-top:2px;
+      font-weight:bold
+    }
+
+    /* ========== ПРАВИЛО: СЕТКА КРУЖОЧКОВ (для привычек) ========== */
+    .dots-grid{
+      display:flex;
+      gap:2px;
+      width:100%
+    }
+
+    .dots-grid .dot-slot{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center
+    }
+
+    .dots-grid .dot-slot.separator{flex:.4}
+
+    /* ========== ПРАВИЛО: КАРТОЧКА ПРИВЫЧКИ ==========
+    border-left — цветная полоска слева (4px толщиной) */
+    .habit-card{
+      background:#fefcf7;
+      border-radius:8px;
+      padding:8px 12px;
+      margin-bottom:6px;
+      border-left:4px solid transparent /* transparent — прозрачный, цвет задаётся классами w1-w5 */;
+    }
+
+    /* Цвета полосок (по очереди) */
+    .habit-card.w1{border-left-color:#b8956a}
+    .habit-card.w2{border-left-color:#6a9e6a}
+    .habit-card.w3{border-left-color:#c47a7a}
+    .habit-card.w4{border-left-color:#6a8eb8}
+    .habit-card.w5{border-left-color:#b8a83a}
+
+    .habit-card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:4px
+    }
+
+    .habit-card-name{font-size:13px;color:#5a4a3a}
+    .habit-card-goal{font-size:11px;color:#8b7355;font-weight:bold}
+
+    /* Кнопки ✎ (редактировать) и ✕ (удалить) */
+    .habit-edit-btn,.habit-delete-btn{
+      font-size:10px;
+      cursor:pointer;
+      background:none;
+      border:none;
+      font-family:Georgia,serif;
+      margin-left:4px
+    }
+    .habit-edit-btn{color:#b8a590}
+    .habit-delete-btn{color:#c09090}
+    .task-del-btn{font-size:12px;color:#c09090;cursor:pointer;background:none;border:none;margin-left:8px}
+.task-del-btn:hover{color:#d00000}
+
+    /* Прогресс-бар внутри карточки */
+    .habit-progress-bar{
+      width:100%;
+      height:10px;
+      background:#e0d8cc;
+      border-radius:5px;
+      overflow:hidden;
+      margin-bottom:5px
+    }
+
+    .habit-progress-fill{
+      height:100%;
+      border-radius:5px;
+      transition:width .5s
+    }
+
+    /* Цвета заполнения прогресс-бара */
+    .habit-progress-fill.w1{background:#b8956a}
+    .habit-progress-fill.w2{background:#6a9e6a}
+    .habit-progress-fill.w3{background:#c47a7a}
+    .habit-progress-fill.w4{background:#6a8eb8}
+    .habit-progress-fill.w5{background:#b8a83a}
+
+    /* ========== ПРАВИЛО: КРУЖОЧЕК В СЕТКЕ ПРИВЫЧЕК ==========
+    border-radius:50% — делает круг
+    background — серый (не выполнено) */
+    .habit-dot{
+      width:11px;
+      height:11px;
+      border-radius:50%;
+      background:#ddd6cc;
+      cursor:pointer;
+      transition:.2s
+    }
+
+    .habit-dot:hover{transform:scale(1.3)} /* увеличивается при наведении */
+
+    /* Цветные кружочки (выполнено) */
+    .habit-dot.done.w1{background:#b8956a}
+    .habit-dot.done.w2{background:#6a9e6a}
+    .habit-dot.done.w3{background:#c47a7a}
+    .habit-dot.done.w4{background:#6a8eb8}
+    .habit-dot.done.w5{background:#b8a83a}
+
+    /* ========== ПРАВИЛО: КНОПКА ДОБАВЛЕНИЯ ========== */
+    .add-btn{
+      display:block;
+      width:100%;
+      padding:8px;
+      margin-top:8px;
+      background:transparent;
+      border:1px dashed #c8b8a8;
+      border-radius:8px;
+      color:#8b7355;
+      font-family:Georgia,serif;
+      font-size:13px;
+      cursor:pointer;
+      transition:.3s
+    }
+
+    .add-btn:hover{background:#fdf5f0}
+
+    /* ========== ПРАВИЛО: КРУГИ ПО НЕДЕЛЯМ ==========
+    conic-gradient — конический градиент (как пироговая диаграмма)
+    Процент заполнения задаётся через JavaScript */
+    .week-circles{
+      display:flex;
+      justify-content:space-between;
+      margin:16px 0;
+      padding:0 4px
+    }
+
+    .week-circle-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      flex:1;
+      max-width:60px
+    }
+
+    .week-circle-label{font-size:10px;color:#8b7355;text-align:center}
+
+    .week-circle{
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      position:relative
+    }
+
+    .week-circle span{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%); /* ровно по центру */
+      font-size:11px;
+      font-weight:bold;
+      color:#5a4a3a
+    }
+
+    /* ========== ПРАВИЛО: БЛОКИ "ТРЕБУЮТ ВНИМАНИЯ" И "ЛУЧШИЕ" ========== */
+    .insight-blocks{
+      display:flex;
+      gap:15px;
+      margin-top:12px
+    }
+
+    .insight-block{
+      flex:1;
+      border-radius:10px;
+      padding:12px
+    }
+
+    .insight-block h4{
+      font-size:12px;
+      margin-bottom:8px;
+      font-weight:normal;
+      padding-bottom:5px
+    }
+
+    /* Красный блок (требуют внимания) */
+    .insight-block.attention{
+      background:#fff0f0;
+      border:1px solid #f0d0d0
+    }
+    .insight-block.attention h4{
+      color:#b05050;
+      border-bottom:1px solid #f0d0d0
+    }
+
+    /* Зелёный блок (лучшие) */
+    .insight-block.success{
+      background:#f0fff0;
+      border:1px solid #c0e0c0
+    }
+    .insight-block.success h4{
+      color:#508050;
+      border-bottom:1px solid #c0e0c0
+    }
+
+    .insight-item{
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      color:#5a4a3a;
+      padding:3px 0
+    }
+
+    .insight-item .percent{
+      color:#8b7355;
+      font-size:11px;
+      font-weight:bold
+    }
+
+    /* ========== ПРАВИЛО: УХОД ========== */
+    .beauty-card{
+      background:#fdfaf5;
+      border-radius:8px;
+      padding:8px 12px;
+      margin-bottom:6px;
+      border-left:4px solid transparent
+    }
+
+    .beauty-card.w1{border-left-color:#b8956a}
+    .beauty-card.w2{border-left-color:#6a9e6a}
+    .beauty-card.w3{border-left-color:#c47a7a}
+    .beauty-card.w4{border-left-color:#6a8eb8}
+    .beauty-card.w5{border-left-color:#b8a83a}
+
+    .beauty-card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px
+    }
+
+    .beauty-card-name{font-size:13px;color:#5a4a3a}
+
+    /* Ряд с блоками недель */
+    .beauty-weeks-row{display:flex;gap:0}
+
+    .beauty-week-block{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      padding:6px 2px;
+      border-radius:6px;
+      margin:0 1px;
+      border:1px solid transparent
+    }
+
+    .beauty-week-label{font-size:10px;color:#6a5a4a;font-weight:bold}
+    .beauty-week-dots{display:flex;gap:4px}
+
+    /* Кружочек ухода */
+    .beauty-week-dot{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      cursor:pointer;
+      transition:.2s;
+      border:2px solid;
+      background:transparent /* пустой внутри */;
+    }
+
+    .beauty-week-dot:hover{transform:scale(1.3)}
+
+    /* ========== ПРАВИЛО: ТРЕНИРОВКИ ========== */
+    .training-grid{
+      display:flex;
+      flex-direction:column;
+      gap:4px
+    }
+
+    /* Заголовки дней недели */
+    .training-weekdays{display:flex;margin-bottom:2px}
+
+    .training-weekday{
+      flex:1;
+      text-align:center;
+      font-size:11px;
+      color:#8b7355;
+      padding:4px 0;
+      font-weight:bold
+    }
+
+    /* Ряд с днями */
+    .training-week-row{display:flex;gap:3px}
+
+    /* Ячейка дня */
+    .training-day-cell{
+      flex:1;
+      min-width:0;
+      background:#fdfaf5;
+      border-radius:8px;
+      padding:8px 4px;
+      border:2px solid #e8e0d4;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+      transition:.2s;
+      min-height:60px
+    }
+
+    .training-day-cell.empty{
+      background:transparent;
+      border:none;
+      cursor:default;
+      min-height:0
+    }
+
+    .training-day-cell.weekend{background:#f5f8fc;border-color:#d0dce8}
+    .training-day-cell:hover:not(.empty){background:#faf5f0;border-color:#c8a1c0}
+
+    /* Выбранная ячейка */
+    .training-day-cell.selected{
+      border-color:#8aa8c8;
+      background:#f0f4f8;
+      box-shadow:0 0 0 2px #c0d4e8
+    }
+
+    .training-day-num{font-size:14px;font-weight:bold;color:#5a4a3a}
+    .training-day-indicators{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+
+    /* Точка-индикатор тренировки */
+    .training-dot{width:7px;height:7px;border-radius:50%;background:#e0d8cc}
+    .training-dot.done{background:#8aa8c8}
+
+    .training-day-bar{
+      width:100%;
+      height:3px;
+      background:#e8e0d8;
+      border-radius:2px;
+      overflow:hidden
+    }
+
+    .training-day-bar-fill{
+      height:100%;
+      background:#8aa8c8;
+      border-radius:2px;
+      transition:width .3s
+    }
+
+    /* Детали тренировки (когда выбран день) */
+    .training-detail{
+      margin-top:10px;
+      padding:10px;
+      background:#fdfaf5;
+      border-radius:8px;
+      border:1px solid #e8e0d4
+    }
+
     .training-detail-date{font-size:14px;color:#5a4a3a;margin-bottom:6px;font-weight:bold}
     .training-detail-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px}
     .training-detail-item input[type="checkbox"]{width:14px;height:14px;accent-color:#8aa8c8}
-    .training-detail-item label{color:#5a4a3a;cursor:pointer;flex:1}.training-detail-item input:checked+label{text-decoration:line-through;color:#c8b8a8}
-    .cleaning-card{background:#fdfaf5;border-radius:8px;padding:8px 12px;margin-bottom:6px;border-left:4px solid}
-    .cleaning-card.daily{border-left-color:#e8d898}.cleaning-card.weekly{border-left-color:#d4b896}.cleaning-card.monthly{border-left-color:#c4b0d0}
-    .cleaning-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.cleaning-card-name{font-size:13px;color:#5a4a3a}
-    .cleaning-dot{width:12px;height:12px;border-radius:50%;background:#e8e0cc;cursor:pointer;transition:.2s}.cleaning-dot:hover{transform:scale(1.3)}
-    .cleaning-dot.done.daily{background:#e8d898}.cleaning-dot.done.weekly{background:#d4b896}.cleaning-dot.done.monthly{background:#c4b0d0}
-    .cleaning-week-block{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;background:#fdfaf5;border-radius:6px;margin:0 1px;border:1px solid #e8e0d4}
-    .cleaning-week-label{font-size:10px;color:#6a5a4a;font-weight:bold}.cleaning-week-dots{display:flex;gap:3px}
-    .cleaning-week-dot{width:16px;height:16px;border-radius:50%;cursor:pointer;transition:.2s;border:1.5px solid #d4b896;background:transparent}.cleaning-week-dot.done{background:#d4b896}.cleaning-week-dot:hover{transform:scale(1.3)}
-    .cleaning-month-dots{display:flex;gap:3px;justify-content:center}.cleaning-month-dot{width:16px;height:16px;border-radius:50%;cursor:pointer;transition:.2s;border:1.5px solid #c4b0d0;background:transparent}.cleaning-month-dot.done{background:#c4b0d0}
-    .quote-bar{text-align:center;font-style:italic;color:#b8a590;padding:15px 30px;border-top:1px dashed #d4b896;font-size:14px;position:relative;z-index:11}
+    .training-detail-item label{color:#5a4a3a;cursor:pointer;flex:1}
+    .training-detail-item input:checked+label{text-decoration:line-through;color:#c8b8a8}
+
+    /* ========== ПРАВИЛО: УБОРКА ========== */
+    .cleaning-card{
+      background:#fdfaf5;
+      border-radius:8px;
+      padding:8px 12px;
+      margin-bottom:6px;
+      border-left:4px solid
+    }
+
+    .cleaning-card.daily{border-left-color:#e8d898}
+    .cleaning-card.weekly{border-left-color:#d4b896}
+    .cleaning-card.monthly{border-left-color:#c4b0d0}
+
+    .cleaning-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .cleaning-card-name{font-size:13px;color:#5a4a3a}
+
+    /* Кружочек уборки */
+    .cleaning-dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#e8e0cc;
+      cursor:pointer;
+      transition:.2s
+    }
+
+    .cleaning-dot:hover{transform:scale(1.3)}
+    .cleaning-dot.done.daily{background:#e8d898}
+    .cleaning-dot.done.weekly{background:#d4b896}
+    .cleaning-dot.done.monthly{background:#c4b0d0}
+
+    .cleaning-week-block{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      padding:6px 2px;
+      background:#fdfaf5;
+      border-radius:6px;
+      margin:0 1px;
+      border:1px solid #e8e0d4
+    }
+
+    .cleaning-week-label{font-size:10px;color:#6a5a4a;font-weight:bold}
+    .cleaning-week-dots{display:flex;gap:3px}
+
+    .cleaning-week-dot{
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      cursor:pointer;
+      transition:.2s;
+      border:2px solid #d4b896;
+      background:transparent
+    }
+
+    .cleaning-week-dot.done{background:#d4b896}
+    .cleaning-week-dot:hover{transform:scale(1.3)}
+    .cleaning-month-dots{display:flex;gap:3px;justify-content:center}
+
+    .cleaning-month-dot{
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      cursor:pointer;
+      transition:.2s;
+      border:2px solid #c4b0d0;
+      background:transparent
+    }
+
+    .cleaning-month-dot.done{background:#c4b0d0}
+
+    /* ========== ПРАВИЛО: КАЛЕНДАРЬ (виджет слева) ==========
+    box-shadow:inset — тень ВНУТРЬ элемента */
+    .calendar-widget{
+      background:#faf5ed;
+      border-radius:12px;
+      padding:12px;
+      box-shadow:inset 0 1px 3px rgba(0,0,0,0.05)
+    }
+
+    .calendar-widget h4{
+      text-align:center;
+      color:#8b7355;
+      font-weight:normal;
+      margin-bottom:10px;
+      font-size:14px
+    }
+
+    .calendar-widget table{width:100%;border-collapse:collapse}
+    .calendar-widget th{font-size:11px;color:#b8a590;font-weight:normal;padding:4px 0}
+
+    /* Ячейка календаря
+       border-radius:50% — круглая
+       transition:.2s — плавное изменение цвета */
+    .calendar-widget td{
+      text-align:center;
+      padding:6px 0;
+      font-size:14px;
+      cursor:pointer;
+      border-radius:50%;
+      transition:.2s;
+      color:#5a4a3a
+    }
+
+    .calendar-widget td:hover{background:#f0e8d8}
+    .calendar-widget td.today{background:#d9ead3;font-weight:bold;color:#38761d}
+    .calendar-widget td.selected{background:#c8a1c0;color:white;font-weight:bold}
+
+    /* ========== ПРАВИЛО: ЗАДАЧИ ========== */
+    .tasks-block{
+      background:#faf5ed;
+      border-radius:12px;
+      padding:15px
+    }
+
+    .tasks-block h4{
+      color:#8b7355;
+      font-weight:normal;
+      margin-bottom:12px;
+      font-size:14px;
+      border-bottom:1px dotted #d4b896;
+      padding-bottom:8px
+    }
+
+    .task-item{display:flex;align-items:center;gap:10px;padding:5px 0}
+    .task-item input[type="checkbox"]{width:18px;height:18px;accent-color:#c8a1c0;cursor:pointer}
+    .task-item label{font-size:15px;color:#5a4a3a;cursor:pointer}
+    .task-item input:checked+label{text-decoration:line-through;color:#c8b8a8;opacity:.6}
+
+    /* ========== ПРАВИЛО: ЗАМЕТКИ ==========
+    resize:vertical — можно растягивать только по высоте
+    ::placeholder — стиль подсказки внутри поля */
+       /* БЛОК ЗАМЕТОК */
+        .notes-block{
+      background:#fef9f0;
+      border-radius:12px;
+      padding:15px;
+      margin-top:8px;
+      border:1px solid #f0e0c8;
+      box-shadow:0 1px 3px rgba(0,0,0,0.04);
+    }
+    .notes-block h4{
+      color:#8b7355;
+      font-weight:normal;
+      margin-bottom:12px;
+      font-size:14px;
+      border-bottom:1px dotted #d4b896;
+      padding-bottom:8px;
+    }
+    .note-item{
+      background:#fffdf7;
+      border:1px solid #f0e8d8;
+      border-radius:8px;
+      padding:10px 12px;
+      margin-bottom:8px;
+      position:relative;
+      font-size:13px;
+      color:#5a4a3a;
+      line-height:1.5;
+      white-space:pre-wrap;
+    }
+    .note-item .note-text{
+      cursor:pointer;
+      padding-right:50px;
+    }
+    .note-item .note-actions{
+      position:absolute;
+      top:8px;
+      right:10px;
+      display:flex;
+      gap:6px;
+    }
+    .note-edit-btn,.note-del-btn{
+      font-size:11px;
+      cursor:pointer;
+      background:none;
+      border:none;
+      font-family:Georgia,serif;
+    }
+    .note-edit-btn{color:#b8a590;}
+    .note-del-btn{color:#c09090;}
+    .note-edit-btn:hover{color:#8b7355;}
+    .note-del-btn:hover{color:#d00000;}
+    .notes-input-row{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+    }
+    .notes-input-row textarea{
+      flex:1;
+      min-height:40px;
+      background:#fffef9;
+      border:1px dashed #d4b896;
+      border-radius:8px;
+      padding:8px;
+      font-family:Georgia,serif;
+      font-size:13px;
+      color:#5a4a3a;
+      resize:none;
+    }
+    .notes-input-row textarea::placeholder{color:#c8b8a8;}
+    .notes-add-btn{
+      padding:6px 14px;
+      background:#c8a1c0;
+      color:white;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-family:Georgia,serif;
+      font-size:13px;
+      transition:.2s;
+      white-space:nowrap;
+    }
+    .notes-add-btn:hover{background:#b890b0;}
+
+    /* ========== ПРАВИЛО: ЦИТАТА ========== */
+    .quote-bar{
+      text-align:center;
+      font-style:italic;
+      color:#b8a590;
+      padding:15px 30px;
+      border-top:1px dashed #d4b896;
+      font-size:14px;
+      position:relative;
+      z-index:11
+    }
+
+    /* ============================================================
+    МЕДИА-ЗАПРОС: МОБИЛЬНАЯ ВЕРСИЯ
+    @media(max-width:768px) — "ЕСЛИ ширина экрана 768px или меньше, ТО..."
+    Всё внутри скобок {} применяется только на телефонах и планшетах
+    ============================================================ */
     @media(max-width:768px){
       body{padding:0;align-items:flex-start}
-      .notebook{width:100%;min-height:100vh;border-radius:0;box-shadow:none;margin:0;margin-top:20px;overflow-x:hidden;max-width:100vw}
+      .notebook{width:100%;min-height:100vh;border-radius:0;box-shadow:none;margin:0;margin-top:20px;overflow:visible}
       .notebook::after{display:none}
-      .stickers{left:8px;top:-18px;gap:2px}.sticker{padding:7px 7px 4px;font-size:9px}
-      .content{flex-direction:column;padding:8px;gap:10px}.left-col{width:100%}.center-col{width:100%}
-      .top-bar{padding:18px 12px 8px}.month-title{font-size:18px}
-      .daily-habits-row{display:flex;flex-direction:row;gap:8px}
-      .daily-progress-bar-wrap{width:22px}.daily-progress-bar{width:14px;min-height:80px}
-      .tasks-row{display:flex;gap:8px}
-      .tasks-block{flex:1;padding:10px}.tasks-block h4{font-size:12px}.tasks-block input{font-size:12px!important;width:100%!important}.task-item label{font-size:13px}
+      .stickers{left:8px;top:-18px;gap:2px}
+      .sticker{padding:7px 7px 4px;font-size:9px}
+      .content{flex-direction:column;padding:8px;gap:10px}
+      .left-col{width:100%}
+      .center-col{width:100%}
+      .top-bar{padding:18px 12px 8px}
+      .month-title{font-size:18px}
+      .daily-habits-row{flex-direction:column}
+      .daily-progress-bar-wrap{width:100%;flex-direction:row;align-items:center;gap:8px}
+      .daily-progress-bar{width:100%;height:12px;min-height:12px;flex:none}
       .insight-blocks{flex-direction:column}
-      .day-bars-row{display:flex;flex-wrap:wrap}.day-bar-item{min-width:10px}.day-bar-fill{width:8px}.day-bar-num{font-size:7px}
-      .dots-grid{display:flex;flex-wrap:wrap;gap:1px}.dots-grid .dot-slot{flex:none}.dots-grid .dot-slot.separator{display:none}
+      .day-bars-row{display:none}
+      .dots-grid{display:grid;grid-template-columns:30px repeat(auto-fill,1fr);gap:2px}
+      .dots-grid .dot-slot{min-width:auto}
+      .dots-grid .dot-slot.separator{display:none}
       .habit-card{padding:6px 8px}
-      .beauty-weeks-row{flex-wrap:wrap;gap:4px}.beauty-week-block{flex:none;width:18%}
-      .training-weekdays{gap:1px}.training-weekday{font-size:8px;padding:2px 1px}.training-week-row{gap:1px}.training-day-cell{min-width:0;padding:3px 1px;min-height:40px;border-width:1px}.training-day-num{font-size:10px}.training-dot{width:5px;height:5px}
+      .beauty-weeks-row{flex-direction:column;gap:6px}
+      .beauty-week-block{flex-direction:row;gap:8px;justify-content:space-between;padding:4px 8px}
+      .training-weekdays{gap:1px}
+      .training-weekday{font-size:8px;padding:2px 1px}
+      .training-week-row{gap:1px}
+      .training-day-cell{min-width:0;padding:3px 1px;min-height:40px;border-width:1px}
+      .training-day-num{font-size:10px}
+      .training-dot{width:5px;height:5px}
       .training-detail-item{font-size:10px}
-      .week-circles{flex-wrap:wrap;gap:8px}.week-circle{width:38px;height:38px}.week-circle span{font-size:9px}
-      .section-block{margin-bottom:8px;padding:10px}
-      .calendar-widget,.tasks-block,.top3-block,.notes-block{margin-bottom:8px}
     }
+
   </style>
+  <!-- КОНЕЦ БЛОКА СТИЛЕЙ -->
+
 </head>
+<!-- КОНЕЦ HEAD -->
+
+<!-- ============================================================
+ОТКРЫВАЮЩИЙ ТЕГ BODY
+Всё что внутри body — ВИДИМО на странице
+============================================================ -->
 <body>
+
+<!-- ============================================================
+БЛОК 2: HTML-СКЕЛЕТ (то, что видят глаза)
+Это "кости" приложения: блокнот, закладки, страницы
+============================================================ -->
+
+<!-- Основной контейнер (блокнот) -->
 <div class="notebook">
+
+  <!-- Веточка сакуры -->
   <div class="sakura-bg"></div>
-  <div class="stickers" id="stickerBar">
+
+  <!-- Закладки-стикеры (5 штук) -->
+  <div class="stickers">
+    <!-- data-page="daily" — говорит JS, какую страницу открыть при клике -->
     <div class="sticker active" data-page="daily">Ежедневник</div>
     <div class="sticker" data-page="habits">Привычки</div>
     <div class="sticker" data-page="beauty">Уход</div>
     <div class="sticker" data-page="training">Тренировки</div>
     <div class="sticker" data-page="cleaning">Уборка</div>
   </div>
-  <div class="top-bar" id="topBar"><div class="month-selector"><button onclick="chM(-1)">◀</button><span class="month-title" id="monthTitle"></span><button onclick="chM(1)">▶</button></div></div>
-  <div class="content" id="mainContent">
-    <div class="left-col" id="leftCol">
-      <div class="calendar-widget"><h4 id="calMonthTitle"></h4><table><thead><tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr></thead><tbody id="calendarBody"></tbody></table></div>
-      <div class="tasks-row" id="tasksRow">
-        <div class="tasks-block"><h4>Дела на сегодня</h4><div id="dailyTasks"></div><input type="text" id="newDailyTask" placeholder="+ добавить..." style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px"></div>
-        <div class="tasks-block"><h4>Дела на неделю</h4><div id="weekTasks"></div><input type="text" id="newWeekTask" placeholder="+ добавить..." style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px"></div>
-      </div>
-      <div class="top3-block"><h4>🎯 ТОП-3 цели на месяц</h4><input type="text" id="top3_1" placeholder="Цель 1..."><input type="text" id="top3_2" placeholder="Цель 2..."><input type="text" id="top3_3" placeholder="Цель 3..."></div>
-      <div class="notes-block"><h4>📝 Заметки</h4><textarea id="dailyNotes" placeholder="Всё, что приходит в голову..."></textarea></div>
-    </div>
-    <div class="center-col">
-      <div id="daily" class="tracker-page active">
-        <div class="section-block"><div class="section-title">Привычки</div><div class="daily-habits-row"><div class="daily-habits-list" id="dailyHabitsList"></div><div class="daily-progress-bar-wrap"><span class="label" id="dailyProgressLabel">0%</span><div class="daily-progress-bar"><div class="daily-progress-fill" id="dailyProgressFill" style="height:0%"></div></div></div></div></div>
-        <div class="section-block"><div class="section-title" onclick="tS('beautySection')">🌸 Уход <span class="toggle-icon">▼</span></div><div class="daily-section-list" id="beautySection"><div id="dailyBeauty"></div></div></div>
-        <div class="section-block"><div class="section-title">🏋️ Тренировка</div><div id="dailyTraining"></div></div>
-        <div class="section-block"><div class="section-title" onclick="tS('cleaningSection')">🧹 Уборка <span class="toggle-icon">▼</span></div><div class="daily-section-list" id="cleaningSection"><div id="dailyCleaning"></div></div></div>
-        <div id="copyNextMonth"></div>
-      </div>
-      <div id="habits" class="tracker-page"><div class="tracker-section-header">Привычки</div><div class="day-bars-row" id="dayBarsRow"></div><div id="habitsCardsContainer"></div><button class="add-btn" onclick="aH()">+ Добавить привычку</button><div id="weekCirclesContainer" class="week-circles"></div><div class="insight-blocks"><div class="insight-block attention"><h4>Требуют внимания</h4><div id="attentionList"></div></div><div class="insight-block success"><h4>Лучшие привычки</h4><div id="successList"></div></div></div></div>
-      <div id="beauty" class="tracker-page"><div class="tracker-section-header">Уход</div><div class="day-bars-row" id="beautyDayBars"></div><div id="beautyCardsContainer"></div><button class="add-btn" onclick="aB()">+ Добавить процедуру</button><div id="beautyWeekCircles" class="week-circles"></div></div>
-      <div id="training" class="tracker-page"><div class="tracker-section-header">Тренировки</div><div class="training-weekdays"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div><div id="trainingGrid" class="training-grid"></div><div id="trainingDetail"></div></div>
-      <div id="cleaning" class="tracker-page"><div class="tracker-section-header">Уборка</div><div class="day-bars-row" id="cleaningDayBars"></div><div id="cleaningCardsContainer"></div><button class="add-btn" onclick="aC()">+ Добавить задачу</button><div id="cleaningWeekCircles" class="week-circles"></div></div>
+
+  <!-- Верхняя панель (месяц + стрелки) -->
+  <div class="top-bar" id="topBar">
+    <div class="month-selector">
+      <!-- onclick — при клике выполнит функцию changeMonth(-1) (предыдущий месяц) -->
+      <button onclick="changeMonth(-1)">◀</button>
+      <!-- id="monthTitle" — сюда JS вставит название месяца -->
+      <span class="month-title" id="monthTitle"></span>
+      <!-- changeMonth(1) — следующий месяц -->
+      <button onclick="changeMonth(1)">▶</button>
     </div>
   </div>
-  <div class="quote-bar" id="quote"></div>
+
+  <!-- Основной контент -->
+  <div class="content" id="mainContent">
+
+    <!-- Левая колонка (календарь + задачи + заметки) -->
+    <div class="left-col" id="leftCol">
+
+      <!-- Календарь -->
+      <div class="calendar-widget">
+        <h4 id="calMonthTitle"></h4>
+        <table>
+          <thead>
+            <tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>
+          </thead>
+          <tbody id="calendarBody">
+            <!-- Сюда JS вставит строки с числами -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Дела на сегодня -->
+      <div class="tasks-block">
+        <h4>Дела на сегодня</h4>
+        <div id="dailyTasks"></div>
+        <!-- input — поле ввода. placeholder — серая подсказка -->
+        <input type="text" id="newDailyTask" placeholder="+ добавить..."
+               style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;">
+      </div>
+
+      <!-- Дела на неделю -->
+      <div class="tasks-block">
+        <h4>Дела на неделю</h4>
+        <div id="weekTasks"></div>
+        <input type="text" id="newWeekTask" placeholder="+ добавить..."
+               style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;">
+        <!-- Заметки (внутри блока дел на неделю) -->
+       
+      </div>
+       <div class="tasks-block">
+      <h4>Дела на месяц</h4><div id="monthTasks"></div>
+      <input type="text" id="newMonthTask" placeholder="+ добавить..." 
+      style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;"></div>
+
+             <div class="notes-block">
+        <h4>📝 Заметки</h4>
+        <div id="notesList"></div>
+        <div class="notes-input-row">
+          <textarea id="newNoteText" placeholder="Напиши заметку..."></textarea>
+          <button class="notes-add-btn" onclick="addNote()">✓</button>
+        </div>
+      </div>
+      </div>
+   
+    <!-- Конец левой колонки -->
+
+    <!-- Центральная колонка (5 страниц) -->
+    <div class="center-col">
+
+      <!-- Страница 1: Ежедневник (active — видна по умолчанию) -->
+      <div id="daily" class="tracker-page active">
+        <div class="section-title">Привычки</div>
+        <div class="daily-habits-row">
+          <div class="daily-habits-list" id="dailyHabitsList"></div>
+          <div class="daily-progress-bar-wrap">
+            <span class="label" id="dailyProgressLabel">0%</span>
+            <div class="daily-progress-bar">
+              <div class="daily-progress-fill" id="dailyProgressFill" style="height:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- onClick — при клике на заголовок сворачивает/разворачивает секцию -->
+        <div class="section-title" onclick="toggleSection('beautySection')">🌸 Уход <span class="toggle-icon">▼</span></div>
+        <div class="daily-section-list" id="beautySection"><div id="dailyBeauty"></div></div>
+
+        <div class="section-title">🏋️ Тренировка</div>
+        <div id="dailyTraining"></div>
+
+        <div class="section-title" onclick="toggleSection('cleaningSection')">🧹 Уборка <span class="toggle-icon">▼</span></div>
+        <div class="daily-section-list" id="cleaningSection"><div id="dailyCleaning"></div></div>
+      </div>
+
+      <!-- Страница 2: Привычки -->
+      <div id="habits" class="tracker-page">
+        <div class="tracker-section-header">Привычки</div>
+        <div class="day-bars-row" id="dayBarsRow"></div>
+        <div id="habitsCardsContainer"></div>
+        <button class="add-btn" onclick="addHabit()">+ Добавить привычку</button>
+        <div id="weekCirclesContainer" class="week-circles"></div>
+        <div class="insight-blocks">
+          <div class="insight-block attention"><h4>Требуют внимания</h4><div id="attentionList"></div></div>
+          <div class="insight-block success"><h4>Лучшие привычки</h4><div id="successList"></div></div>
+        </div>
+      </div>
+
+      <!-- Страница 3: Уход -->
+      <div id="beauty" class="tracker-page">
+        <div class="tracker-section-header">Уход</div>
+        <div class="day-bars-row" id="beautyDayBars"></div>
+        <div id="beautyCardsContainer"></div>
+        <button class="add-btn" onclick="addBeauty()">+ Добавить процедуру</button>
+        <div id="beautyWeekCircles" class="week-circles"></div>
+      </div>
+
+      <!-- Страница 4: Тренировки -->
+      <div id="training" class="tracker-page">
+        <div class="tracker-section-header">Тренировки</div>
+        <div class="training-weekdays">
+          <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+        </div>
+        <div id="trainingGrid" class="training-grid"></div>
+        <div id="trainingDetail"></div>
+      </div>
+
+      <!-- Страница 5: Уборка -->
+      <div id="cleaning" class="tracker-page">
+        <div class="tracker-section-header">Уборка</div>
+        <div class="day-bars-row" id="cleaningDayBars"></div>
+        <div id="cleaningCardsContainer"></div>
+        <button class="add-btn" onclick="addCleaning()">+ Добавить задачу</button>
+        <div id="cleaningWeekCircles" class="week-circles"></div>
+      </div>
+
+    </div>
+    <!-- Конец центральной колонки -->
+
+  </div>
+  <!-- Конец content -->
+
+  <!-- Цитата внизу -->
+<div class="quote-bar" id="quote"></div>
+
 </div>
+<!-- Конец notebook -->
+
+<!-- ============================================================
+БЛОК 3: JAVASCRIPT — ВСЯ ЛОГИКА
+JavaScript (JS) — язык, который "оживляет" страницу:
+реагирует на клики, сохраняет данные, обновляет текст
+
+Переменная (let) — как коробочка с именем, в которой можно хранить значение
+Функция (function) — набор действий, который можно вызвать по имени
+localStorage — "вечная память" браузера (не стирается при обновлении)
+============================================================ -->
 
 <script>
-// ЗАЩИТА ОТ ДУБЛИРОВАНИЯ
-(function(){const k='dap_ts',t=Date.now(),l=parseInt(sessionStorage.getItem(k)||'0');if(t-l<3000&&window.matchMedia('(display-mode:standalone)').matches){window.close();return;}sessionStorage.setItem(k,t);})();
-if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(resp){return caches.open('daily-v11').then(function(cache){cache.put(e.request,resp.clone());return resp})})}).catch(function(){return new Response('',{status:502})})})`],{type:'application/javascript'}))).catch(()=>{});}
 
-const S=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-const WC=['w1','w2','w3','w4','w5'];const WCO=['#b8956a','#6a9e6a','#c47a7a','#6a8eb8','#b8a83a'];const WB=['#d4c4a8','#a8c8a0','#e0b8b8','#a8c0d8','#d8d0a0'];
-const Q=['"Маленькие шаги каждый день приводят к большим результатам."','"То, что мы делаем сегодня, определяет наше завтра."','"Дисциплина — это мост между целями и достижениями."','"Не обязательно быть идеальной, достаточно быть настоящей."','"Забота о себе — это не роскошь, а необходимость."','"Каждый день — это новая возможность."','"Магия происходит за пределами зоны комфорта."','"Тишина и покой — лучшее лекарство для души."','"Твой дом — это продолжение твоего внутреннего мира."','"Сила не в том, чтобы никогда не падать, а в том, чтобы всегда подниматься."'];
-const D=new Date();let M=D.getMonth()+1,Y=D.getFullYear(),Day=D.getDate(),P='daily',ST=null;
-let HDs=[],BDs=[],CDs=[],TD={};let H={},B={},C={};
-const HK=(hi,d)=>`${Y}-${M}-${d}-h${hi}`;const BK=(bi,w,s)=>`${Y}-${M}-b${bi}-w${w}${s||''}`;const CK=(ci,d)=>`${Y}-${M}-c${ci}-${d}`;
-const dh=(hi,d)=>H[HK(hi,d)]===true;
-const chd=hi=>{let c=0;for(let d=1;d<=new Date(Y,M,0).getDate();d++)if(dh(hi,d))c++;return c;};
-const cdd=d=>{let c=0;for(let h=0;h<HDs.length;h++)if(dh(h,d))c++;return c;};
-function WR(dim){const fd=new Date(Y,M-1,1).getDay(),so=fd===0?7:fd;const w=[];let c=1,wn=1;if(so>1){w.push({w:wn,s:1,e:Math.min(8-so,dim)});c=(8-so)+1;wn++;}while(c<=dim){w.push({w:wn,s:c,e:Math.min(c+6,dim)});c+=7;wn++;}return w;}
-function WFD(d){return WR(new Date(Y,M,0).getDate()).find(w=>d>=w.s&&d<=w.e);}
-function GM(ds){const d=new Date(ds),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+// ==================== GOOGLE SHEETS КОНФИГУРАЦИЯ ====================
+// API_KEY — ключ для доступа к Google Таблицам (как пароль)
+// SHEET_ID — ID твоей таблицы (взят из ссылки)
+const API_KEY = 'AIzaSyBvuv4QUQrSeQykocAL4yl Sbp25HR3Em4A';
+const SHEET_ID = '1xXpZhUalrLWJqM2-hfVJJqOjbP-h0DzvCufvAcVVpZg';
 
-function loadFallback(){
-  HDs=JSON.parse(localStorage.getItem('HDs')||'[{"name":"Утренняя зарядка","goal":31},{"name":"Душ","goal":31},{"name":"Английский язык 25 минут","goal":15},{"name":"Макияж","goal":31},{"name":"3 жеста","goal":20},{"name":"Тренировка 15+ мин","goal":20},{"name":"1 фрукт + 1 овощ","goal":31},{"name":"Звонок маме","goal":31},{"name":"Поиск заработка","goal":20},{"name":"Отказ от мучного","goal":25},{"name":"Минимум сахара","goal":25},{"name":"Снятие макияжа","goal":31},{"name":"Массаж лица","goal":31},{"name":"Список дел на завтра","goal":31}]');
-  BDs=JSON.parse(localStorage.getItem('BDs')||'[{"name":"Маска для лица","freq":2},{"name":"Скраб для лица","freq":1},{"name":"Скраб для тела","freq":1},{"name":"Маска для волос","freq":1},{"name":"Эпиляция","freq":1},{"name":"Маникюр","freq":1},{"name":"Педикюр","freq":1},{"name":"Коррекция бровей","freq":1}]');
-  CDs=JSON.parse(localStorage.getItem('CDs')||'[{"name":"Застелить постель","type":"daily","goal":31},{"name":"Помыть посуду","type":"daily","goal":31},{"name":"Помыть раковины","type":"daily","goal":31},{"name":"Вынести мусор","type":"daily","goal":31},{"name":"Убрать вещи","type":"daily","goal":31},{"name":"Протереть стол","type":"daily","goal":31},{"name":"Подмести","type":"daily","goal":31},{"name":"Помыть пол","type":"weekly","goal":5},{"name":"Вытереть пыль","type":"weekly","goal":5},{"name":"Помыть зеркала","type":"weekly","goal":5},{"name":"Уборка ванной","type":"weekly","goal":5},{"name":"Помыть унитаз","type":"weekly","goal":5},{"name":"Убрать кошачью шерсть","type":"weekly","goal":5},{"name":"Помыть кошачий лоток","type":"weekly","goal":5},{"name":"Смена белья","type":"monthly","goal":1},{"name":"Уборка стола","type":"monthly","goal":1},{"name":"Помыть холодильник","type":"monthly","goal":1},{"name":"Перевернуть матрас","type":"monthly","goal":1}]');
-  TD=JSON.parse(localStorage.getItem('TD')||'{}');
+
+// ==================== SERVICE WORKER (PWA) ====================
+// Это "сервис-воркер" — специальный скрипт для работы без интернета
+// Когда страница загружена первый раз — она сохраняется в кеш
+// При следующем открытии (даже без интернета) — показывается из кеша
+if ('serviceWorker' in navigator) {
+  const swCode = `self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(resp){return caches.open('daily-v4').then(function(cache){cache.put(e.request,resp.clone());return resp})})}).catch(function(){return new Response('',{status:502})})})`;
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], { type: 'application/javascript' }))).catch(() => {});
 }
-function loadData(){const dim=new Date(Y,M,0).getDate();H={};B={};C={};for(let h=0;h<HDs.length;h++)for(let d=1;d<=dim;d++)H[HK(h,d)]=localStorage.getItem(HK(h,d))==='true';for(let b=0;b<BDs.length;b++)for(let w=1;w<=5;w++){B[BK(b,w)]=localStorage.getItem(BK(b,w))==='true';B[BK(b,w,'b')]=localStorage.getItem(BK(b,w,'b'))==='true';}for(let c=0;c<CDs.length;c++)for(let d=1;d<=dim;d++)C[CK(c,d)]=localStorage.getItem(CK(c,d))==='true';}
-function getQuote(){const t=new Date().toDateString(),s=localStorage.getItem('qd');if(s===t)return localStorage.getItem('qt')||Q[0];const q=Q[Math.floor(Math.random()*Q.length)];localStorage.setItem('qd',t);localStorage.setItem('qt',q);return q;}
-function cal(){const b=document.getElementById('calendarBody');b.innerHTML='';const t=`${S[M-1]} ${Y}`;document.getElementById('calMonthTitle').textContent=t;document.getElementById('monthTitle').textContent=t;const dim=new Date(Y,M,0).getDate(),fd=new Date(Y,M-1,1).getDay(),sd=fd===0?7:fd;if(Day>dim)Day=dim;let r=document.createElement('tr');for(let i=1;i<sd;i++)r.appendChild(document.createElement('td'));for(let d=1;d<=dim;d++){const c=document.createElement('td');c.textContent=d;c.addEventListener('click',function(){selDay(d,c);});if(d===D.getDate()&&M===D.getMonth()+1&&Y===D.getFullYear())c.classList.add('today');if(d===Day)c.classList.add('selected');r.appendChild(c);if((d+sd-1)%7===0||d===dim){b.appendChild(r);r=document.createElement('tr');}}}
-function selDay(d,c){Day=d;document.querySelectorAll('.calendar-widget td').forEach(t=>t.classList.remove('selected'));if(c)c.classList.add('selected');loadDay();}
-function chM(dir){M+=dir;if(M>12){M=1;Y++;}if(M<1){M=12;Y--;}localStorage.setItem('SM',M);localStorage.setItem('SY',Y);loadData();cal();if(P==='daily')loadDay();else refP();}
-function loadDay(){const dk=`${Y}-${M}-${Day}`;const dailyT=JSON.parse(localStorage.getItem('d_'+dk)||'[]');
-  document.getElementById('dailyTasks').innerHTML=dailyT.map((t,i)=>`<div class="task-item"><input type="checkbox" id="dt${i}" ${t.done?'checked':''} onchange="sDT(${i},this.checked)"><label for="dt${i}">${t.text}</label><button class="task-del-btn" onclick="delDT(${i})">✕</button></div>`).join('');
-  const ws=GM(dk);const weekT=JSON.parse(localStorage.getItem('w_'+ws)||'[]');
-  document.getElementById('weekTasks').innerHTML=weekT.map((t,i)=>`<div class="task-item"><input type="checkbox" id="wt${i}" ${t.done?'checked':''} onchange="sWT(${i},this.checked)"><label for="wt${i}">${t.text}</label><button class="task-del-btn" onclick="delWT(${i})">✕</button></div>`).join('');
-  document.getElementById('dailyNotes').value=localStorage.getItem('n_'+dk)||'';document.getElementById('dailyNotes').oninput=function(){localStorage.setItem('n_'+dk,this.value);};
-  ['top3_1','top3_2','top3_3'].forEach(id=>{document.getElementById(id).value=localStorage.getItem(id+'_'+Y+'-'+M)||'';document.getElementById(id).oninput=function(){localStorage.setItem(id+'_'+Y+'-'+M,this.value);};});
-  const dim=new Date(Y,M,0).getDate();
-  const copyDiv=document.getElementById('copyNextMonth');
-  if(Day===dim){copyDiv.innerHTML=`<button class="copy-btn" onclick="copyToNextMonth()">📋 Копировать в ${S[M===12?0:M]} ${M===12?Y+1:Y}</button>`;}else{copyDiv.innerHTML='';}
-  rDH();rDB();rDT();rDC();
-}
-function delDT(i){const dk=`${Y}-${M}-${Day}`;const t=JSON.parse(localStorage.getItem('d_'+dk)||'[]');t.splice(i,1);localStorage.setItem('d_'+dk,JSON.stringify(t));loadDay();}
-function delWT(i){const ws=GM(`${Y}-${M}-${Day}`);const t=JSON.parse(localStorage.getItem('w_'+ws)||'[]');t.splice(i,1);localStorage.setItem('w_'+ws,JSON.stringify(t));loadDay();}
-function copyToNextMonth(){const nm=M===12?1:M+1;const ny=M===12?Y+1:Y;if(HDs.length)localStorage.setItem('HDs_'+ny+'-'+nm,JSON.stringify(HDs));if(BDs.length)localStorage.setItem('BDs_'+ny+'-'+nm,JSON.stringify(BDs));if(Object.keys(TD).length)localStorage.setItem('TD_'+ny+'-'+nm,JSON.stringify(TD));alert('Скопировано в '+S[nm-1]+' '+ny);}
-function rDH(){const l=document.getElementById('dailyHabitsList');l.innerHTML='';let d=0;HDs.forEach((h,i)=>{const c=dh(i,Day);if(c)d++;const r=document.createElement('div');r.className='habit-row';r.innerHTML=`<input type="checkbox" id="dhi${i}" ${c?'checked':''} onchange="tDH(${i},this.checked)"><label for="dhi${i}">${h.name}</label>`;l.appendChild(r);});const p=HDs.length?Math.round((d/HDs.length)*100):0;document.getElementById('dailyProgressFill').style.height=p+'%';document.getElementById('dailyProgressLabel').textContent=p+'%';}
-function rDB(){const c=document.getElementById('dailyBeauty');c.innerHTML='';const w=WFD(Day);if(!w)return;const wk=`bwd_${Y}-${M}-w${w.w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');BDs.forEach((b,bi)=>{const k1=BK(bi,w.w),k2=BK(bi,w.w,'b'),d1=B[k1],d2=B[k2],done=(b.freq===2)?(d1&&d2):d1;if((!done||wd[bi])&&(b.freq===1||!d1||!d2)){const sub=(b.freq===2&&!d1)?'':((b.freq===2&&d1&&!d2)?'b':'');const r=document.createElement('div');r.className='habit-row';r.innerHTML=`<input type="checkbox" ${wd[bi]||done?'checked':''} onchange="mBD(${bi},${w.w},this.checked,'${sub}')"><label>${b.name}${!d1&&b.freq===2?' (1/2)':''}${d1&&!d2&&b.freq===2?' (2/2)':''}</label>`;if(wd[bi]||done)r.querySelector('label').style.textDecoration='line-through';c.appendChild(r);}});}
-function mBD(bi,w,ch,sub){const k=BK(bi,w,sub);B[k]=ch;localStorage.setItem(k,ch?'true':'false');const wk=`bwd_${Y}-${M}-w${w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');if(ch)wd[bi]=true;else delete wd[bi];localStorage.setItem(wk,JSON.stringify(wd));rDB();rBT();}
-function rDT(){document.getElementById('dailyTraining').innerHTML=GTL(Day).filter(n=>n&&n.trim()).map((n,i)=>`<div class="habit-row"><input type="checkbox" ${localStorage.getItem(`td_${Y}-${M}-${Day}_${i}`)==='true'?'checked':''} onchange="sTC(${Day},${i},this.checked)"><label>${n}</label>${localStorage.getItem(`tl_${Y}-${M}-${Day}_${i}`)?`<a href="${localStorage.getItem(`tl_${Y}-${M}-${Day}_${i}`)}" target="_blank" style="font-size:11px;color:#8aa8c8;margin-left:4px">▶</a>`:''}</div>`).join('');}
-function rDC(){const c=document.getElementById('dailyCleaning');c.innerHTML='';const w=WFD(Day);if(!w)return;const wk=`cwd_${Y}-${M}-w${w.w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');CDs.forEach((cc,ci)=>{if(cc.type==='daily'){const ch=C[CK(ci,Day)];c.innerHTML+=`<div class="habit-row"><input type="checkbox" ${ch?'checked':''} onchange="tDC(${ci},${Day},this.checked)"><label>${cc.name}</label></div>`;}else if(cc.type==='weekly'){const ch=C[CK(ci,w.s)];if(!ch||wd[ci]){const r=document.createElement('div');r.className='habit-row';r.innerHTML=`<input type="checkbox" ${wd[ci]||ch?'checked':''} onchange="mWC(${ci},${w.s},this.checked)"><label>${cc.name}</label>`;if(wd[ci]||ch)r.querySelector('label').style.textDecoration='line-through';c.appendChild(r);}}else if(cc.type==='monthly'){if(!C[CK(ci,1)]){c.innerHTML+=`<div class="habit-row"><input type="checkbox" onchange="mMC(${ci},this.checked)"><label>${cc.name}</label></div>`;}}});}
-function tDC(ci,d,ch){C[CK(ci,d)]=ch;localStorage.setItem(CK(ci,d),ch?'true':'false');}
-function mWC(ci,sd,ch){C[CK(ci,sd)]=ch;localStorage.setItem(CK(ci,sd),ch?'true':'false');const w=WFD(sd),wk=`cwd_${Y}-${M}-w${w.w}`,wd=JSON.parse(localStorage.getItem(wk)||'{}');if(ch)wd[ci]=true;else delete wd[ci];localStorage.setItem(wk,JSON.stringify(wd));loadDay();}
-function mMC(ci,ch){C[CK(ci,1)]=ch;localStorage.setItem(CK(ci,1),ch?'true':'false');loadDay();}
-function tDH(hi,ch){H[HK(hi,Day)]=ch;localStorage.setItem(HK(hi,Day),ch?'true':'false');rDH();rHT();}
-document.getElementById('newDailyTask').addEventListener('keypress',function(e){if(e.key==='Enter'&&this.value.trim()){const dk=`${Y}-${M}-${Day}`,t=JSON.parse(localStorage.getItem('d_'+dk)||'[]');t.push({text:this.value.trim(),done:false});localStorage.setItem('d_'+dk,JSON.stringify(t));this.value='';loadDay();}});
-document.getElementById('newWeekTask').addEventListener('keypress',function(e){if(e.key==='Enter'&&this.value.trim()){const ws=GM(`${Y}-${M}-${Day}`),t=JSON.parse(localStorage.getItem('w_'+ws)||'[]');t.push({text:this.value.trim(),done:false});localStorage.setItem('w_'+ws,JSON.stringify(t));this.value='';loadDay();}});
-function sDT(i,ch){const dk=`${Y}-${M}-${Day}`,t=JSON.parse(localStorage.getItem('d_'+dk)||'[]');if(t[i])t[i].done=ch;localStorage.setItem('d_'+dk,JSON.stringify(t));}
-function sWT(i,ch){const ws=GM(`${Y}-${M}-${Day}`),t=JSON.parse(localStorage.getItem('w_'+ws)||'[]');if(t[i])t[i].done=ch;localStorage.setItem('w_'+ws,JSON.stringify(t));}
 
-function bDG(dim,weeks,hi){const g=document.createElement('div');g.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.s&&d<=wr.e);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';g.appendChild(sp);}if(w)pw=w.w;const s=document.createElement('div');s.className='dot-slot';const dot=document.createElement('div');dot.className='habit-dot';if(dh(hi,d)){dot.classList.add('done');dot.classList.add(WC[hi%5]);}dot.addEventListener('click',function(){const v=!dh(hi,d);H[HK(hi,d)]=v;localStorage.setItem(HK(hi,d),v?'true':'false');rHT();if(Day===d)rDH();});s.appendChild(dot);g.appendChild(s);}return g;}
-function rHT(){const dim=new Date(Y,M,0).getDate(),weeks=WR(dim);document.getElementById('dayBarsRow').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.s&&d<=wr.e);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;const p=HDs.length>0?(cdd(d)/HDs.length)*100:0;h+=`<div class="day-bar-item"><div class="day-bar-fill" style="height:${Math.max(2,p*1.5)}px"></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const cards=document.getElementById('habitsCardsContainer');cards.innerHTML='';HDs.forEach((h,hi)=>{const dc=chd(hi),p=Math.round((dc/h.goal)*100);const card=document.createElement('div');card.className=`habit-card ${WC[hi%5]}`;card.innerHTML=`<div class="habit-card-header"><span class="habit-card-name">${h.name}</span><span class="habit-card-goal">${dc}/${h.goal} <button class="habit-edit-btn" onclick="eH(${hi})">✎</button><button class="habit-delete-btn" onclick="dH(${hi})">✕</button></span></div><div class="habit-progress-bar"><div class="habit-progress-fill ${WC[hi%5]}" style="width:${p}%"></div></div>`;card.appendChild(bDG(dim,weeks,hi));cards.appendChild(card);});rWC('weekCirclesContainer',dim,weeks,(wr)=>{let t=0,d=0;for(let dd=wr.s;dd<=wr.e;dd++)for(let h=0;h<HDs.length;h++){t++;if(dh(h,dd))d++;}return t>0?Math.round((d/t)*100):0;});rIB();}
-function aH(){const n=prompt('Название:');if(!n||!n.trim())return;const g=parseInt(prompt('Цель:'));if(isNaN(g)||g<1)return;HDs.push({name:n.trim(),goal:g});localStorage.setItem('HDs',JSON.stringify(HDs));loadData();rHT();}
-function eH(hi){const n=prompt('Название:',HDs[hi].name);if(n===null)return;const g=parseInt(prompt('Цель:',HDs[hi].goal));if(isNaN(g)||g<1)return;HDs[hi]={name:n.trim()||HDs[hi].name,goal:g};localStorage.setItem('HDs',JSON.stringify(HDs));rHT();}
-function dH(hi){if(!confirm(`Удалить «${HDs[hi].name}»?`))return;HDs.splice(hi,1);localStorage.setItem('HDs',JSON.stringify(HDs));loadData();rHT();if(P==='daily')loadDay();}
-function rWC(id,dim,weeks,fn){document.getElementById(id).innerHTML=weeks.map(wr=>{const p=fn(wr);return`<div class="week-circle-wrap"><div class="week-circle" style="background:conic-gradient(${WCO[(wr.w-1)%5]} ${p*3.6}deg,#e0d8cc 0deg)"><span>${p}%</span></div><div class="week-circle-label">Нед.${wr.w}</div></div>`;}).join('');}
-function rIB(){const s=HDs.map((h,i)=>({name:h.name,pct:Math.round((chd(i)/h.goal)*100)})).sort((a,b)=>a.pct-b.pct);document.getElementById('attentionList').innerHTML=s.slice(0,3).map(h=>`<div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>`).join('');document.getElementById('successList').innerHTML=s.slice(-3).reverse().map(h=>`<div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>`).join('');}
 
-function rBT(){const dim=new Date(Y,M,0).getDate(),weeks=WR(dim);document.getElementById('beautyDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.s&&d<=wr.e);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();document.getElementById('beautyCardsContainer').innerHTML=BDs.map((b,bi)=>{let wh='';weeks.forEach(ww=>{wh+=`<div class="beauty-week-block" style="background:${WB[(ww.w-1)%5]}22;border-color:${WB[(ww.w-1)%5]}"><div class="beauty-week-label">Нед.${ww.w}</div><div class="beauty-week-dots">${(()=>{let dots='';const k1=BK(bi,ww.w);dots+=`<div class="beauty-week-dot ${WC[bi%5]}${B[k1]?' done':''}" onclick="B['${k1}']=!B['${k1}'];localStorage.setItem('${k1}',B['${k1}']?'true':'false');rBT();"></div>`;if(b.freq===2){const k2=BK(bi,ww.w,'b');dots+=`<div class="beauty-week-dot ${WC[bi%5]}${B[k2]?' done':''}" onclick="B['${k2}']=!B['${k2}'];localStorage.setItem('${k2}',B['${k2}']?'true':'false');rBT();"></div>`;}return dots;})()}</div></div>`;});return`<div class="beauty-card ${WC[bi%5]}"><div class="beauty-card-header"><span class="beauty-card-name">${b.name} (${b.freq}р/нед)</span><span><button class="habit-edit-btn" onclick="eB(${bi})">✎</button><button class="habit-delete-btn" onclick="dB(${bi})">✕</button></span></div><div class="beauty-weeks-row">${wh}</div></div>`;}).join('');rWC('beautyWeekCircles',dim,weeks,(wr)=>{let ts=0,f=0;BDs.forEach((b,bi)=>{ts+=b.freq;if(B[BK(bi,wr.w)])f++;if(b.freq===2&&B[BK(bi,wr.w,'b')])f++;});return ts>0?Math.round((f/ts)*100):0;});}
-function aB(){const n=prompt('Название:');if(!n||!n.trim())return;const f=parseInt(prompt('Частота (1 или 2):'));if(f!==1&&f!==2)return;BDs.push({name:n.trim(),freq:f});localStorage.setItem('BDs',JSON.stringify(BDs));loadData();rBT();}
-function eB(bi){const n=prompt('Название:',BDs[bi].name);if(n===null)return;const f=parseInt(prompt('Частота:',BDs[bi].freq));if(f!==1&&f!==2)return;BDs[bi]={name:n.trim()||BDs[bi].name,freq:f};localStorage.setItem('BDs',JSON.stringify(BDs));rBT();}
-function dB(bi){if(!confirm(`Удалить «${BDs[bi].name}»?`))return;BDs.splice(bi,1);localStorage.setItem('BDs',JSON.stringify(BDs));loadData();rBT();}
+// ==================== КОНСТАНТЫ (неизменяемые данные) ====================
+// const — "константа", значение не меняется
 
-function GTL(d){const k=`${Y}-${M}-${d}`;if(TD[k])return TD[k];const def={1:['Flat Belly Pilates','Anti-Cellulite Thigh','Lower Belly Fat','Tired Body Stretch'],2:['Inner & Outer Thigh','Booty Burn','Core & Abs Band','Full Body Stretch'],3:['Morning Stretch','Tired Body Stretch','Daily Mobility Flow','Yoga for Better Posture'],4:['Morning Energy Workout','Flat Abs & Waist','Daily Stretch',''],5:['Pilates Arms','Lower Abs & Waist','Toned Arms Quickie','Evening Deep Stretch'],6:['Booty & Thigh Burn','Inner Thigh','Neck & Upper Back','Yoga for Back Pain'],7:['Standing Pilates Sculpt','Slim & Sculpt Pilates','Standing Abs','Hip & Lower Back Relief'],8:['Flat Belly Pilates','Anti-Cellulite Thigh','Lower Belly Fat','Tired Body Stretch'],9:['Inner & Outer Thigh','Booty Burn','Core & Abs Band','Full Body Stretch'],10:['Daily Mobility Flow','Morning Stretch','Tired Body Stretch','Yoga for Better Posture'],11:['Morning Pilates Weight Loss','Flat Abs & Waist','Daily Stretch',''],12:['Resistance Band Booty','Inner Thigh','Anti-Cellulite Thigh','Evening Deep Stretch'],13:['Pilates Arms','Standing Abs','Posture Care Routine','Yoga for Back Pain'],14:['Lower Abs & Waist','Booty Burn','Neck & Upper Back','Hip & Lower Back Relief'],15:['Standing Full Body','Standing Pilates Sculpt','Lower Belly Fat','Tired Body Stretch'],16:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],17:['Daily Mobility Flow','Tired Body Stretch','Neck & Upper Back','Yoga for Better Posture'],18:['Full Body Toning Band','Slim & Sculpt Pilates','Daily Stretch','Evening Deep Stretch'],19:['Glutes & Legs Dumbbells','Inner Thigh','Booty Burn','Yoga for Back Pain'],20:['Pilates Arms','Lower Belly Fat','Posture Care Routine','Hip & Lower Back Relief'],21:['Morning Standing Band','Flat Abs & Waist','Neck & Upper Back','Tired Body Stretch'],22:['Slim & Sculpt Pilates','Anti-Cellulite Thigh','Standing Abs','Daily Stretch'],23:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],24:['Daily Mobility Flow','Tired Body Stretch','Neck & Upper Back','Yoga for Better Posture'],25:['Morning Energy Workout','Flat Abs & Waist','Lower Belly Fat','Evening Deep Stretch'],26:['Lower-Body Pilates','Inner Thigh','Anti-Cellulite Thigh','Yoga for Back Pain'],27:['Flat Belly Pilates','Pilates Arms','Posture Care Routine','Hip & Lower Back Relief'],28:['Standing Pilates Sculpt','Slim & Sculpt Pilates','Neck & Upper Back','Tired Body Stretch'],29:['Standing Full Body','Morning Standing Band','Booty Burn','Daily Stretch'],30:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch'],31:['Inner & Outer Thigh','Toned Arms Quickie','Core & Abs Band','Full Body Stretch']};return def[d]||[];}
-function sTC(d,i,ch){localStorage.setItem(`td_${Y}-${M}-${d}_${i}`,ch?'true':'false');rTT();if(d===Day)rDT();}
-function dT(d,i){const l=GTL(d);if(!confirm(`Удалить «${l[i]}»?`))return;l.splice(i,1);TD[`${Y}-${M}-${d}`]=l;localStorage.setItem('TD',JSON.stringify(TD));rTT();if(d===Day)rDT();}
-function eTL(d,i){const k=`tl_${Y}-${M}-${d}_${i}`;const l=prompt('Ссылка:',localStorage.getItem(k)||'');if(l===null)return;if(l.trim())localStorage.setItem(k,l.trim());else localStorage.removeItem(k);rTT();}
-function aTD(d){const n=prompt('Название:');if(!n||!n.trim())return;const l=prompt('Ссылка на YouTube:');const k=`${Y}-${M}-${d}`;if(!TD[k])TD[k]=GTL(d).filter(x=>x);TD[k].push(n.trim());localStorage.setItem('TD',JSON.stringify(TD));if(l&&l.trim())localStorage.setItem(`tl_${k}_${TD[k].length-1}`,l.trim());rTT();if(d===Day)rDT();}
-function rTT(){const dim=new Date(Y,M,0).getDate();let h='';const fd=new Date(Y,M-1,1).getDay(),so=fd===0?7:fd;let d=1,fr=true;while(d<=dim){let rh='<div class="training-week-row">';for(let c=1;c<=7;c++){if(fr&&c<so){rh+='<div class="training-day-cell empty"></div>';continue;}if(d>dim){rh+='<div class="training-day-cell empty"></div>';d++;continue;}const dow=new Date(Y,M-1,d).getDay();const l=GTL(d);let t=0,done=0;l.forEach((n,i)=>{if(!n||!n.trim())return;t++;if(localStorage.getItem(`td_${Y}-${M}-${d}_${i}`)==='true')done++;});rh+=`<div class="training-day-cell${dow===0||dow===6?' weekend':''}${ST===d?' selected':''}" onclick="ST=ST===${d}?null:${d};rTT();"><div class="training-day-num">${d}</div><div class="training-day-bar"><div class="training-day-bar-fill" style="width:${t>0?Math.round((done/t)*100):0}%"></div></div><div class="training-day-indicators">${l.filter(n=>n&&n.trim()).map((n,i)=>`<div class="training-dot${localStorage.getItem('td_'+Y+'-'+M+'-'+d+'_'+i)==='true'?' done':''}"></div>`).join('')}</div></div>`;d++;}rh+='</div>';h+=rh;fr=false;}document.getElementById('trainingGrid').innerHTML=h;const dt=document.getElementById('trainingDetail');dt.innerHTML='';if(ST){const l=GTL(ST);dt.className='training-detail';let dh=`<div class="training-detail-date">${ST} ${S[M-1].toLowerCase()}</div>`;l.forEach((n,i)=>{if(!n||!n.trim())return;const c=localStorage.getItem(`td_${Y}-${M}-${ST}_${i}`)==='true';const lk=localStorage.getItem(`tl_${Y}-${M}-${ST}_${i}`);dh+=`<div class="training-detail-item"><input type="checkbox" ${c?'checked':''} onchange="sTC(${ST},${i},this.checked)"><label>${n}</label><span class="training-link-icon" onclick="event.stopPropagation();eTL(${ST},${i})">🔗</span><span class="training-delete-icon" onclick="event.stopPropagation();dT(${ST},${i})">✕</span>${lk?`<a href="${lk}" target="_blank" style="font-size:10px;color:#8aa8c8">▶</a>`:''}</div>`;});dh+='<span class="training-detail-add" onclick="aTD('+ST+')">+ Добавить</span>';dt.innerHTML=dh;}}
+// MONTHS — массив (список) названий месяцев. [0] = Январь, [1] = Февраль...
+const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
-function bCDG(dim,weeks,ci,type){const g=document.createElement('div');g.className='dots-grid';let pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.s&&d<=wr.e);if(w&&w.w!==pw&&pw!==0){const sp=document.createElement('div');sp.className='dot-slot separator';g.appendChild(sp);}if(w)pw=w.w;const s=document.createElement('div');s.className='dot-slot';const dot=document.createElement('div');dot.className=`cleaning-dot ${type}`;if(C[CK(ci,d)])dot.classList.add('done');dot.addEventListener('click',function(){const v=!C[CK(ci,d)];C[CK(ci,d)]=v;localStorage.setItem(CK(ci,d),v?'true':'false');rCT();if(Day===d)rDC();});s.appendChild(dot);g.appendChild(s);}return g;}
-function rCT(){const dim=new Date(Y,M,0).getDate(),weeks=WR(dim);document.getElementById('cleaningDayBars').innerHTML=(()=>{let h='',pw=0;for(let d=1;d<=dim;d++){const w=weeks.find(wr=>d>=wr.s&&d<=wr.e);if(w&&w.w!==pw&&pw!==0)h+='<div class="day-bar-spacer"></div>';if(w)pw=w.w;h+=`<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;}return h;})();const cont=document.getElementById('cleaningCardsContainer');cont.innerHTML='';CDs.forEach((c,ci)=>{let dc=0;if(c.type==='daily'){for(let d=1;d<=dim;d++)if(C[CK(ci,d)])dc++;}else if(c.type==='weekly'){weeks.forEach(wr=>{if(C[CK(ci,wr.s)])dc++;});}else{for(let d=1;d<=dim;d++)if(C[CK(ci,d)])dc++;}const card=document.createElement('div');card.className=`cleaning-card ${c.type}`;card.innerHTML=`<div class="cleaning-card-header"><span class="cleaning-card-name">${c.name}</span><span style="font-size:11px;color:#8b7355">${dc}/${c.goal} <button class="habit-edit-btn" onclick="eC(${ci})">✎</button><button class="habit-delete-btn" onclick="dC(${ci})">✕</button></span></div>`;if(c.type==='daily'){card.appendChild(bCDG(dim,weeks,ci,'daily'));}else if(c.type==='weekly'){const wrr=document.createElement('div');wrr.className='beauty-weeks-row';weeks.forEach(wr=>{wrr.innerHTML+=`<div class="cleaning-week-block"><div class="cleaning-week-label">Нед.${wr.w}</div><div class="cleaning-week-dots"><div class="cleaning-week-dot${C[CK(ci,wr.s)]?' done':''}" onclick="const v=!C['${CK(ci,wr.s)}'];C['${CK(ci,wr.s)}']=v;localStorage.setItem('${CK(ci,wr.s)}',v?'true':'false');rCT();"></div></div></div>`;});card.appendChild(wrr);}else if(c.type==='monthly'){card.innerHTML+=`<div class="cleaning-month-dots"><div class="cleaning-month-dot${C[CK(ci,1)]?' done':''}" onclick="const v=!C['${CK(ci,1)}'];C['${CK(ci,1)}']=v;localStorage.setItem('${CK(ci,1)}',v?'true':'false');rCT();"></div></div>`;}cont.appendChild(card);});rWC('cleaningWeekCircles',dim,weeks,(wr)=>{let t=0,f=0;CDs.forEach((c,ci)=>{if(c.type==='daily'){for(let d=wr.s;d<=wr.e;d++){t++;if(C[CK(ci,d)])f++;}}else if(c.type==='weekly'){t++;if(C[CK(ci,wr.s)])f++;}});return t>0?Math.round((f/t)*100):0;});}
-function aC(){const n=prompt('Название:');if(!n||!n.trim())return;const t=prompt('Тип (daily/weekly/monthly):');if(!['daily','weekly','monthly'].includes(t))return;const g=parseInt(prompt('Цель:'));if(isNaN(g)||g<1)return;CDs.push({name:n.trim(),type:t,goal:g});localStorage.setItem('CDs',JSON.stringify(CDs));loadData();rCT();}
-function eC(ci){const n=prompt('Название:',CDs[ci].name);if(n===null)return;const t=prompt('Тип:',CDs[ci].type);if(!['daily','weekly','monthly'].includes(t))return;const g=parseInt(prompt('Цель:',CDs[ci].goal));if(isNaN(g)||g<1)return;CDs[ci]={name:n.trim()||CDs[ci].name,type:t,goal:g};localStorage.setItem('CDs',JSON.stringify(CDs));rCT();}
-function dC(ci){if(!confirm(`Удалить «${CDs[ci].name}»?`))return;CDs.splice(ci,1);localStorage.setItem('CDs',JSON.stringify(CDs));loadData();rCT();}
+// WCLS — классы для 5 цветов (w1, w2, w3, w4, w5)
+const WCLS = ['w1', 'w2', 'w3', 'w4', 'w5'];
 
-function tS(id){const e=document.getElementById(id);if(e.classList.contains('expanded')){e.classList.remove('expanded');e.style.maxHeight='140px';}else{e.classList.add('expanded');e.style.maxHeight='none';}}
-function refP(){if(P==='habits')rHT();else if(P==='beauty')rBT();else if(P==='training')rTT();else if(P==='cleaning')rCT();}
-function sP(p,st){P=p;ST=null;document.querySelectorAll('.sticker').forEach(s=>s.classList.remove('active'));st.classList.add('active');document.querySelectorAll('.tracker-page').forEach(pg=>pg.classList.remove('active'));document.getElementById(p).classList.add('active');localStorage.setItem('P',p);const lc=document.getElementById('leftCol'),tb=document.getElementById('topBar'),mc=document.getElementById('mainContent');if(p==='daily'){lc.classList.remove('hidden');tb.classList.remove('hidden');mc.classList.remove('full-width');loadDay();}else{lc.classList.add('hidden');tb.classList.remove('hidden');mc.classList.add('full-width');refP();}}
+// WCOLORS — цвета для кругов (conic-gradient)
+const WCOLORS = ['#b8956a', '#6a9e6a', '#c47a7a', '#6a8eb8', '#b8a83a'];
 
-function start(){
-  if(!localStorage.getItem('HDs')){loadFallback();}
-  else{
-    HDs=JSON.parse(localStorage.getItem('HDs'));
-    BDs=JSON.parse(localStorage.getItem('BDs'));
-    CDs=JSON.parse(localStorage.getItem('CDs'));
-    TD=JSON.parse(localStorage.getItem('TD')||'{}');
+// WBEAUTY — фоновые цвета блоков недель
+const WBEAUTY = ['#d4c4a8', '#a8c8a0', '#e0b8b8', '#a8c0d8', '#d8d0a0'];
+
+// QUOTES — массив цитат (одна показывается внизу каждый день)
+const QUOTES = [
+  '"Маленькие шаги каждый день приводят к большим результатам."',
+  '"То, что мы делаем сегодня, определяет наше завтра."',
+  '"Дисциплина — это мост между целями и достижениями."',
+  '"Не обязательно быть идеальной, достаточно быть настоящей."',
+  '"Забота о себе — это не роскошь, а необходимость."',
+  '"Каждый день — это новая возможность."',
+  '"Магия происходит за пределами зоны комфорта."',
+  '"Тишина и покой — лучшее лекарство для души."',
+  '"Твой дом — это продолжение твоего внутреннего мира."',
+  '"Сила не в том, чтобы никогда не падать, а в том, чтобы всегда подниматься."',
+  '"Будь добрее к себе — ты делаешь достаточно."',
+  '"Порядок вокруг — порядок внутри."',
+  '"Лучшее время начать — сейчас."',
+  '"Сначала забота о себе, потом всё остальное."'
+];
+
+
+// ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
+// let — переменная, значение МОЖЕТ меняться
+
+// now — сегодняшняя дата (new Date() — "создать новую дату прямо сейчас")
+const now = new Date();
+
+// currentMonth — текущий месяц (1-12). getMonth() возвращает 0-11, поэтому +1
+let currentMonth = now.getMonth() + 1;
+
+// currentYear — текущий год (например 2026)
+let currentYear = now.getFullYear();
+
+// selectedDay — выбранный день (по умолчанию — сегодня)
+let selectedDay = now.getDate();
+
+// currentPage — какая страница открыта ('daily', 'habits', 'beauty', 'training', 'cleaning')
+let currentPage = 'daily';
+
+// selectedTrainingDay — выбранный день в тренировках (null = ничего не выбрано)
+let selectedTrainingDay = null;
+
+// habitDefs — СПИСОК привычек (массив объектов {name, goal})
+let habitDefs = [];
+
+// beautyDefs — СПИСОК процедур ухода
+let beautyDefs = [];
+
+// cleaningDefs — СПИСОК задач уборки
+let cleaningDefs = [];
+
+// trainingDefs — ТРЕНИРОВКИ (объект, ключ = "2026-5-21", значение = массив названий)
+let trainingDefs = JSON.parse(localStorage.getItem('trainingDefs') || '{}');
+
+// habitsData — ОТМЕТКИ привычек (объект, ключ = "2026-5-21-h0", значение = true/false)
+let habitsData = {};
+
+// beautyData — ОТМЕТКИ ухода
+let beautyData = {};
+
+// cleaningData — ОТМЕТКИ уборки
+let cleaningData = {};
+
+
+// ==================== ФУНКЦИИ-ПОМОЩНИКИ (УТИЛИТЫ) ====================
+
+// Функция СОЗДАЁТ КЛЮЧ для привычки
+// Берёт: hi (номер привычки) и d (день)
+// Возвращает строку, например "2026-5-21-h0"
+// В JavaScript `обратные кавычки` и ${} — это "шаблонная строка" (вставляет значение переменной в текст)
+const getHKey = (hi, d) => `${currentYear}-${currentMonth}-${d}-h${hi}`;
+
+// Ключ для ухода (bi — номер процедуры, w — неделя, sub — 'b' для второго раза или пусто)
+const getBKey = (bi, w, sub) => `${currentYear}-${currentMonth}-b${bi}-w${w}${sub || ''}`;
+
+// Ключ для уборки
+const getCKey = (ci, d) => `${currentYear}-${currentMonth}-c${ci}-${d}`;
+
+// ПРОВЕРИТЬ: выполнена ли привычка hi в день d?
+// === true — строгое сравнение (вернёт true только если значение именно true, а не "true" или 1)
+const getHD = (hi, d) => habitsData[getHKey(hi, d)] === true;
+
+// ПОСЧИТАТЬ: сколько раз привычка hi выполнена в этом месяце?
+const cntHD = hi => {
+  let c = 0; // счётчик
+  // new Date(year, month, 0).getDate() — хитрость: день 0 даёт последний день ПРЕДЫДУЩЕГО месяца
+  // То есть мы узнаём количество дней в currentMonth
+  for (let d = 1; d <= new Date(currentYear, currentMonth, 0).getDate(); d++) {
+    if (getHD(hi, d)) c++; // если выполнена — увеличить счётчик
   }
-  loadData();cal();loadDay();
-  document.getElementById('quote').textContent=getQuote();
-  const pn={daily:'Ежедневник',habits:'Привычки',beauty:'Уход',training:'Тренировки',cleaning:'Уборка'};
-  document.querySelectorAll('.sticker').forEach(s=>{s.addEventListener('click',function(){sP(this.dataset.page,this);});s.classList.toggle('active',s.textContent===pn[P]);});
-  document.getElementById(P).classList.add('active');
-  if(P!=='daily'){document.getElementById('leftCol').classList.add('hidden');refP();}
+  return c;
+};
+
+// ПОСЧИТАТЬ: сколько ВСЕХ привычек выполнено в день d?
+const cntDD = d => {
+  let c = 0;
+  for (let h = 0; h < habitDefs.length; h++) {
+    if (getHD(h, d)) c++;
+  }
+  return c;
+};
+
+// РАЗБИТЬ МЕСЯЦ НА НЕДЕЛИ
+// dim — количество дней в месяце
+// Возвращает массив объектов: [{w:1, start:1, end:5}, {w:2, start:6, end:12}, ...]
+function getWeekRanges(dim) {
+  // getDay() — день недели (0=Вс, 1=Пн, ..., 6=Сб)
+  const fd = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const so = fd === 0 ? 7 : fd; // переводим: Пн=1, ..., Вс=7
+  
+  const wks = [];
+  let cur = 1; // текущий день
+  let wn = 1;  // номер недели
+  
+  // Если месяц начинается не с понедельника — первая неделя короче
+  if (so > 1) {
+    wks.push({ w: wn, start: 1, end: Math.min(8 - so, dim) });
+    cur = (8 - so) + 1;
+    wn++;
+  }
+  
+  // Остальные недели по 7 дней
+  while (cur <= dim) {
+    wks.push({ w: wn, start: cur, end: Math.min(cur + 6, dim) });
+    cur += 7;
+    wn++;
+  }
+  
+  return wks;
 }
-start();
+
+// НАЙТИ НЕДЕЛЮ, в которую входит день day
+function getWeekForDay(day) {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  return getWeekRanges(dim).find(w => day >= w.start && day <= w.end);
+}
+
+
+// ==================== GOOGLE SHEETS (загрузка данных) ====================
+
+// ЗАГРУЗИТЬ ДАННЫЕ ИЗ GOOGLE ТАБЛИЦЫ
+// async — функция асинхронная (может ждать ответа от интернета)
+// await — "подожди, пока придёт ответ"
+async function fetchSheet(sheetName, range) {
+  // URL для запроса к Google Sheets API
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${sheetName}!${range}?key=${API_KEY}`;
+  try {
+    const resp = await fetch(url); // отправить запрос
+    const data = await resp.json(); // получить JSON-ответ
+    return data.values || []; // вернуть значения (или пустой массив если ничего нет)
+  } catch (e) {
+    console.log('Ошибка загрузки ' + sheetName, e);
+    return [];
+  }
+}
+
+// ПРЕОБРАЗОВАТЬ СТРОКИ ТАБЛИЦЫ В СПИСОК ПРИВЫЧЕК
+function parseHabits(rows) {
+  const defs = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (r[0] && r[0].trim()) defs.push({ name: r[0].trim(), goal: parseInt(r[1]) || 31 });
+  }
+  return defs; // Только то что в таблице, без демо-данных
+}
+
+function parseBeauty(rows) {
+  const defs = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (r[0] && r[0].trim()) defs.push({ name: r[0].trim(), freq: parseInt(r[1]) || 1 });
+  }
+  return defs; // Только то что в таблице, без демо-данных
+}
+
+function parseCleaning(rows) {
+  const defs = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (r[0] && r[0].trim() && r[1]) {
+      defs.push({
+        name: r[0].trim(),
+        type: r[1].trim(),
+        goal: parseInt(r[2]) || (r[1] === 'daily' ? 31 : r[1] === 'weekly' ? 5 : 1)
+      });
+    }
+  }
+  return defs; // Только то что в таблице, без демо-данных
+}
+
+// ЗАГРУЗИТЬ ВСЁ ИЗ GOOGLE SHEETS И СОХРАНИТЬ В localStorage
+async function loadFromSheets() {
+  // Promise.all — запустить три запроса ОДНОВРЕМЕННО (быстрее)
+  const [hr, br, cr] = await Promise.all([
+    fetchSheet('Привычки', 'A:B'),
+    fetchSheet('Уход', 'A:C'),
+    fetchSheet('Уборка', 'A:C')
+  ]);
+  
+  habitDefs = parseHabits(hr);
+  beautyDefs = parseBeauty(br);
+  cleaningDefs = parseCleaning(cr);
+  
+  // Сохранить в localStorage чтобы не грузить каждый раз из интернета
+  localStorage.setItem('habitDefs_' + currentYear + '-' + currentMonth, JSON.stringify(habitDefs));
+  localStorage.setItem('beautyDefs_' + currentYear + '-' + currentMonth, JSON.stringify(beautyDefs));
+  localStorage.setItem('cleaningDefs_' + currentYear + '-' + currentMonth, JSON.stringify(cleaningDefs));
+}
+
+// ЗАГРУЗИТЬ ДАННЫЕ ИЗ localStorage (если интернета нет или таблица недоступна)
+function loadLocalFallback(){
+  const savedHabits=localStorage.getItem('habitDefs_'+currentYear+'-'+currentMonth);
+  const savedBeauty=localStorage.getItem('beautyDefs_'+currentYear+'-'+currentMonth);
+  const savedCleaning=localStorage.getItem('cleaningDefs_'+currentYear+'-'+currentMonth);
+  
+  // ЕСЛИ есть сохранённые данные — загружаем
+  // ЕСЛИ нет — оставляем то, что уже в habitDefs (НЕ ЗАТИРАЕМ ПУСТОТОЙ!)
+  if(savedHabits!==null) habitDefs=JSON.parse(savedHabits);
+  if(savedBeauty!==null) beautyDefs=JSON.parse(savedBeauty);
+  if(savedCleaning!==null) cleaningDefs=JSON.parse(savedCleaning);
+}
+
+// ЗАГРУЗИТЬ ВСЕ ОТМЕТКИ (галочки) из localStorage
+function loadAllData() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  habitsData = {};
+  beautyData = {};
+  cleaningData = {};
+  
+  // Привычки
+  for (let h = 0; h < habitDefs.length; h++) {
+    for (let d = 1; d <= dim; d++) {
+      habitsData[getHKey(h, d)] = localStorage.getItem(getHKey(h, d)) === 'true';
+    }
+  }
+  
+  // Уход
+ for (let b = 0; b < beautyDefs.length; b++) {
+    for (let w = 1; w <= 5; w++) {
+      const key = `beauty_week_${currentYear}-${currentMonth}-w${w}-b${b}`;
+      const saved = localStorage.getItem(key);
+      beautyData[key] = saved ? JSON.parse(saved) : [];
+    }
+  }
+  
+  // Уборка
+  for (let c = 0; c < cleaningDefs.length; c++) {
+    for (let d = 1; d <= dim; d++) {
+      cleaningData[getCKey(c, d)] = localStorage.getItem(getCKey(c, d)) === 'true';
+    }
+  }
+}
+
+
+// ==================== ЦИТАТА ДНЯ ====================
+
+function getDailyQuote() {
+  const today = new Date().toDateString(); // например "Thu May 21 2026"
+  const saved = localStorage.getItem('quoteDate');
+  
+  // Если сегодня уже показывали цитату — вернуть ту же
+  if (saved === today) return localStorage.getItem('quoteText') || QUOTES[0];
+  
+  // Иначе — выбрать случайную
+  const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  localStorage.setItem('quoteDate', today);
+  localStorage.setItem('quoteText', q);
+  return q;
+}
+
+
+// ==================== КАЛЕНДАРЬ ====================
+
+// ПОСТРОИТЬ КАЛЕНДАРЬ (заполнить таблицу числами)
+function buildCalendar() {
+  const body = document.getElementById('calendarBody');
+  body.innerHTML = ''; // очистить
+  
+  // Заголовок "Май 2026"
+  const t = `${MONTHS[currentMonth - 1]} ${currentYear}`;
+  document.getElementById('calMonthTitle').textContent = t;
+  document.getElementById('monthTitle').textContent = t;
+  
+  const dim = new Date(currentYear, currentMonth, 0).getDate(); // дней в месяце
+  const fd = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const sd = fd === 0 ? 7 : fd; // день недели первого числа (Пн=1)
+  
+  if (selectedDay > dim) selectedDay = dim; // если 31 февраля → скорректировать
+  
+  let row = document.createElement('tr'); // создать строку таблицы
+  
+  // Пустые ячейки до первого дня
+  for (let i = 1; i < sd; i++) {
+    row.appendChild(document.createElement('td'));
+  }
+  
+  // Ячейки с числами
+  for (let d = 1; d <= dim; d++) {
+    const cell = document.createElement('td');
+    cell.textContent = d;
+    
+    // addEventListener — "слушатель события": при клике выполнит selectDay()
+    cell.addEventListener('click', function() { selectDay(d, cell); });
+    
+    // Подсветка сегодняшнего дня
+    if (d === now.getDate() && currentMonth === now.getMonth() + 1 && currentYear === now.getFullYear()) {
+      cell.classList.add('today'); // добавить класс today (зелёный фон)
+    }
+    
+    // Подсветка выбранного дня
+    if (d === selectedDay) {
+      cell.classList.add('selected');
+    }
+    
+    row.appendChild(cell);
+    
+    // Конец недели (каждые 7 дней) или конец месяца — начать новую строку
+    if ((d + sd - 1) % 7 === 0 || d === dim) {
+      body.appendChild(row);
+      row = document.createElement('tr');
+    }
+  }
+}
+
+// ВЫБРАТЬ ДЕНЬ в календаре
+function selectDay(day, cell) {
+  selectedDay = day;
+  
+  // Убрать выделение со всех ячеек
+  document.querySelectorAll('.calendar-widget td').forEach(td => td.classList.remove('selected'));
+  
+  // Выделить новую
+  if (cell) cell.classList.add('selected');
+  
+  loadDayData(); // обновить задачи, привычки и т.д. для этого дня
+}
+
+// ПЕРЕКЛЮЧИТЬ МЕСЯЦ (dir = -1 назад, +1 вперёд)
+function changeMonth(dir) {
+  currentMonth += dir;
+  if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+  if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+  
+  localStorage.setItem('selectedMonth', currentMonth);
+  localStorage.setItem('selectedYear', currentYear);
+  
+  loadAllData();
+  
+  // Загрузить списки привычек/ухода/уборки для НОВОГО месяца
+  loadLocalFallback();
+  
+  buildCalendar();
+  
+  if (currentPage === 'daily') loadDayData();
+  else refreshCurrentPage();
+}
+
+
+// ==================== ЕЖЕДНЕВНИК (страница daily) ====================
+
+// ЗАГРУЗИТЬ ВСЁ ДЛЯ ВЫБРАННОГО ДНЯ
+function loadDayData() {
+  const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
+  
+  // --- Дела на сегодня ---
+  const dailyTasks = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
+  document.getElementById('dailyTasks').innerHTML = dailyTasks.map((t, i) => `
+    <div class="task-item">
+      <input type="checkbox" id="dt${i}" ${t.done ? 'checked' : ''} onchange="saveDailyTask(${i}, this.checked)">
+      <label for="dt${i}">${t.text}</label>
+    </div>
+  `).join('');
+
+    // Добавляем кнопки удаления к делам на сегодня
+  document.querySelectorAll('#dailyTasks .task-item').forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'task-del-btn';
+    btn.textContent = '✕';
+    btn.onclick = function() { deleteDailyTask(i); };
+    item.appendChild(btn);
+  });
+  
+  // --- Дела на неделю ---
+  const ws = getMonday(dk);
+  const weekTasks = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
+  document.getElementById('weekTasks').innerHTML = weekTasks.map((t, i) => `
+    <div class="task-item">
+      <input type="checkbox" id="wt${i}" ${t.done ? 'checked' : ''} onchange="saveWeekTask(${i}, this.checked)">
+      <label for="wt${i}">${t.text}</label>
+    </div>
+  `).join('');
+
+    // Добавляем кнопки удаления к делам на неделю
+  document.querySelectorAll('#weekTasks .task-item').forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'task-del-btn';
+    btn.textContent = '✕';
+    btn.onclick = function() { deleteWeekTask(i); };
+    item.appendChild(btn);
+  });
+  
+  // --- Заметки ---
+    renderNotes();
+  
+    // Дела на месяц
+  const mk=`${currentYear}-${currentMonth}`;
+  const monthT=JSON.parse(localStorage.getItem('month_'+mk)||'[]');
+  document.getElementById('monthTasks').innerHTML=monthT.map((t,i)=>`<div class="task-item"><input type="checkbox" id="mt${i}" ${t.done?'checked':''} onchange="saveMonthTask(${i},this.checked)"><label for="mt${i}">${t.text}</label></div>`).join('');
+  // Добавляем кнопки удаления
+  document.querySelectorAll('#monthTasks .task-item').forEach((item,i)=>{const btn=document.createElement('button');btn.className='task-del-btn';btn.textContent='✕';btn.onclick=function(){deleteMonthTask(i);};item.appendChild(btn);});
+  
+  // Отрисовать секции
+  renderDailyHabits();
+  renderDailyBeauty();
+  renderDailyTraining();
+  renderDailyCleaning();
+}
+
+// ОТРИСОВАТЬ ПРИВЫЧКИ В ЕЖЕДНЕВНИКЕ
+function renderDailyHabits() {
+  const list = document.getElementById('dailyHabitsList');
+  list.innerHTML = '';
+  let done = 0;
+  
+  habitDefs.forEach((h, i) => {
+    const ch = getHD(i, selectedDay); // выполнена ли сегодня?
+    if (ch) done++;
+    
+    const row = document.createElement('div');
+    row.className = 'habit-row';
+    row.innerHTML = `
+      <input type="checkbox" id="dh${i}" ${ch ? 'checked' : ''} onchange="toggleDailyHabit(${i}, this.checked)">
+      <label for="dh${i}">${h.name}</label>
+    `;
+    list.appendChild(row);
+  });
+  
+  // Обновить прогресс-бар
+  const pct = Math.round((done / habitDefs.length) * 100);
+  document.getElementById('dailyProgressFill').style.height = pct + '%';
+  document.getElementById('dailyProgressLabel').textContent = pct + '%';
+}
+
+// ОТРИСОВАТЬ УХОД В ЕЖЕДНЕВНИКЕ
+function renderDailyBeauty() {
+  const container = document.getElementById('dailyBeauty');
+  container.innerHTML = '';
+  const wr = getWeekForDay(selectedDay);
+  if (!wr) return;
+
+  beautyDefs.forEach((b, bi) => {
+    const key = `beauty_week_${currentYear}-${currentMonth}-w${wr.w}-b${bi}`;
+    const checkedDays = beautyData[key] || [];
+    const isTodayChecked = checkedDays.includes(selectedDay);
+
+    if (!isTodayChecked) {
+      const row = document.createElement('div');
+      row.className = 'habit-row';
+      row.innerHTML = `
+        <input type="checkbox" onchange="toggleBeautyDayFromDaily(${bi}, ${wr.w}, ${selectedDay}, this.checked)">
+        <label>${b.name}</label>
+      `;
+      container.appendChild(row);
+    }
+  });
+}
+
+// Отметка дня в трекере ухода (клик по кружочку)
+function toggleBeautyDay(bi, w, d) {
+  const key = `beauty_week_${currentYear}-${currentMonth}-w${w}-b${bi}`;
+  let checkedDays = beautyData[key] || [];
+  const idx = checkedDays.indexOf(d);
+  if (idx === -1) {
+    checkedDays.push(d);
+  } else {
+    checkedDays.splice(idx, 1);
+  }
+  beautyData[key] = checkedDays;
+  localStorage.setItem(key, JSON.stringify(checkedDays));
+  renderBeautyTracker();
+  if (selectedDay === d && currentPage === 'daily') renderDailyBeauty();
+}
+
+// Отметка из ежедневника (через чекбокс)
+function toggleBeautyDayFromDaily(bi, w, d, checked) {
+  if (checked) {
+    const key = `beauty_week_${currentYear}-${currentMonth}-w${w}-b${bi}`;
+    let checkedDays = beautyData[key] || [];
+    if (!checkedDays.includes(d)) {
+      checkedDays.push(d);
+      beautyData[key] = checkedDays;
+      localStorage.setItem(key, JSON.stringify(checkedDays));
+      renderDailyBeauty();
+      renderBeautyTracker();
+    }
+  }
+}
+
+// ОТМЕТИТЬ ПРОЦЕДУРУ УХОДА
+
+
+// ОТРИСОВАТЬ ТРЕНИРОВКИ В ЕЖЕДНЕВНИКЕ
+function renderDailyTraining() {
+  document.getElementById('dailyTraining').innerHTML = getTrainingList(selectedDay)
+    .filter(n => n && n.trim())
+    .map((n, i) => `
+      <div class="habit-row">
+        <input type="checkbox" ${localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedDay}_${i}`) === 'true' ? 'checked' : ''} onchange="saveTrainingCheck(${selectedDay},${i},this.checked)">
+        <label>${n}</label>
+        ${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`) ? `<a href="${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`)}" target="_blank" style="font-size:11px;color:#8aa8c8;margin-left:4px">▶</a>` : ''}
+      </div>
+    `).join('');
+}
+
+// ОТРИСОВАТЬ УБОРКУ В ЕЖЕДНЕВНИКЕ
+function renderDailyCleaning() {
+  const container = document.getElementById('dailyCleaning');
+  container.innerHTML = '';
+  
+  const wr = getWeekForDay(selectedDay);
+  if (!wr) return;
+  
+  const wdk = `clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`;
+  const wd = JSON.parse(localStorage.getItem(wdk) || '{}');
+  
+  cleaningDefs.forEach((c, ci) => {
+    if (c.type === 'daily') {
+      const ch = cleaningData[getCKey(ci, selectedDay)];
+      const row = document.createElement('div');
+      row.className = 'habit-row';
+      row.innerHTML = `<input type="checkbox" ${ch ? 'checked' : ''} onchange="toggleDailyCleaning(${ci},${selectedDay},this.checked)"><label>${c.name}</label>`;
+      container.appendChild(row);
+    } else if (c.type === 'weekly') {
+      const ch = cleaningData[getCKey(ci, wr.start)];
+      if (!ch || wd[ci]) {
+        const row = document.createElement('div');
+        row.className = 'habit-row';
+        row.innerHTML = `<input type="checkbox" ${wd[ci] || ch ? 'checked' : ''} onchange="markWeeklyCleaning(${ci},${wr.start},this.checked)"><label>${c.name}</label>`;
+        if (wd[ci] || ch) row.querySelector('label').style.textDecoration = 'line-through';
+        container.appendChild(row);
+      }
+    } else if (c.type === 'monthly') {
+      const ch = cleaningData[getCKey(ci, 1)];
+      if (!ch) {
+        const row = document.createElement('div');
+        row.className = 'habit-row';
+        row.innerHTML = `<input type="checkbox" onchange="markMonthlyCleaning(${ci},this.checked)"><label>${c.name}</label>`;
+        container.appendChild(row);
+      }
+    }
+  });
+}
+
+// Отметить ежедневную уборку
+function toggleDailyCleaning(ci, day, checked) {
+  cleaningData[getCKey(ci, day)] = checked;
+  localStorage.setItem(getCKey(ci, day), checked ? 'true' : 'false');
+  renderCleaningTracker();
+}
+
+// Отметить еженедельную уборку
+function markWeeklyCleaning(ci, startDay, checked) {
+  cleaningData[getCKey(ci, startDay)] = checked;
+  localStorage.setItem(getCKey(ci, startDay), checked ? 'true' : 'false');
+  
+  const wr = getWeekForDay(startDay);
+  const wk = `clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`;
+  const wd = JSON.parse(localStorage.getItem(wk) || '{}');
+  if (checked) wd[ci] = true;
+  else delete wd[ci];
+  localStorage.setItem(wk, JSON.stringify(wd));
+  
+  loadDayData();
+  renderCleaningTracker();
+}
+
+// Отметить ежемесячную уборку
+function markMonthlyCleaning(ci, checked) {
+  cleaningData[getCKey(ci, 1)] = checked;
+  localStorage.setItem(getCKey(ci, 1), checked ? 'true' : 'false');
+  loadDayData();
+  renderCleaningTracker();
+}
+
+// Отметить привычку в ежедневнике
+function toggleDailyHabit(hi, checked) {
+  habitsData[getHKey(hi, selectedDay)] = checked;
+  localStorage.setItem(getHKey(hi, selectedDay), checked ? 'true' : 'false');
+  renderDailyHabits();
+  renderHabitsTracker();
+}
+
+// Получить понедельник недели, в которую входит дата ds
+function getMonday(ds) {
+  const d = new Date(ds);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+
+// ДОБАВЛЕНИЕ ЗАДАЧ ПО ENTER
+document.getElementById('newDailyTask').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter' && this.value.trim()) {
+    const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
+    const t = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
+    t.push({ text: this.value.trim(), done: false });
+    localStorage.setItem('daily_' + dk, JSON.stringify(t));
+    this.value = '';
+    loadDayData();
+  }
+});
+
+document.getElementById('newWeekTask').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter' && this.value.trim()) {
+    const ws = getMonday(`${currentYear}-${currentMonth}-${selectedDay}`);
+    const t = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
+    t.push({ text: this.value.trim(), done: false });
+    localStorage.setItem('week_' + ws, JSON.stringify(t));
+    this.value = '';
+    loadDayData();
+  }
+});
+
+// Сохранить галочку задачи
+function saveDailyTask(idx, checked) {
+  const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
+  const t = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
+  if (t[idx]) t[idx].done = checked;
+  localStorage.setItem('daily_' + dk, JSON.stringify(t));
+}
+
+function saveWeekTask(idx, checked) {
+  const ws = getMonday(`${currentYear}-${currentMonth}-${selectedDay}`);
+  const t = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
+  if (t[idx]) t[idx].done = checked;
+  localStorage.setItem('week_' + ws, JSON.stringify(t));
+}
+
+function deleteDailyTask(idx){
+  const dk=`${currentYear}-${currentMonth}-${selectedDay}`;
+  const t=JSON.parse(localStorage.getItem('daily_'+dk)||'[]');
+  t.splice(idx,1);
+  localStorage.setItem('daily_'+dk,JSON.stringify(t));
+  loadDayData();
+}
+function deleteWeekTask(idx){
+  const ws=getMonday(`${currentYear}-${currentMonth}-${selectedDay}`);
+  const t=JSON.parse(localStorage.getItem('week_'+ws)||'[]');
+  t.splice(idx,1);
+  localStorage.setItem('week_'+ws,JSON.stringify(t));
+  loadDayData();
+}
+
+// ДЕЛА НА МЕСЯЦ
+function saveMonthTask(idx,checked){
+  const mk=`${currentYear}-${currentMonth}`;
+  const t=JSON.parse(localStorage.getItem('month_'+mk)||'[]');
+  if(t[idx])t[idx].done=checked;
+  localStorage.setItem('month_'+mk,JSON.stringify(t));
+}
+function deleteMonthTask(idx){
+  const mk=`${currentYear}-${currentMonth}`;
+  const t=JSON.parse(localStorage.getItem('month_'+mk)||'[]');
+  t.splice(idx,1);
+  localStorage.setItem('month_'+mk,JSON.stringify(t));
+  loadDayData();
+}
+document.getElementById('newMonthTask').addEventListener('keypress',function(e){
+  if(e.key==='Enter'&&this.value.trim()){
+    const mk=`${currentYear}-${currentMonth}`;
+    const t=JSON.parse(localStorage.getItem('month_'+mk)||'[]');
+    t.push({text:this.value.trim(),done:false});
+    localStorage.setItem('month_'+mk,JSON.stringify(t));
+    this.value='';
+    loadDayData();
+  }
+});
+
+// ==================== СТРАНИЦА ПРИВЫЧЕК ====================
+
+// Сетка кружочков для одной привычки
+function buildDotsGrid(dim, weeks, hi) {
+  const grid = document.createElement('div');
+  grid.className = 'dots-grid';
+  let pw = 0; // предыдущая неделя
+  
+  for (let d = 1; d <= dim; d++) {
+    const w = weeks.find(wr => d >= wr.start && d <= wr.end);
+    
+    // Разделитель между неделями
+    if (w && w.w !== pw && pw !== 0) {
+      const sp = document.createElement('div');
+      sp.className = 'dot-slot separator';
+      grid.appendChild(sp);
+    }
+    if (w) pw = w.w;
+    
+    const slot = document.createElement('div');
+    slot.className = 'dot-slot';
+    
+    const dot = document.createElement('div');
+    dot.className = 'habit-dot';
+    
+    if (getHD(hi, d)) {
+      dot.classList.add('done');
+      dot.classList.add(WCLS[hi % 5]); // цвет по номеру привычки
+    }
+    
+    // Клик — переключить отметку
+    dot.addEventListener('click', function() {
+      const v = !getHD(hi, d);
+      habitsData[getHKey(hi, d)] = v;
+      localStorage.setItem(getHKey(hi, d), v ? 'true' : 'false');
+      renderHabitsTracker();
+      if (selectedDay === d) renderDailyHabits();
+    });
+    
+    slot.appendChild(dot);
+    grid.appendChild(slot);
+  }
+  
+  return grid;
+}
+
+// Отрисовать страницу привычек
+function renderHabitsTracker() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const weeks = getWeekRanges(dim);
+  
+  // Полосы по дням
+  document.getElementById('dayBarsRow').innerHTML = (() => {
+    let h = '';
+    let pw = 0;
+    for (let d = 1; d <= dim; d++) {
+      const w = weeks.find(wr => d >= wr.start && d <= wr.end);
+      if (w && w.w !== pw && pw !== 0) h += '<div class="day-bar-spacer"></div>';
+      if (w) pw = w.w;
+      const pct = habitDefs.length > 0 ? (cntDD(d) / habitDefs.length) * 100 : 0;
+      h += `<div class="day-bar-item"><div class="day-bar-fill" style="height:${Math.max(2, pct * 1.5)}px"></div><div class="day-bar-num">${d}</div></div>`;
+    }
+    return h;
+  })();
+  
+  // Карточки привычек
+  const cards = document.getElementById('habitsCardsContainer');
+  cards.innerHTML = '';
+  
+  habitDefs.forEach((h, hi) => {
+    const dc = cntHD(hi);
+    const pct = Math.round((dc / h.goal) * 100);
+    
+    const card = document.createElement('div');
+    card.className = `habit-card ${WCLS[hi % 5]}`;
+    card.innerHTML = `
+      <div class="habit-card-header">
+        <span class="habit-card-name">${h.name}</span>
+        <span class="habit-card-goal">${dc}/${h.goal} <button class="habit-edit-btn" onclick="editHabit(${hi})">✎</button><button class="habit-delete-btn" onclick="deleteHabit(${hi})">✕</button></span>
+      </div>
+      <div class="habit-progress-bar"><div class="habit-progress-fill ${WCLS[hi % 5]}" style="width:${pct}%"></div></div>
+    `;
+    card.appendChild(buildDotsGrid(dim, weeks, hi));
+    cards.appendChild(card);
+  });
+  
+  // Круги по неделям
+  renderWeekCircles('weekCirclesContainer', dim, weeks, (wr) => {
+    let t = 0, d = 0;
+    for (let dd = wr.start; dd <= wr.end; dd++) {
+      for (let h = 0; h < habitDefs.length; h++) {
+        t++;
+        if (getHD(h, dd)) d++;
+      }
+    }
+    return t > 0 ? Math.round((d / t) * 100) : 0;
+  });
+  
+  // Блоки "требуют внимания" и "лучшие"
+  renderInsightBlocks();
+}
+
+// Добавить привычку
+function addHabit() {
+  const name = prompt('Название:');
+  if (!name || !name.trim()) return;
+  const goal = parseInt(prompt('Цель:'));
+  if (isNaN(goal) || goal < 1) return;
+  
+  habitDefs.push({ name: name.trim(), goal });
+  saveAllDefs();
+  renderHabitsTracker();
+}
+
+// Редактировать привычку
+function editHabit(hi) {
+  const name = prompt('Название:', habitDefs[hi].name);
+  if (name === null) return;
+  const goal = parseInt(prompt('Цель:', habitDefs[hi].goal));
+  if (isNaN(goal) || goal < 1) return;
+  
+  habitDefs[hi] = { name: name.trim() || habitDefs[hi].name, goal };
+  saveAllDefs();
+  renderHabitsTracker();
+}
+
+// Удалить привычку
+function deleteHabit(hi) {
+  if (!confirm(`Удалить «${habitDefs[hi].name}»?`)) return;
+  habitDefs.splice(hi, 1); // splice — вырезать элемент из массива
+  saveAllDefs();
+  renderHabitsTracker();
+  if (currentPage === 'daily') loadDayData();
+}
+
+// Сохранить все определения в localStorage
+function saveAllDefs() {
+  // Сохраняем с ключом, привязанным к месяцу и году
+  // Теперь у каждого месяца свой список привычек!
+  localStorage.setItem('habitDefs_' + currentYear + '-' + currentMonth, JSON.stringify(habitDefs));
+  localStorage.setItem('beautyDefs_' + currentYear + '-' + currentMonth, JSON.stringify(beautyDefs));
+  localStorage.setItem('cleaningDefs_' + currentYear + '-' + currentMonth, JSON.stringify(cleaningDefs));
+}
+
+// Круги по неделям (универсальная функция)
+function renderWeekCircles(containerId, dim, weeks, pctFn) {
+  document.getElementById(containerId).innerHTML = weeks.map(wr => {
+    const pct = pctFn(wr);
+    return `<div class="week-circle-wrap">
+              <div class="week-circle" style="background:conic-gradient(${WCOLORS[(wr.w - 1) % 5]} ${pct * 3.6}deg, #e0d8cc 0deg)">
+                <span>${pct}%</span>
+              </div>
+              <div class="week-circle-label">Нед.${wr.w}</div>
+            </div>`;
+  }).join('');
+}
+
+// Блоки "требуют внимания" и "лучшие"
+function renderInsightBlocks() {
+  // Сортируем по проценту выполнения
+  const stats = habitDefs.map((h, i) => ({
+    name: h.name,
+    pct: Math.round((cntHD(i) / h.goal) * 100)
+  })).sort((a, b) => a.pct - b.pct); // от меньшего к большему
+  
+  // 3 худших
+  document.getElementById('attentionList').innerHTML = stats.slice(0, 3).map(h => `
+    <div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>
+  `).join('');
+  
+  // 3 лучших (slice(-3) — последние 3, reverse — перевернуть)
+  document.getElementById('successList').innerHTML = stats.slice(-3).reverse().map(h => `
+    <div class="insight-item"><span>${h.name}</span><span class="percent">${h.pct}%</span></div>
+  `).join('');
+}
+
+
+// ==================== СТРАНИЦА УХОДА ====================
+
+function renderBeautyTracker() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const weeks = getWeekRanges(dim);
+
+  // Дневные полосы
+  document.getElementById('beautyDayBars').innerHTML = (() => {
+    let h = '', pw = 0;
+    for (let d = 1; d <= dim; d++) {
+      const w = weeks.find(wr => d >= wr.start && d <= wr.end);
+      if (w && w.w !== pw && pw !== 0) h += '<div class="day-bar-spacer"></div>';
+      if (w) pw = w.w;
+      h += `<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;
+    }
+    return h;
+  })();
+
+  const container = document.getElementById('beautyCardsContainer');
+  container.innerHTML = '';
+
+  beautyDefs.forEach((b, bi) => {
+    // Считаем общее количество выполнений за месяц
+    let totalDone = 0;
+    weeks.forEach(wr => {
+      const key = `beauty_week_${currentYear}-${currentMonth}-w${wr.w}-b${bi}`;
+      const checkedDays = beautyData[key] || [];
+      totalDone += checkedDays.length;
+    });
+    
+    const totalGoal = b.goal * weeks.length; // цель на месяц = цель в неделю × количество недель
+    const pct = Math.round((totalDone / totalGoal) * 100);
+
+    const card = document.createElement('div');
+    card.className = `habit-card ${WCLS[bi % 5]}`;
+    card.innerHTML = `
+      <div class="habit-card-header">
+        <span class="habit-card-name">${b.name}</span>
+        <span class="habit-card-goal">${totalDone}/${totalGoal} 
+          <button class="habit-edit-btn" onclick="editBeauty(${bi})">✎</button>
+          <button class="habit-delete-btn" onclick="deleteBeauty(${bi})">✕</button>
+        </span>
+      </div>
+      <div class="habit-progress-bar">
+        <div class="habit-progress-fill ${WCLS[bi % 5]}" style="width:${Math.min(pct, 100)}%"></div>
+      </div>
+    `;
+
+    // Строим сетку кружочков по дням (как в привычках)
+    const grid = document.createElement('div');
+    grid.className = 'dots-grid';
+    let prevWeek = 0;
+
+    for (let d = 1; d <= dim; d++) {
+      const w = weeks.find(wr => d >= wr.start && d <= wr.end);
+      
+      // Разделитель между неделями
+      if (w && w.w !== prevWeek && prevWeek !== 0) {
+        const sp = document.createElement('div');
+        sp.className = 'dot-slot separator';
+        grid.appendChild(sp);
+      }
+      if (w) prevWeek = w.w;
+
+      const slot = document.createElement('div');
+      slot.className = 'dot-slot';
+
+      const dot = document.createElement('div');
+      dot.className = `habit-dot ${WCLS[bi % 5]}`;
+      
+      const key = `beauty_week_${currentYear}-${currentMonth}-w${w.w}-b${bi}`;
+      const checkedDays = beautyData[key] || [];
+      if (checkedDays.includes(d)) {
+        dot.classList.add('done');
+      }
+
+      dot.addEventListener('click', function() {
+        const k = `beauty_week_${currentYear}-${currentMonth}-w${w.w}-b${bi}`;
+        let arr = beautyData[k] || [];
+        const idx = arr.indexOf(d);
+        if (idx === -1) {
+          arr.push(d);
+        } else {
+          arr.splice(idx, 1);
+        }
+        beautyData[k] = arr;
+        localStorage.setItem(k, JSON.stringify(arr));
+        renderBeautyTracker();
+        if (selectedDay === d && currentPage === 'daily') renderDailyBeauty();
+      });
+
+      slot.appendChild(dot);
+      grid.appendChild(slot);
+    }
+
+    card.appendChild(grid);
+    container.appendChild(card);
+  });
+
+  // Круги по неделям
+  renderWeekCircles('beautyWeekCircles', dim, weeks, (wr) => {
+    let totalGoal = 0, totalDone = 0;
+    beautyDefs.forEach((b, bi) => {
+      totalGoal += b.goal;
+      const key = `beauty_week_${currentYear}-${currentMonth}-w${wr.w}-b${bi}`;
+      const checkedDays = beautyData[key] || [];
+      totalDone += checkedDays.length;
+    });
+    return totalGoal > 0 ? Math.round((totalDone / totalGoal) * 100) : 0;
+  });
+}
+
+function addBeauty() {
+  const name = prompt('Название:');
+  if (!name || !name.trim()) return;
+  const goal = parseInt(prompt('Цель (раз в неделю):'));
+  if (isNaN(goal) || goal < 1) return;
+  beautyDefs.push({ name: name.trim(), goal: goal });
+  saveAllDefs();
+  loadAllData();
+  renderBeautyTracker();
+}
+
+function editBeauty(bi) {
+  const name = prompt('Название:', beautyDefs[bi].name);
+  if (name === null) return;
+  const goal = parseInt(prompt('Цель (раз в неделю):', beautyDefs[bi].goal));
+  if (isNaN(goal) || goal < 1) return;
+  beautyDefs[bi] = { name: name.trim() || beautyDefs[bi].name, goal: goal };
+  saveAllDefs();
+  renderBeautyTracker();
+}
+
+function deleteBeauty(bi) {
+  if (!confirm(`Удалить «${beautyDefs[bi].name}»?`)) return;
+  beautyDefs.splice(bi, 1);
+  saveAllDefs();
+  renderBeautyTracker();
+}
+
+
+// ==================== СТРАНИЦА ТРЕНИРОВОК ====================
+
+function getTrainingList(d) {
+  const key = `${currentYear}-${currentMonth}-${d}`;
+  if (trainingDefs[key]) return trainingDefs[key];
+  
+  // Дефолтный план на каждый день
+  const def = {
+    1: ['Flat Belly Pilates', 'Anti-Cellulite Thigh', 'Lower Belly Fat', 'Tired Body Stretch'],
+    2: ['Inner & Outer Thigh', 'Booty Burn', 'Core & Abs Band', 'Full Body Stretch'],
+    // ... (все 31 день)
+    31: ['Inner & Outer Thigh', 'Toned Arms Quickie', 'Core & Abs Band', 'Full Body Stretch']
+  };
+  return def[d] || [];
+}
+
+function saveTrainingCheck(day, idx, checked) {
+  localStorage.setItem(`td_${currentYear}-${currentMonth}-${day}_${idx}`, checked ? 'true' : 'false');
+  renderTrainingTracker();
+  if (day === selectedDay) renderDailyTraining();
+}
+
+function deleteTraining(day, idx) {
+  const list = getTrainingList(day);
+  if (!confirm(`Удалить «${list[idx]}»?`)) return;
+  list.splice(idx, 1);
+  trainingDefs[`${currentYear}-${currentMonth}-${day}`] = list;
+  localStorage.setItem('trainingDefs', JSON.stringify(trainingDefs));
+  renderTrainingTracker();
+  if (day === selectedDay) renderDailyTraining();
+}
+
+function editTrainingLink(day, idx) {
+  const key = `tl_${currentYear}-${currentMonth}-${day}_${idx}`;
+  const link = prompt('Ссылка:', localStorage.getItem(key) || '');
+  if (link === null) return;
+  if (link.trim()) localStorage.setItem(key, link.trim());
+  else localStorage.removeItem(key);
+  renderTrainingTracker();
+}
+
+function addTrainingDay(day) {
+  const name = prompt('Название:');
+  if (!name || !name.trim()) return;
+  const link = prompt('Ссылка на YouTube:');
+  const key = `${currentYear}-${currentMonth}-${day}`;
+  if (!trainingDefs[key]) trainingDefs[key] = getTrainingList(day).filter(x => x);
+  trainingDefs[key].push(name.trim());
+  localStorage.setItem('trainingDefs', JSON.stringify(trainingDefs));
+  if (link && link.trim()) localStorage.setItem(`tl_${key}_${trainingDefs[key].length - 1}`, link.trim());
+  renderTrainingTracker();
+  if (day === selectedDay) renderDailyTraining();
+}
+
+function renderTrainingTracker() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const grid = document.getElementById('trainingGrid');
+  grid.innerHTML = '';
+  
+  const fd = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const so = fd === 0 ? 7 : fd;
+  
+  let day = 1;
+  let fr = true;
+  
+  while (day <= dim) {
+    let rowHTML = '<div class="training-week-row">';
+    
+    for (let col = 1; col <= 7; col++) {
+      if (fr && col < so) {
+        rowHTML += '<div class="training-day-cell empty"></div>';
+        continue;
+      }
+      if (day > dim) {
+        rowHTML += '<div class="training-day-cell empty"></div>';
+        day++;
+        continue;
+      }
+      
+      const dow = new Date(currentYear, currentMonth - 1, day).getDay();
+      const list = getTrainingList(day);
+      let total = 0, done = 0;
+      
+      list.forEach((n, i) => {
+        if (!n || !n.trim()) return;
+        total++;
+        if (localStorage.getItem(`td_${currentYear}-${currentMonth}-${day}_${i}`) === 'true') done++;
+      });
+      
+      const sel = selectedTrainingDay === day ? ' selected' : '';
+      rowHTML += `<div class="training-day-cell${dow === 0 || dow === 6 ? ' weekend' : ''}${sel}" onclick="selectedTrainingDay=selectedTrainingDay===${day}?null:${day};renderTrainingTracker();">
+                    <div class="training-day-num">${day}</div>
+                    <div class="training-day-bar"><div class="training-day-bar-fill" style="width:${total > 0 ? Math.round((done / total) * 100) : 0}%"></div></div>
+                    <div class="training-day-indicators">${list.filter(n => n && n.trim()).map((n, i) => `<div class="training-dot${localStorage.getItem('td_' + currentYear + '-' + currentMonth + '-' + day + '_' + i) === 'true' ? ' done' : ''}"></div>`).join('')}</div>
+                  </div>`;
+      day++;
+    }
+    
+    rowHTML += '</div>';
+    grid.innerHTML += rowHTML;
+    fr = false;
+  }
+  
+  // Детали выбранного дня
+  const detail = document.getElementById('trainingDetail');
+  detail.innerHTML = '';
+  
+  if (selectedTrainingDay) {
+    const list = getTrainingList(selectedTrainingDay);
+    detail.className = 'training-detail';
+    let html = `<div class="training-detail-date">${selectedTrainingDay} ${MONTHS[currentMonth - 1].toLowerCase()}</div>`;
+    
+    list.forEach((n, i) => {
+      if (!n || !n.trim()) return;
+      const checked = localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`) === 'true';
+      const link = localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedTrainingDay}_${i}`);
+      html += `<div class="training-detail-item">
+                <input type="checkbox" ${checked ? 'checked' : ''} onchange="saveTrainingCheck(${selectedTrainingDay},${i},this.checked)">
+                <label>${n}</label>
+                <span onclick="event.stopPropagation();editTrainingLink(${selectedTrainingDay},${i})" style="cursor:pointer;font-size:11px;">🔗</span>
+                <span onclick="event.stopPropagation();deleteTraining(${selectedTrainingDay},${i})" style="cursor:pointer;font-size:11px;color:#c09090;">✕</span>
+                ${link ? `<a href="${link}" target="_blank" style="font-size:10px;color:#8aa8c8">▶</a>` : ''}
+              </div>`;
+    });
+    
+    html += '<span onclick="addTrainingDay(' + selectedTrainingDay + ')" style="cursor:pointer;color:#8aa8c8;font-size:12px;">+ Добавить</span>';
+    detail.innerHTML = html;
+  }
+}
+
+
+// ==================== СТРАНИЦА УБОРКИ ====================
+
+function buildCleaningDotsGrid(dim, weeks, ci, type) {
+  const grid = document.createElement('div');
+  grid.className = 'dots-grid';
+  let pw = 0;
+  
+  for (let d = 1; d <= dim; d++) {
+    const w = weeks.find(wr => d >= wr.start && d <= wr.end);
+    if (w && w.w !== pw && pw !== 0) {
+      const sp = document.createElement('div');
+      sp.className = 'dot-slot separator';
+      grid.appendChild(sp);
+    }
+    if (w) pw = w.w;
+    
+    const slot = document.createElement('div');
+    slot.className = 'dot-slot';
+    
+    const dot = document.createElement('div');
+    dot.className = `cleaning-dot ${type}`;
+    if (cleaningData[getCKey(ci, d)]) dot.classList.add('done');
+    
+    dot.addEventListener('click', function() {
+      const v = !cleaningData[getCKey(ci, d)];
+      cleaningData[getCKey(ci, d)] = v;
+      localStorage.setItem(getCKey(ci, d), v ? 'true' : 'false');
+      renderCleaningTracker();
+      if (selectedDay === d) renderDailyCleaning();
+    });
+    
+    slot.appendChild(dot);
+    grid.appendChild(slot);
+  }
+  
+  return grid;
+}
+
+function renderCleaningTracker() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const weeks = getWeekRanges(dim);
+  
+  document.getElementById('cleaningDayBars').innerHTML = (() => {
+    let h = '';
+    let pw = 0;
+    for (let d = 1; d <= dim; d++) {
+      const w = weeks.find(wr => d >= wr.start && d <= wr.end);
+      if (w && w.w !== pw && pw !== 0) h += '<div class="day-bar-spacer"></div>';
+      if (w) pw = w.w;
+      h += `<div class="day-bar-item"><div></div><div class="day-bar-num">${d}</div></div>`;
+    }
+    return h;
+  })();
+  
+  const container = document.getElementById('cleaningCardsContainer');
+  container.innerHTML = '';
+  
+  cleaningDefs.forEach((c, ci) => {
+    let dc = 0;
+    if (c.type === 'daily') {
+      for (let d = 1; d <= dim; d++) if (cleaningData[getCKey(ci, d)]) dc++;
+    } else if (c.type === 'weekly') {
+      weeks.forEach(wr => { if (cleaningData[getCKey(ci, wr.start)]) dc++; });
+    } else {
+      for (let d = 1; d <= dim; d++) if (cleaningData[getCKey(ci, d)]) dc++;
+    }
+    
+    const card = document.createElement('div');
+    card.className = `cleaning-card ${c.type}`;
+    card.innerHTML = `<div class="cleaning-card-header">
+                        <span class="cleaning-card-name">${c.name}</span>
+                        <span style="font-size:11px;color:#8b7355">${dc}/${c.goal} <button class="habit-edit-btn" onclick="editCleaning(${ci})">✎</button><button class="habit-delete-btn" onclick="deleteCleaning(${ci})">✕</button></span>
+                      </div>`;
+    
+    if (c.type === 'daily') {
+      card.appendChild(buildCleaningDotsGrid(dim, weeks, ci, 'daily'));
+    } else if (c.type === 'weekly') {
+      const wrr = document.createElement('div');
+      wrr.className = 'beauty-weeks-row';
+      weeks.forEach(wr => {
+        wrr.innerHTML += `<div class="cleaning-week-block">
+                            <div class="cleaning-week-label">Нед.${wr.w}</div>
+                            <div class="cleaning-week-dots">
+                              <div class="cleaning-week-dot${cleaningData[getCKey(ci, wr.start)] ? ' done' : ''}" onclick="const v=!cleaningData['${getCKey(ci, wr.start)}'];cleaningData['${getCKey(ci, wr.start)}']=v;localStorage.setItem('${getCKey(ci, wr.start)}',v?'true':'false');renderCleaningTracker();"></div>
+                            </div>
+                          </div>`;
+      });
+      card.appendChild(wrr);
+    } else if (c.type === 'monthly') {
+      card.innerHTML += `<div class="cleaning-month-dots">
+                           <div class="cleaning-month-dot${cleaningData[getCKey(ci, 1)] ? ' done' : ''}" onclick="const v=!cleaningData['${getCKey(ci, 1)}'];cleaningData['${getCKey(ci, 1)}']=v;localStorage.setItem('${getCKey(ci, 1)}',v?'true':'false');renderCleaningTracker();"></div>
+                         </div>`;
+    }
+    
+    container.appendChild(card);
+  });
+  
+  renderWeekCircles('cleaningWeekCircles', dim, weeks, (wr) => {
+    let t = 0, f = 0;
+    cleaningDefs.forEach((c, ci) => {
+      if (c.type === 'daily') {
+        for (let d = wr.start; d <= wr.end; d++) { t++; if (cleaningData[getCKey(ci, d)]) f++; }
+      } else if (c.type === 'weekly') {
+        t++; if (cleaningData[getCKey(ci, wr.start)]) f++;
+      }
+    });
+    return t > 0 ? Math.round((f / t) * 100) : 0;
+  });
+}
+
+function addCleaning() {
+  const name = prompt('Название:');
+  if (!name || !name.trim()) return;
+  const type = prompt('Тип (daily/weekly/monthly):');
+  if (!['daily', 'weekly', 'monthly'].includes(type)) return;
+  const goal = parseInt(prompt('Цель:'));
+  if (isNaN(goal) || goal < 1) return;
+  cleaningDefs.push({ name: name.trim(), type, goal });
+  saveAllDefs();
+  renderCleaningTracker();
+}
+
+function editCleaning(ci) {
+  const name = prompt('Название:', cleaningDefs[ci].name);
+  if (name === null) return;
+  const type = prompt('Тип:', cleaningDefs[ci].type);
+  if (!['daily', 'weekly', 'monthly'].includes(type)) return;
+  const goal = parseInt(prompt('Цель:', cleaningDefs[ci].goal));
+  if (isNaN(goal) || goal < 1) return;
+  cleaningDefs[ci] = { name: name.trim() || cleaningDefs[ci].name, type, goal };
+  saveAllDefs();
+  renderCleaningTracker();
+}
+
+function deleteCleaning(ci) {
+  if (!confirm(`Удалить «${cleaningDefs[ci].name}»?`)) return;
+  cleaningDefs.splice(ci, 1);
+  saveAllDefs();
+  renderCleaningTracker();
+}
+
+
+// ==================== НАВИГАЦИЯ (переключение страниц) ====================
+
+// Свернуть/развернуть секцию
+function toggleSection(id) {
+  const el = document.getElementById(id);
+  // Если maxHeight уже установлен — убрать, иначе — установить 140px
+  el.style.maxHeight = el.style.maxHeight ? null : '140px';
+  el.style.overflow = el.style.overflow ? null : 'hidden';
+}
+
+// Обновить текущую страницу
+function refreshCurrentPage() {
+  if (currentPage === 'habits') renderHabitsTracker();
+  else if (currentPage === 'beauty') renderBeautyTracker();
+  else if (currentPage === 'training') renderTrainingTracker();
+  else if (currentPage === 'cleaning') renderCleaningTracker();
+}
+
+// Переключить страницу
+function switchPage(page, sticker) {
+  currentPage = page;
+  selectedTrainingDay = null;
+  
+  // Обновить закладки
+  document.querySelectorAll('.sticker').forEach(s => s.classList.remove('active'));
+  sticker.classList.add('active');
+  
+  // Показать нужную страницу, скрыть остальные
+  document.querySelectorAll('.tracker-page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+  
+  localStorage.setItem('currentPage', page);
+  
+  const lc = document.getElementById('leftCol');
+  const tb = document.getElementById('topBar');
+  const mc = document.getElementById('mainContent');
+  
+  if (page === 'daily') {
+    // Ежедневник: показать левую колонку
+    lc.classList.remove('hidden');
+    tb.classList.remove('hidden');
+    mc.classList.remove('full-width');
+    loadDayData();
+  } else {
+    // Другие страницы: скрыть левую колонку
+    lc.classList.add('hidden');
+    tb.classList.remove('hidden');
+    mc.classList.add('full-width');
+    refreshCurrentPage();
+  }
+}
+
+
+// ==================== ЗАПУСК ПРИЛОЖЕНИЯ ====================
+
+// ЗАМЕТКИ
+function renderNotes(){
+  const dk=`${currentYear}-${currentMonth}-${selectedDay}`;
+  const notes=JSON.parse(localStorage.getItem('notes_'+dk)||'[]');
+  document.getElementById('notesList').innerHTML=notes.map((n,i)=>`
+    <div class="note-item">
+      <div class="note-text" onclick="editNote(${i})">${n}</div>
+      <div class="note-actions">
+        <button class="note-edit-btn" onclick="editNote(${i})">✎</button>
+        <button class="note-del-btn" onclick="deleteNote(${i})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addNote(){
+  const textarea=document.getElementById('newNoteText');
+  const text=textarea.value.trim();
+  if(!text)return;
+  const dk=`${currentYear}-${currentMonth}-${selectedDay}`;
+  const notes=JSON.parse(localStorage.getItem('notes_'+dk)||'[]');
+  notes.push(text);
+  localStorage.setItem('notes_'+dk,JSON.stringify(notes));
+  textarea.value='';
+  renderNotes();
+}
+
+function editNote(idx){
+  const dk=`${currentYear}-${currentMonth}-${selectedDay}`;
+  const notes=JSON.parse(localStorage.getItem('notes_'+dk)||'[]');
+  const newText=prompt('Редактировать заметку:',notes[idx]);
+  if(newText===null)return;
+  notes[idx]=newText.trim();
+  localStorage.setItem('notes_'+dk,JSON.stringify(notes));
+  renderNotes();
+}
+
+function deleteNote(idx){
+  if(!confirm('Удалить заметку?'))return;
+  const dk=`${currentYear}-${currentMonth}-${selectedDay}`;
+  const notes=JSON.parse(localStorage.getItem('notes_'+dk)||'[]');
+  notes.splice(idx,1);
+  localStorage.setItem('notes_'+dk,JSON.stringify(notes));
+  renderNotes();
+}
+
+// Ctrl+Enter для добавления заметки
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey&&e.key==='Enter'&&document.activeElement===document.getElementById('newNoteText')){
+    addNote();
+  }
+});
+
+// async — функция может использовать await (ждать интернет)
+async function init(){
+  // Google Sheets временно отключены — используем только localStorage
+  loadLocalFallback();
+  loadAllData();
+  buildCalendar();
+  loadDayData();
+  // ... остальное не трогай
+  
+  // Показать цитату
+  document.getElementById('quote').textContent = getDailyQuote();
+  
+  // Навесить клики на закладки
+  const pageNames = {
+    daily: 'Ежедневник',
+    habits: 'Привычки',
+    beauty: 'Уход',
+    training: 'Тренировки',
+    cleaning: 'Уборка'
+  };
+  
+  document.querySelectorAll('.sticker').forEach(s => {
+    s.addEventListener('click', function() { switchPage(this.dataset.page, this); });
+    s.classList.toggle('active', s.textContent === pageNames[currentPage]);
+  });
+  
+  document.getElementById(currentPage).classList.add('active');
+  
+  if (currentPage !== 'daily') {
+    document.getElementById('leftCol').classList.add('hidden');
+    refreshCurrentPage();
+  }
+}
+
+// ЗАПУСК! Всё начинается здесь
+function clearFutureMonths() {
+  const now = new Date();
+  const thisMonth = now.getMonth() + 1;
+  const thisYear = now.getFullYear();
+  
+  // Собрать все ключи из localStorage
+  const keys = Object.keys(localStorage);
+  let removed = 0;
+  
+  keys.forEach(key => {
+    // Пропускаем текущий месяц
+    if (key.includes(`${thisYear}-${thisMonth}`)) return;
+    
+    // Удаляем всё, что связано с привычками, уходом, уборкой, тренировками
+    if (
+      key.startsWith('habitDefs_') ||
+      key.startsWith('beautyDefs_') ||
+      key.startsWith('cleaningDefs_') ||
+      key.startsWith('trainingDefs_') ||
+      key.includes('-h') || key.includes('-b') || key.includes('-c') ||
+      key.startsWith('td_') || key.startsWith('tl_') ||
+      key.startsWith('daily_') || key.startsWith('week_') || key.startsWith('notes_') ||
+      key.startsWith('beauty_week_done_') || key.startsWith('clean_week_done_')
+    ) {
+      localStorage.removeItem(key);
+      removed++;
+    }
+  });
+  
+  // Очистить данные выбора месяца
+  localStorage.removeItem('selectedMonth');
+  localStorage.removeItem('selectedYear');
+  
+  alert(`Очищено ${removed} записей! Сейчас страница обновится.`);
+  location.reload(); // перезагрузить страницу
+}
+init();
+
 </script>
+<!-- КОНЕЦ JAVASCRIPT -->
+
 </body>
 </html>
