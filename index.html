@@ -694,16 +694,21 @@
     }
 
     /* Заголовки дней недели */
-    .training-weekdays{display:flex;margin-bottom:2px}
-
-    .training-weekday{
+       .training-weekdays{
+      display:flex;
+      margin-bottom:2px;
+      width:100%;
+    }
+    .training-weekdays div{
       flex:1;
       text-align:center;
       font-size:11px;
       color:#8b7355;
       padding:4px 0;
-      font-weight:bold
+      font-weight:bold;
+      min-width:20px;
     }
+
 
     /* Ряд с днями */
     .training-week-row{display:flex;gap:3px}
@@ -711,7 +716,7 @@
     /* Ячейка дня */
     .training-day-cell{
       flex:1;
-      min-width:0;
+      min-width:20;
       background:#fdfaf5;
       border-radius:8px;
       padding:8px 4px;
@@ -729,7 +734,8 @@
       background:transparent;
       border:none;
       cursor:default;
-      min-height:0
+      min-height:0;
+      min-width:20px;
     }
 
     .training-day-cell.weekend{background:#f5f8fc;border-color:#d0dce8}
@@ -2331,43 +2337,61 @@ function renderTrainingTracker() {
   let day = 1;
   let fr = true;
   
-  while (day <= dim) {
-    let rowHTML = '<div class="training-week-row">';
-    
-    for (let col = 1; col <= 7; col++) {
-      if (fr && col < so) {
-        rowHTML += '<div class="training-day-cell empty"></div>';
-        continue;
-      }
-      if (day > dim) {
-        rowHTML += '<div class="training-day-cell empty"></div>';
-        day++;
-        continue;
-      }
-      
-      const dow = new Date(currentYear, currentMonth - 1, day).getDay();
-      const list = getTrainingList(day);
+  // Строим правильную сетку с учётом смещения
+  let html = '';
+  let d = 1;
+  
+  // Первая строка: пустые ячейки + дни
+  html += '<div class="training-week-row">';
+  for (let col = 1; col <= 7; col++) {
+    if (col < so) {
+      html += '<div class="training-day-cell empty"></div>';
+    } else if (d <= dim) {
+      const dow = new Date(currentYear, currentMonth - 1, d).getDay();
+      const list = getTrainingList(d);
       let total = 0, done = 0;
-      
       list.forEach((n, i) => {
         if (!n || !n.trim()) return;
         total++;
-        if (localStorage.getItem(`td_${currentYear}-${currentMonth}-${day}_${i}`) === 'true') done++;
+        if (localStorage.getItem(`td_${currentYear}-${currentMonth}-${d}_${i}`) === 'true') done++;
       });
-      
-      const sel = selectedTrainingDay === day ? ' selected' : '';
-      rowHTML += `<div class="training-day-cell${dow === 0 || dow === 6 ? ' weekend' : ''}${sel}" onclick="selectedTrainingDay=selectedTrainingDay===${day}?null:${day};renderTrainingTracker();">
-                    <div class="training-day-num">${day}</div>
-                    <div class="training-day-bar"><div class="training-day-bar-fill" style="width:${total > 0 ? Math.round((done / total) * 100) : 0}%"></div></div>
-                    <div class="training-day-indicators">${list.filter(n => n && n.trim()).map((n, i) => `<div class="training-dot${localStorage.getItem('td_' + currentYear + '-' + currentMonth + '-' + day + '_' + i) === 'true' ? ' done' : ''}"></div>`).join('')}</div>
-                  </div>`;
-      day++;
+      const sel = selectedTrainingDay === d ? ' selected' : '';
+      html += `<div class="training-day-cell${dow === 0 || dow === 6 ? ' weekend' : ''}${sel}" onclick="selectedTrainingDay=selectedTrainingDay===${d}?null:${d};renderTrainingTracker();">
+        <div class="training-day-num">${d}</div>
+        <div class="training-day-bar"><div class="training-day-bar-fill" style="width:${total > 0 ? Math.round((done / total) * 100) : 0}%"></div></div>
+        <div class="training-day-indicators">${list.filter(n => n && n.trim()).map((n, i) => `<div class="training-dot${localStorage.getItem('td_' + currentYear + '-' + currentMonth + '-' + d + '_' + i) === 'true' ? ' done' : ''}"></div>`).join('')}</div>
+      </div>`;
+      d++;
+    } else {
+      html += '<div class="training-day-cell empty"></div>';
     }
-    
-    rowHTML += '</div>';
-    grid.innerHTML += rowHTML;
-    fr = false;
   }
+  html += '</div>';
+  
+  // Остальные строки
+  while (d <= dim) {
+    html += '<div class="training-week-row">';
+    for (let col = 1; col <= 7 && d <= dim; col++) {
+      const dow = new Date(currentYear, currentMonth - 1, d).getDay();
+      const list = getTrainingList(d);
+      let total = 0, done = 0;
+      list.forEach((n, i) => {
+        if (!n || !n.trim()) return;
+        total++;
+        if (localStorage.getItem(`td_${currentYear}-${currentMonth}-${d}_${i}`) === 'true') done++;
+      });
+      const sel = selectedTrainingDay === d ? ' selected' : '';
+      html += `<div class="training-day-cell${dow === 0 || dow === 6 ? ' weekend' : ''}${sel}" onclick="selectedTrainingDay=selectedTrainingDay===${d}?null:${d};renderTrainingTracker();">
+        <div class="training-day-num">${d}</div>
+        <div class="training-day-bar"><div class="training-day-bar-fill" style="width:${total > 0 ? Math.round((done / total) * 100) : 0}%"></div></div>
+        <div class="training-day-indicators">${list.filter(n => n && n.trim()).map((n, i) => `<div class="training-dot${localStorage.getItem('td_' + currentYear + '-' + currentMonth + '-' + d + '_' + i) === 'true' ? ' done' : ''}"></div>`).join('')}</div>
+      </div>`;
+      d++;
+    }
+    html += '</div>';
+  }
+  
+  grid.innerHTML = html;
   
   // Детали выбранного дня
   const detail = document.getElementById('trainingDetail');
