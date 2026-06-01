@@ -1,0 +1,159 @@
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    
+    .shop-name{
+        color: #d995ff;
+        font-family: 'Cormorant Garamond';
+        font-size: 50px;
+        text-align: center;
+        padding: 10px;
+        background: linear-gradient(to bottom, #2d1b3d, #1a2332);
+        border-radius: 1px;
+        margin: 30px 0 15px 0;
+        width: 80%;
+        align-items: center;
+        position: relative;
+        left: 10%;
+    }
+    
+    .potion-card{
+        max-width: 80%;
+        margin: 50px auto;
+        padding: 30px 25px;
+        background: linear-gradient(to bottom, #2d1b3d, #1a2332);
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    
+    .potion-icon{
+        font-size: 80px;
+        margin-bottom: 15px;
+        filter: drop-shadow(0 0 15px rgba(180,130,255,0.6));
+    }
+    
+    .potion-name{
+        color: #e0c080;
+        font-family: 'Cormorant Garamond';
+        font-size: 36px;
+    }
+    
+    .potion-desc{
+        color: #c0c0d0;
+        font-size: 16px;
+        font-style: italic;
+    }
+    
+    .ingredients{
+        text-align: left;
+        color: #b0a0c0;
+        font-size: 15px;
+        list-style: none;
+        padding: 0;
+    }
+    
+    .ingredients li{
+        padding: 6px 0;
+        border-bottom: 1px dotted #4a3a5a;
+    }
+    
+    .price{
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        color: #f0c040;
+        margin: 20px 0;
+    }
+    
+    .buy-btn{
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #ffffff;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 20px;
+        padding: 12px 35px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 20px auto;
+    }
+    
+    .buy-btn:hover{
+        background: rgba(180,130,255,0.25);
+        border-color: rgba(200,160,255,0.5);
+        box-shadow: 0 0 25px rgba(160,100,255,0.4);
+        transform: translateY(-3px);
+    }
+    
+    .toast{
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2d1b3d;
+        color: #e0c080;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 20px;
+        padding: 15px 30px;
+        border-radius: 50px;
+        border: 1px solid rgba(200,160,255,0.4);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s ease;
+        z-index: 1000;
+    }
+    
+    .toast.show{
+        opacity: 1;
+        visibility: visible;
+    }
+</style>
+
+<body style="
+background-color: #1a0f14;
+">
+
+<h1 class="shop-name">Магазин зелий «У Чародея»</h1>
+
+<div class="potion-card">
+    
+<div class="potion-icon">🧪</div>
+
+<h2 class="potion-name">Элексир молодости</h2>
+
+<p class="potion-desc">Позволяет вернуться в свое молодое тело ровно на 24 часа. Возможны побочные эффекты в виде роста рогов.</p>
+
+<ul class="ingredients">
+    <li>🌙 Лунная пыль</li>
+    <li>🕸️ Паучий шёлк</li>
+    <li>💧 Слеза феникса</li>
+</ul>
+
+</div>
+
+<p class="price">Стоимость: 997 златых</p>
+
+<button class="buy-btn">Добавить в котёл</button>
+
+<div id="toast" class="toast">В котёл добавлено!</div>
+
+<script>
+    const buyBtn=document.querySelector('.buy-btn');
+    const toast=document.getElementById('toast');
+    let toastTimer;
+    buyBtn.addEventListener('click',function () {
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function () {
+    toast.classList.remove('show');
+    }, 5000);
+        
+    });
+</script>
+
+</body>
+    
