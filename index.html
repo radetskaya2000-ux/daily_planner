@@ -299,6 +299,56 @@
       overflow:hidden
     }
 
+        /* КАРТОЧКИ-ИКОНКИ НА ГЛАВНОЙ */
+    .daily-cards-row{
+      display:flex;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .daily-card{
+      flex:1;
+      background:#fefcf7;
+      border:1px solid #f0e8d8;
+      border-radius:12px;
+      padding:14px;
+      text-align:center;
+      cursor:pointer;
+      transition:.2s;
+      box-shadow:0 1px 3px rgba(0,0,0,0.04);
+    }
+    .daily-card:hover{
+      background:#faf5ed;
+      border-color:#d4b896;
+      transform:translateY(-2px);
+    }
+    .daily-card-icon{
+      font-size:28px;
+      margin-bottom:6px;
+    }
+    .daily-card-title{
+      font-size:13px;
+      color:#8b7355;
+      margin-bottom:4px;
+    }
+    .daily-card-progress{
+      font-size:18px;
+      font-weight:bold;
+      color:#5a4a3a;
+    }
+    
+    /* РАСКРЫВАЮЩИЕСЯ СЕКЦИИ */
+    .daily-expandable{
+      display:none;
+      margin-top:12px;
+      padding:12px;
+      background:#fefcf7;
+      border-radius:12px;
+      border:1px solid #f0e8d8;
+    }
+    .daily-expandable.open{
+      display:block;
+    }
+
     /* ========== ПРАВИЛО: ПРИВЫЧКИ В ЕЖЕДНЕВНИКЕ ========== */
     .daily-habits-row{
       display:flex;
@@ -1107,7 +1157,7 @@
 
       <!-- Календарь -->
       <div class="calendar-widget">
-        <h4 id="calMonthTitle"></h4>
+        <h4 id="calMonthTitle" style="cursor:pointer;" onclick="openYearCalendar()" title="Нажми чтобы открыть календарь на год"></h4>
         <table>
           <thead>
             <tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>
@@ -1157,27 +1207,59 @@
     <div class="center-col">
 
       <!-- Страница 1: Ежедневник (active — видна по умолчанию) -->
-      <div id="daily" class="tracker-page active">
-        <div class="section-title">Привычки</div>
-        <div class="daily-habits-row">
-          <div class="daily-habits-list" id="dailyHabitsList"></div>
-          <div class="daily-progress-bar-wrap">
-            <span class="label" id="dailyProgressLabel">0%</span>
-            <div class="daily-progress-bar">
-              <div class="daily-progress-fill" id="dailyProgressFill" style="height:0%"></div>
+            <div id="daily" class="tracker-page active">
+        <!-- Карточки-иконки -->
+        <div class="daily-cards-row">
+          <div class="daily-card" onclick="toggleSection('dailyHabitsSection')">
+            <div class="daily-card-icon">✅</div>
+            <div class="daily-card-title">Привычки</div>
+            <div class="daily-card-progress" id="dailyHabitsCardProgress">0/0</div>
+          </div>
+          <div class="daily-card" onclick="toggleSection('beautySection')">
+            <div class="daily-card-icon">🌸</div>
+            <div class="daily-card-title">Уход</div>
+            <div class="daily-card-progress" id="dailyBeautyCardProgress">0/0</div>
+          </div>
+        </div>
+        <div class="daily-cards-row">
+          <div class="daily-card" onclick="toggleSection('dailyTrainingSection')">
+            <div class="daily-card-icon">🏋️</div>
+            <div class="daily-card-title">Тренировка</div>
+            <div class="daily-card-progress" id="dailyTrainingCardProgress">0/0</div>
+          </div>
+          <div class="daily-card" onclick="toggleSection('cleaningSection')">
+            <div class="daily-card-icon">🧹</div>
+            <div class="daily-card-title">Уборка</div>
+            <div class="daily-card-progress" id="dailyCleaningCardProgress">0/0</div>
+          </div>
+        </div>
+        
+        <!-- Сами секции (изначально скрыты) -->
+        <div class="daily-expandable" id="dailyHabitsSection">
+          <div class="section-title">✅ Привычки</div>
+          <div class="daily-habits-row">
+            <div class="daily-habits-list" id="dailyHabitsList"></div>
+            <div class="daily-progress-bar-wrap">
+              <span class="label" id="dailyProgressLabel">0%</span>
+              <div class="daily-progress-bar"><div class="daily-progress-fill" id="dailyProgressFill" style="height:0%"></div></div>
             </div>
           </div>
         </div>
-
-        <!-- onClick — при клике на заголовок сворачивает/разворачивает секцию -->
-        <div class="section-title" onclick="toggleSection('beautySection')">🌸 Уход <span class="toggle-icon">▼</span></div>
-        <div class="daily-section-list" id="beautySection"><div id="dailyBeauty"></div></div>
-
-        <div class="section-title">🏋️ Тренировка</div>
-        <div id="dailyTraining"></div>
-
-        <div class="section-title" onclick="toggleSection('cleaningSection')">🧹 Уборка <span class="toggle-icon">▼</span></div>
-        <div class="daily-section-list" id="cleaningSection"><div id="dailyCleaning"></div></div>
+        
+        <div class="daily-expandable" id="beautySection">
+          <div class="section-title">🌸 Уход</div>
+          <div id="dailyBeauty"></div>
+        </div>
+        
+        <div class="daily-expandable" id="dailyTrainingSection">
+          <div class="section-title">🏋️ Тренировка</div>
+          <div id="dailyTraining"></div>
+        </div>
+        
+        <div class="daily-expandable" id="cleaningSection">
+          <div class="section-title">🧹 Уборка</div>
+          <div id="dailyCleaning"></div>
+        </div>
       </div>
 
       <!-- Страница 2: Привычки -->
@@ -1191,6 +1273,7 @@
           <div class="insight-block attention"><h4>Требуют внимания</h4><div id="attentionList"></div></div>
           <div class="insight-block success"><h4>Лучшие привычки</h4><div id="successList"></div></div>
         </div>
+        <div id="habitsCopyBtn" style="text-align:center;margin-top:15px;"></div>
       </div>
 
       <!-- Страница 3: Уход -->
@@ -1200,6 +1283,7 @@
         <div id="beautyCardsContainer"></div>
         <button class="add-btn" onclick="addBeauty()">+ Добавить процедуру</button>
         <div id="beautyWeekCircles" class="week-circles"></div>
+        <div id="beautyCopyBtn" style="text-align:center;margin-top:15px;"></div>
       </div>
 
       <!-- Страница 4: Тренировки -->
@@ -1219,6 +1303,7 @@
         <div id="cleaningCardsContainer"></div>
         <button class="add-btn" onclick="addCleaning()">+ Добавить задачу</button>
         <div id="cleaningWeekCircles" class="week-circles"></div>
+        <div id="cleaningCopyBtn" style="text-align:center;margin-top:15px;"></div>
       </div>
 
     </div>
@@ -1226,6 +1311,50 @@
 
   </div>
   <!-- Конец content -->
+
+  <!-- Всплывающий годовой календарь -->
+<div id="yearOverlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:flex-start;padding-top:30px;">
+  <div style="background:#fffef9;border-radius:15px;padding:30px;max-width:1100px;width:95%;max-height:90vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="display:flex;justify-content:center;align-items:center;margin-bottom:15px;position:relative;">
+  <button onclick="changeEventYear(-1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;">◀</button>
+  <span id="eventYearTitle" style="font-size:22px;color:#5a4a3a;margin:0 20px;"></span>
+  <button onclick="changeEventYear(1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;">▶</button>
+  <button onclick="closeYearCalendar()" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;font-size:22px;cursor:pointer;color:#8b7355;">✕</button>
+</div>
+    <div id="yearCalendar"></div>
+    <div id="eventForm" class="training-detail" style="display:none;margin-top:10px;">
+      <div class="training-detail-date" id="eventDateTitle"></div>
+      <input type="text" id="eventName" placeholder="Название события" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;margin-bottom:8px;font-family:Georgia;">
+      <select id="eventColor" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;margin-bottom:8px;font-family:Georgia;">
+        <option value="#e8d898">🟡 Жёлтый</option>
+        <option value="#d9ead3">🟢 Зелёный</option>
+        <option value="#f4cccc">🔴 Розовый</option>
+        <option value="#cfe2f3">🔵 Голубой</option>
+        <option value="#e8d0e8">🟣 Лавандовый</option>
+      </select>
+      <button onclick="saveEvent()" style="width:100%;padding:8px;background:#c8a1c0;color:white;border:none;border-radius:8px;cursor:pointer;font-family:Georgia;">Сохранить</button>
+      <button onclick="deleteEvent()" style="width:100%;padding:8px;background:#f0e0e0;color:#c09090;border:none;border-radius:8px;cursor:pointer;margin-top:4px;font-family:Georgia;">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Всплывающее окно добавления уборки -->
+<div id="cleaningModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1001;justify-content:center;align-items:center;">
+  <div style="background:#fffef9;border-radius:15px;padding:25px;width:400px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:15px;color:#5a4a3a;margin-bottom:15px;" id="cleaningModalTitle">Новая задача</div>
+    <input type="text" id="cleaningNameInput" placeholder="Название задачи" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;margin-bottom:15px;font-family:Georgia;font-size:14px;">
+    <div style="display:flex;gap:8px;margin-bottom:15px;">
+      <button onclick="selectCleaningType('daily')" class="cleaning-type-btn" id="ctype-daily" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">📅 Ежедневно</button>
+      <button onclick="selectCleaningType('weekly')" class="cleaning-type-btn" id="ctype-weekly" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">📆 Еженедельно</button>
+      <button onclick="selectCleaningType('monthly')" class="cleaning-type-btn" id="ctype-monthly" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">🗓️ Ежемесячно</button>
+    </div>
+    <div id="cleaningGoalRow" style="display:none;margin-bottom:15px;">
+      <input type="number" id="cleaningGoalInput" placeholder="Сколько раз?" min="1" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;font-size:14px;text-align:center;">
+    </div>
+    <button onclick="saveCleaningFromModal()" style="width:100%;padding:12px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:15px;">✓ Сохранить</button>
+    <button onclick="closeCleaningModal()" style="width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;font-size:13px;margin-top:5px;">Отмена</button>
+  </div>
+</div>
 
   <!-- Цитата внизу -->
 <div class="quote-bar" id="quote"></div>
@@ -1337,6 +1466,10 @@ let beautyData = {};
 
 // cleaningData — ОТМЕТКИ уборки
 let cleaningData = {};
+
+let eventYear = currentYear;
+let selectedEventDate = null;
+let eventsData = JSON.parse(localStorage.getItem('eventsData') || '{}');
 
 
 // ==================== ФУНКЦИИ-ПОМОЩНИКИ (УТИЛИТЫ) ====================
@@ -1490,11 +1623,12 @@ function loadLocalFallback(){
   const savedBeauty=localStorage.getItem('beautyDefs_'+currentYear+'-'+currentMonth);
   const savedCleaning=localStorage.getItem('cleaningDefs_'+currentYear+'-'+currentMonth);
   
-  // ЕСЛИ есть сохранённые данные — загружаем
-  // ЕСЛИ нет — оставляем то, что уже в habitDefs (НЕ ЗАТИРАЕМ ПУСТОТОЙ!)
   if(savedHabits!==null) habitDefs=JSON.parse(savedHabits);
+  else habitDefs=[];
   if(savedBeauty!==null) beautyDefs=JSON.parse(savedBeauty);
+  else beautyDefs=[];
   if(savedCleaning!==null) cleaningDefs=JSON.parse(savedCleaning);
+  else cleaningDefs=[];
 }
 
 // ЗАГРУЗИТЬ ВСЕ ОТМЕТКИ (галочки) из localStorage
@@ -1639,16 +1773,27 @@ function changeMonth(dir) {
 function loadDayData() {
   const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
   
-  // --- Дела на сегодня ---
-  const dailyTasks = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
-  document.getElementById('dailyTasks').innerHTML = dailyTasks.map((t, i) => `
+   // --- Дела на сегодня ---
+  let dailyT = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
+  
+  // Удаляем старые авто-события
+  dailyT = dailyT.filter(t => !t.isEvent);
+  
+  // Подгружаем события дня
+  const dayEvents = getEventsForPeriod(dk, dk);
+  dayEvents.forEach(ev => {
+    dailyT.push({ text: `${ev.name}`, done: false, isEvent: true });
+  });
+  
+  localStorage.setItem('daily_' + dk, JSON.stringify(dailyT));
+  document.getElementById('dailyTasks').innerHTML = dailyT.map((t, i) => `
     <div class="task-item">
       <input type="checkbox" id="dt${i}" ${t.done ? 'checked' : ''} onchange="saveDailyTask(${i}, this.checked)">
       <label for="dt${i}">${t.text}</label>
     </div>
   `).join('');
 
-    // Добавляем кнопки удаления к делам на сегодня
+  // Добавляем кнопки удаления к делам на сегодня
   document.querySelectorAll('#dailyTasks .task-item').forEach((item, i) => {
     const btn = document.createElement('button');
     btn.className = 'task-del-btn';
@@ -1657,17 +1802,32 @@ function loadDayData() {
     item.appendChild(btn);
   });
   
-  // --- Дела на неделю ---
+    // --- Дела на неделю ---
   const ws = getMonday(dk);
-  const weekTasks = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
-  document.getElementById('weekTasks').innerHTML = weekTasks.map((t, i) => `
+  let weekT = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
+  
+  // Удаляем старые авто-события
+  weekT = weekT.filter(t => !t.isEvent);
+  
+  // Подгружаем события недели
+  // Конец недели = понедельник + 6 дней
+  const we = new Date(ws);
+  we.setDate(we.getDate() + 6);
+  const weStr = we.getFullYear() + '-' + (we.getMonth() + 1) + '-' + we.getDate();
+  const weekEvents = getEventsForPeriod(ws, weStr);
+  weekEvents.forEach(ev => {
+    weekT.push({ text: `${getDayName(ev.dow)} — ${ev.name}`, done: false, isEvent: true });
+  });
+  
+  localStorage.setItem('week_' + ws, JSON.stringify(weekT));
+  document.getElementById('weekTasks').innerHTML = weekT.map((t, i) => `
     <div class="task-item">
       <input type="checkbox" id="wt${i}" ${t.done ? 'checked' : ''} onchange="saveWeekTask(${i}, this.checked)">
       <label for="wt${i}">${t.text}</label>
     </div>
   `).join('');
 
-    // Добавляем кнопки удаления к делам на неделю
+  // Добавляем кнопки удаления к делам на неделю
   document.querySelectorAll('#weekTasks .task-item').forEach((item, i) => {
     const btn = document.createElement('button');
     btn.className = 'task-del-btn';
@@ -1679,9 +1839,23 @@ function loadDayData() {
   // --- Заметки ---
     renderNotes();
   
-    // Дела на месяц
+   // Дела на месяц
   const mk=`${currentYear}-${currentMonth}`;
-  const monthT=JSON.parse(localStorage.getItem('month_'+mk)||'[]');
+  let monthT=JSON.parse(localStorage.getItem('month_'+mk)||'[]');
+  
+  // Удаляем старые авто-события
+  monthT = monthT.filter(t => !t.isEvent);
+  
+  // Подгружаем события месяца
+  const monthEvents = getEventsForPeriod(
+    `${currentYear}-${currentMonth}-1`,
+    `${currentYear}-${currentMonth}-${new Date(currentYear, currentMonth, 0).getDate()}`
+  );
+  monthEvents.forEach(ev => {
+    monthT.push({ text: `${ev.day} число — ${ev.name}`, done: false, isEvent: true });
+  });
+  
+  localStorage.setItem('month_'+mk, JSON.stringify(monthT));
   document.getElementById('monthTasks').innerHTML=monthT.map((t,i)=>`<div class="task-item"><input type="checkbox" id="mt${i}" ${t.done?'checked':''} onchange="saveMonthTask(${i},this.checked)"><label for="mt${i}">${t.text}</label></div>`).join('');
   // Добавляем кнопки удаления
   document.querySelectorAll('#monthTasks .task-item').forEach((item,i)=>{const btn=document.createElement('button');btn.className='task-del-btn';btn.textContent='✕';btn.onclick=function(){deleteMonthTask(i);};item.appendChild(btn);});
@@ -1698,6 +1872,7 @@ function renderDailyHabits() {
   const list = document.getElementById('dailyHabitsList');
   list.innerHTML = '';
   let done = 0;
+  document.getElementById('dailyHabitsCardProgress').textContent = done + '/' + habitDefs.length;
   
   habitDefs.forEach((h, i) => {
     const ch = getHD(i, selectedDay); // выполнена ли сегодня?
@@ -1720,6 +1895,8 @@ function renderDailyHabits() {
 
 // ОТРИСОВАТЬ УХОД В ЕЖЕДНЕВНИКЕ
 function renderDailyBeauty() {
+  let beautyDone = 0;
+  let beautyTotal = 0;
   const container = document.getElementById('dailyBeauty');
   container.innerHTML = '';
   const wr = getWeekForDay(selectedDay);
@@ -1728,6 +1905,8 @@ function renderDailyBeauty() {
   beautyDefs.forEach((b, bi) => {
     const key = `beauty_week_${currentYear}-${currentMonth}-w${wr.w}-b${bi}`;
     const checkedDays = beautyData[key] || [];
+      beautyTotal++;
+  if (checkedDays.includes(selectedDay)) beautyDone++;
     const isTodayChecked = checkedDays.includes(selectedDay);
 
     if (!isTodayChecked) {
@@ -1739,6 +1918,7 @@ function renderDailyBeauty() {
       `;
       container.appendChild(row);
     }
+    document.getElementById('dailyBeautyCardProgress').textContent = beautyDone + '/' + beautyTotal;
   });
 }
 
@@ -1778,15 +1958,23 @@ function toggleBeautyDayFromDaily(bi, w, d, checked) {
 
 // ОТРИСОВАТЬ ТРЕНИРОВКИ В ЕЖЕДНЕВНИКЕ
 function renderDailyTraining() {
+  let trainingDone = 0;
+  let trainingTotal = 0;
   document.getElementById('dailyTraining').innerHTML = getTrainingList(selectedDay)
     .filter(n => n && n.trim())
-    .map((n, i) => `
-      <div class="habit-row">
-        <input type="checkbox" ${localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedDay}_${i}`) === 'true' ? 'checked' : ''} onchange="saveTrainingCheck(${selectedDay},${i},this.checked)">
-        <label>${n}</label>
-        ${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`) ? `<a href="${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`)}" target="_blank" style="font-size:11px;color:#8aa8c8;margin-left:4px">▶</a>` : ''}
-      </div>
-    `).join('');
+    .map((n, i) => {
+      const checked = localStorage.getItem(`td_${currentYear}-${currentMonth}-${selectedDay}_${i}`) === 'true';
+      trainingTotal++;
+      if (checked) trainingDone++;
+      return `
+        <div class="habit-row">
+          <input type="checkbox" ${checked ? 'checked' : ''} onchange="saveTrainingCheck(${selectedDay},${i},this.checked)">
+          <label>${n}</label>
+          ${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`) ? `<a href="${localStorage.getItem(`tl_${currentYear}-${currentMonth}-${selectedDay}_${i}`)}" target="_blank" style="font-size:11px;color:#8aa8c8;margin-left:4px">▶</a>` : ''}
+        </div>
+      `;
+    }).join('');
+  document.getElementById('dailyTrainingCardProgress').textContent = trainingDone + '/' + trainingTotal;
 }
 
 // ОТРИСОВАТЬ УБОРКУ В ЕЖЕДНЕВНИКЕ
@@ -1794,38 +1982,22 @@ function renderDailyCleaning() {
   const container = document.getElementById('dailyCleaning');
   container.innerHTML = '';
   
-  const wr = getWeekForDay(selectedDay);
-  if (!wr) return;
-  
-  const wdk = `clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`;
-  const wd = JSON.parse(localStorage.getItem(wdk) || '{}');
+  let cleaningDone = 0;
+  let cleaningTotal = 0;
   
   cleaningDefs.forEach((c, ci) => {
-    if (c.type === 'daily') {
-      const ch = cleaningData[getCKey(ci, selectedDay)];
-      const row = document.createElement('div');
-      row.className = 'habit-row';
-      row.innerHTML = `<input type="checkbox" ${ch ? 'checked' : ''} onchange="toggleDailyCleaning(${ci},${selectedDay},this.checked)"><label>${c.name}</label>`;
-      container.appendChild(row);
-    } else if (c.type === 'weekly') {
-      const ch = cleaningData[getCKey(ci, wr.start)];
-      if (!ch || wd[ci]) {
-        const row = document.createElement('div');
-        row.className = 'habit-row';
-        row.innerHTML = `<input type="checkbox" ${wd[ci] || ch ? 'checked' : ''} onchange="markWeeklyCleaning(${ci},${wr.start},this.checked)"><label>${c.name}</label>`;
-        if (wd[ci] || ch) row.querySelector('label').style.textDecoration = 'line-through';
-        container.appendChild(row);
-      }
-    } else if (c.type === 'monthly') {
-      const ch = cleaningData[getCKey(ci, 1)];
-      if (!ch) {
-        const row = document.createElement('div');
-        row.className = 'habit-row';
-        row.innerHTML = `<input type="checkbox" onchange="markMonthlyCleaning(${ci},this.checked)"><label>${c.name}</label>`;
-        container.appendChild(row);
-      }
-    }
+    cleaningTotal++;
+    const ch = cleaningData[getCKey(ci, selectedDay)];
+    if (ch) cleaningDone++;
+    
+    const row = document.createElement('div');
+    row.className = 'habit-row';
+    row.innerHTML = `<input type="checkbox" ${ch ? 'checked' : ''} onchange="toggleDailyCleaning(${ci},${selectedDay},this.checked)"><label>${c.name}</label>`;
+    if (ch) row.querySelector('label').style.textDecoration = 'line-through';
+    container.appendChild(row);
   });
+  
+  document.getElementById('dailyCleaningCardProgress').textContent = cleaningDone + '/' + cleaningTotal;
 }
 
 // Отметить ежедневную уборку
@@ -1836,28 +2008,8 @@ function toggleDailyCleaning(ci, day, checked) {
 }
 
 // Отметить еженедельную уборку
-function markWeeklyCleaning(ci, startDay, checked) {
-  cleaningData[getCKey(ci, startDay)] = checked;
-  localStorage.setItem(getCKey(ci, startDay), checked ? 'true' : 'false');
-  
-  const wr = getWeekForDay(startDay);
-  const wk = `clean_week_done_${currentYear}-${currentMonth}-w${wr.w}`;
-  const wd = JSON.parse(localStorage.getItem(wk) || '{}');
-  if (checked) wd[ci] = true;
-  else delete wd[ci];
-  localStorage.setItem(wk, JSON.stringify(wd));
-  
-  loadDayData();
-  renderCleaningTracker();
-}
 
 // Отметить ежемесячную уборку
-function markMonthlyCleaning(ci, checked) {
-  cleaningData[getCKey(ci, 1)] = checked;
-  localStorage.setItem(getCKey(ci, 1), checked ? 'true' : 'false');
-  loadDayData();
-  renderCleaningTracker();
-}
 
 // Отметить привычку в ежедневнике
 function toggleDailyHabit(hi, checked) {
@@ -2054,6 +2206,8 @@ function renderHabitsTracker() {
   
   // Блоки "требуют внимания" и "лучшие"
   renderInsightBlocks();
+
+  showCopyButtonIfLastWeek('habitsCopyBtn');
 }
 
 // Добавить привычку
@@ -2241,6 +2395,7 @@ function renderBeautyTracker() {
     });
     return totalGoal > 0 ? Math.round((totalDone / totalGoal) * 100) : 0;
   });
+  showCopyButtonIfLastWeek('beautyCopyBtn');
 }
 
 function addBeauty() {
@@ -2277,15 +2432,7 @@ function deleteBeauty(bi) {
 function getTrainingList(d) {
   const key = `${currentYear}-${currentMonth}-${d}`;
   if (trainingDefs[key]) return trainingDefs[key];
-  
-  // Дефолтный план на каждый день
-  const def = {
-    1: ['Flat Belly Pilates', 'Anti-Cellulite Thigh', 'Lower Belly Fat', 'Tired Body Stretch'],
-    2: ['Inner & Outer Thigh', 'Booty Burn', 'Core & Abs Band', 'Full Body Stretch'],
-    // ... (все 31 день)
-    31: ['Inner & Outer Thigh', 'Toned Arms Quickie', 'Core & Abs Band', 'Full Body Stretch']
-  };
-  return def[d] || [];
+   return [];
 }
 
 function saveTrainingCheck(day, idx, checked) {
@@ -2423,49 +2570,12 @@ function renderTrainingTracker() {
 
 // ==================== СТРАНИЦА УБОРКИ ====================
 
-function buildCleaningDotsGrid(dim, weeks, ci, type) {
-  const grid = document.createElement('div');
-  grid.className = 'dots-grid';
-  let pw = 0;
-  
-  for (let d = 1; d <= dim; d++) {
-    const w = weeks.find(wr => d >= wr.start && d <= wr.end);
-    if (w && w.w !== pw && pw !== 0) {
-      const sp = document.createElement('div');
-      sp.className = 'dot-slot separator';
-      grid.appendChild(sp);
-    }
-    if (w) pw = w.w;
-    
-    const slot = document.createElement('div');
-    slot.className = 'dot-slot';
-    
-    const dot = document.createElement('div');
-    dot.className = `cleaning-dot ${type}`;
-    if (cleaningData[getCKey(ci, d)]) dot.classList.add('done');
-    
-    dot.addEventListener('click', function() {
-      const v = !cleaningData[getCKey(ci, d)];
-      cleaningData[getCKey(ci, d)] = v;
-      localStorage.setItem(getCKey(ci, d), v ? 'true' : 'false');
-      renderCleaningTracker();
-      if (selectedDay === d) renderDailyCleaning();
-    });
-    
-    slot.appendChild(dot);
-    grid.appendChild(slot);
-  }
-  
-  return grid;
-}
-
 function renderCleaningTracker() {
   const dim = new Date(currentYear, currentMonth, 0).getDate();
   const weeks = getWeekRanges(dim);
   
   document.getElementById('cleaningDayBars').innerHTML = (() => {
-    let h = '';
-    let pw = 0;
+    let h = '', pw = 0;
     for (let d = 1; d <= dim; d++) {
       const w = weeks.find(wr => d >= wr.start && d <= wr.end);
       if (w && w.w !== pw && pw !== 0) h += '<div class="day-bar-spacer"></div>';
@@ -2479,66 +2589,89 @@ function renderCleaningTracker() {
   container.innerHTML = '';
   
   cleaningDefs.forEach((c, ci) => {
-    let dc = 0;
-    if (c.type === 'daily') {
-      for (let d = 1; d <= dim; d++) if (cleaningData[getCKey(ci, d)]) dc++;
-    } else if (c.type === 'weekly') {
-      weeks.forEach(wr => { if (cleaningData[getCKey(ci, wr.start)]) dc++; });
-    } else {
-      for (let d = 1; d <= dim; d++) if (cleaningData[getCKey(ci, d)]) dc++;
+    let totalDone = 0;
+    for (let d = 1; d <= dim; d++) {
+      if (cleaningData[getCKey(ci, d)]) totalDone++;
     }
+    
+    const pct = Math.round((totalDone / c.goal) * 100);
     
     const card = document.createElement('div');
-    card.className = `cleaning-card ${c.type}`;
-    card.innerHTML = `<div class="cleaning-card-header">
-                        <span class="cleaning-card-name">${c.name}</span>
-                        <span style="font-size:11px;color:#8b7355">${dc}/${c.goal} <button class="habit-edit-btn" onclick="editCleaning(${ci})">✎</button><button class="habit-delete-btn" onclick="deleteCleaning(${ci})">✕</button></span>
-                      </div>`;
+    card.className = `habit-card ${WCLS[ci % 5]}`;
+    card.innerHTML = `<div class="cleaning-card-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="font-size:13px;color:#5a4a3a;">${c.name}</span>
+      <span style="font-size:11px;color:#8b7355;">${totalDone}/${c.goal} <button class="habit-edit-btn" onclick="editCleaning(${ci})">✎</button><button class="habit-delete-btn" onclick="deleteCleaning(${ci})">✕</button></span>
+    </div>
+    <div class="habit-progress-bar"><div class="habit-progress-fill ${WCLS[ci % 5]}" style="width:${Math.min(pct, 100)}%"></div></div>`;
     
-    if (c.type === 'daily') {
-      card.appendChild(buildCleaningDotsGrid(dim, weeks, ci, 'daily'));
-    } else if (c.type === 'weekly') {
-      const wrr = document.createElement('div');
-      wrr.className = 'beauty-weeks-row';
-      weeks.forEach(wr => {
-        wrr.innerHTML += `<div class="cleaning-week-block">
-                            <div class="cleaning-week-label">Нед.${wr.w}</div>
-                            <div class="cleaning-week-dots">
-                              <div class="cleaning-week-dot${cleaningData[getCKey(ci, wr.start)] ? ' done' : ''}" onclick="const v=!cleaningData['${getCKey(ci, wr.start)}'];cleaningData['${getCKey(ci, wr.start)}']=v;localStorage.setItem('${getCKey(ci, wr.start)}',v?'true':'false');renderCleaningTracker();"></div>
-                            </div>
-                          </div>`;
+    const grid = document.createElement('div');
+    grid.className = 'dots-grid';
+    let prevWeek = 0;
+    
+    for (let d = 1; d <= dim; d++) {
+      const w = weeks.find(wr => d >= wr.start && d <= wr.end);
+      if (w && w.w !== prevWeek && prevWeek !== 0) {
+        const sp = document.createElement('div');
+        sp.className = 'dot-slot separator';
+        grid.appendChild(sp);
+      }
+      if (w) prevWeek = w.w;
+      
+      const slot = document.createElement('div');
+      slot.className = 'dot-slot';
+      
+      const dot = document.createElement('div');
+      dot.className = `habit-dot ${WCLS[ci % 5]}`;
+      if (cleaningData[getCKey(ci, d)]) dot.classList.add('done');
+      
+      dot.addEventListener('click', function() {
+        const v = !cleaningData[getCKey(ci, d)];
+        cleaningData[getCKey(ci, d)] = v;
+        localStorage.setItem(getCKey(ci, d), v ? 'true' : 'false');
+        renderCleaningTracker();
+        if (selectedDay === d) renderDailyCleaning();
       });
-      card.appendChild(wrr);
-    } else if (c.type === 'monthly') {
-      card.innerHTML += `<div class="cleaning-month-dots">
-                           <div class="cleaning-month-dot${cleaningData[getCKey(ci, 1)] ? ' done' : ''}" onclick="const v=!cleaningData['${getCKey(ci, 1)}'];cleaningData['${getCKey(ci, 1)}']=v;localStorage.setItem('${getCKey(ci, 1)}',v?'true':'false');renderCleaningTracker();"></div>
-                         </div>`;
+      
+      slot.appendChild(dot);
+      grid.appendChild(slot);
     }
     
+    card.appendChild(grid);
     container.appendChild(card);
   });
   
   renderWeekCircles('cleaningWeekCircles', dim, weeks, (wr) => {
     let t = 0, f = 0;
     cleaningDefs.forEach((c, ci) => {
-      if (c.type === 'daily') {
-        for (let d = wr.start; d <= wr.end; d++) { t++; if (cleaningData[getCKey(ci, d)]) f++; }
-      } else if (c.type === 'weekly') {
-        t++; if (cleaningData[getCKey(ci, wr.start)]) f++;
-      }
+      for (let d = wr.start; d <= wr.end; d++) { t++; if (cleaningData[getCKey(ci, d)]) f++; }
     });
     return t > 0 ? Math.round((f / t) * 100) : 0;
   });
+  showCopyButtonIfLastWeek('cleaningCopyBtn');
 }
 
 function addCleaning() {
   const name = prompt('Название:');
   if (!name || !name.trim()) return;
-  const type = prompt('Тип (daily/weekly/monthly):');
-  if (!['daily', 'weekly', 'monthly'].includes(type)) return;
-  const goal = parseInt(prompt('Цель:'));
+  
+  const type = prompt('Тип:\n\n1 — 📅 Ежедневно\n2 — 📆 Еженедельно\n3 — 🗓️ Ежемесячно\n\nВведи 1, 2 или 3:');
+  if (type === '1') {
+    cleaningDefs.push({ name: name.trim(), type: 'daily', goal: 31 });
+    saveAllDefs();
+    renderCleaningTracker();
+    return;
+  }
+  
+  let typeStr = '';
+  let goalText = '';
+  if (type === '2') { typeStr = 'weekly'; goalText = 'Сколько раз в неделю?'; }
+  else if (type === '3') { typeStr = 'monthly'; goalText = 'Сколько раз в месяц?'; }
+  else return;
+  
+  const goal = parseInt(prompt(goalText));
   if (isNaN(goal) || goal < 1) return;
-  cleaningDefs.push({ name: name.trim(), type, goal });
+  
+  cleaningDefs.push({ name: name.trim(), type: typeStr, goal });
   saveAllDefs();
   renderCleaningTracker();
 }
@@ -2546,11 +2679,27 @@ function addCleaning() {
 function editCleaning(ci) {
   const name = prompt('Название:', cleaningDefs[ci].name);
   if (name === null) return;
-  const type = prompt('Тип:', cleaningDefs[ci].type);
-  if (!['daily', 'weekly', 'monthly'].includes(type)) return;
-  const goal = parseInt(prompt('Цель:', cleaningDefs[ci].goal));
+  
+  const typeNames = { daily: 'Ежедневно', weekly: 'Еженедельно', monthly: 'Ежемесячно' };
+  const type = prompt('Тип:\n\n1 — 📅 Ежедневно\n2 — 📆 Еженедельно\n3 — 🗓️ Ежемесячно\n\nСейчас: ' + typeNames[cleaningDefs[ci].type] + '\nВведи 1, 2 или 3:');
+  
+  if (type === '1') {
+    cleaningDefs[ci] = { name: name.trim() || cleaningDefs[ci].name, type: 'daily', goal: 31 };
+    saveAllDefs();
+    renderCleaningTracker();
+    return;
+  }
+  
+  let typeStr = '';
+  let goalText = '';
+  if (type === '2') { typeStr = 'weekly'; goalText = 'Сколько раз в неделю?'; }
+  else if (type === '3') { typeStr = 'monthly'; goalText = 'Сколько раз в месяц?'; }
+  else return;
+  
+  const goal = parseInt(prompt(goalText, cleaningDefs[ci].goal));
   if (isNaN(goal) || goal < 1) return;
-  cleaningDefs[ci] = { name: name.trim() || cleaningDefs[ci].name, type, goal };
+  
+  cleaningDefs[ci] = { name: name.trim() || cleaningDefs[ci].name, type: typeStr, goal };
   saveAllDefs();
   renderCleaningTracker();
 }
@@ -2568,9 +2717,14 @@ function deleteCleaning(ci) {
 // Свернуть/развернуть секцию
 function toggleSection(id) {
   const el = document.getElementById(id);
-  // Если maxHeight уже установлен — убрать, иначе — установить 140px
-  el.style.maxHeight = el.style.maxHeight ? null : '140px';
-  el.style.overflow = el.style.overflow ? null : 'hidden';
+  if (!el) return;
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+  } else {
+    // Закрыть все остальные секции
+    document.querySelectorAll('.daily-expandable').forEach(sec => sec.classList.remove('open'));
+    el.classList.add('open');
+  }
 }
 
 // Обновить текущую страницу
@@ -2678,6 +2832,199 @@ document.addEventListener('keydown',function(e){
   }
 });
 
+function openYearCalendar() {
+  eventYear = currentYear;
+  document.getElementById('yearOverlay').style.display = 'flex';
+  renderYearCalendar();
+}
+
+function closeYearCalendar() {
+  document.getElementById('yearOverlay').style.display = 'none';
+  document.getElementById('eventForm').style.display = 'none';
+}
+
+function changeEventYear(dir) {
+  eventYear += dir;
+  renderYearCalendar();
+}
+
+function renderYearCalendar() {
+  document.getElementById('eventYearTitle').textContent = eventYear;
+  const container = document.getElementById('yearCalendar');
+  container.innerHTML = '';
+  
+  let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">';
+  
+  for (let m = 1; m <= 12; m++) {
+    const daysInMonth = new Date(eventYear, m, 0).getDate();
+    const firstDay = new Date(eventYear, m - 1, 1).getDay();
+    const so = firstDay === 0 ? 7 : firstDay;
+    
+    html += `<div style="background:#fdfaf5;border-radius:8px;padding:6px;border:1px solid #f0e8d8;">
+      <div style="text-align:center;font-size:12px;color:#8b7355;margin-bottom:4px;font-weight:bold;">${MONTHS[m-1]}</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;font-size:9px;text-align:center;">`;
+    
+    ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d => html += `<div style="color:#b8a590;">${d}</div>`);
+    
+    for (let i = 1; i < so; i++) html += '<div></div>';
+    
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = `${eventYear}-${m}-${d}`;
+      const event = eventsData[key];
+      const bg = event ? event.color : 'transparent';
+      html += `<div onclick="openEventForm(${eventYear},${m},${d})" style="cursor:pointer;background:${bg};border-radius:50%;width:28px;height:28px;line-height:28px;font-size:11px;color:#5a4a3a;">${d}</div>`;
+    }
+    
+    html += '</div></div>';
+  }
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function openEventForm(y, m, d) {
+  selectedEventDate = `${y}-${m}-${d}`;
+  document.getElementById('eventDateTitle').textContent = d + ' ' + MONTHS[m-1].toLowerCase() + ' ' + y;
+  const event = eventsData[selectedEventDate];
+  document.getElementById('eventName').value = event ? event.name : '';
+  document.getElementById('eventColor').value = event ? event.color : '#e8d898';
+  document.getElementById('eventForm').style.display = 'block';
+}
+
+function saveEvent() {
+  const name = document.getElementById('eventName').value.trim();
+  if (!name) { alert('Введи название!'); return; }
+  eventsData[selectedEventDate] = {
+    name: name,
+    color: document.getElementById('eventColor').value
+  };
+  localStorage.setItem('eventsData', JSON.stringify(eventsData));
+  document.getElementById('eventForm').style.display = 'none';
+  renderYearCalendar();
+}
+
+function deleteEvent() {
+  if (!confirm('Удалить событие?')) return;
+  delete eventsData[selectedEventDate];
+  localStorage.setItem('eventsData', JSON.stringify(eventsData));
+  document.getElementById('eventForm').style.display = 'none';
+  renderYearCalendar();
+}
+
+function getEventsForPeriod(start, end) {
+  const result = [];
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  
+  for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+    const y = d.getFullYear();
+    const m = d.getMonth() + 1;
+    const day = d.getDate();
+    const key = `${y}-${m}-${day}`;
+    const event = eventsData[key];
+    if (event) {
+      result.push({
+        date: key,
+        day: day,
+        month: m,
+        year: y,
+        name: event.name,
+        color: event.color,
+        dow: d.getDay() === 0 ? 7 : d.getDay() // 1=Пн, 7=Вс
+      });
+    }
+  }
+  return result;
+}
+
+function getDayName(dow) {
+  return ['','Пн','Вт','Ср','Чт','Пт','Сб','Вс'][dow] || '';
+}
+
+// МОДАЛЬНОЕ ОКНО УБОРКИ
+let cleaningModalType = 'daily';
+let editingCleaningIndex = -1;
+
+function openCleaningModal(idx = -1) {
+  editingCleaningIndex = idx;
+  document.getElementById('cleaningModalTitle').textContent = idx === -1 ? 'Новая задача' : 'Изменить задачу';
+  
+  if (idx === -1) {
+    document.getElementById('cleaningNameInput').value = '';
+    document.getElementById('cleaningGoalInput').value = '';
+    cleaningModalType = 'daily';
+    document.getElementById('cleaningGoalRow').style.display = 'none';
+  } else {
+    const c = cleaningDefs[idx];
+    document.getElementById('cleaningNameInput').value = c.name;
+    cleaningModalType = c.type;
+    if (c.type !== 'daily') {
+      document.getElementById('cleaningGoalInput').value = c.goal;
+      document.getElementById('cleaningGoalRow').style.display = 'block';
+    } else {
+      document.getElementById('cleaningGoalRow').style.display = 'none';
+    }
+  }
+  
+  updateCleaningTypeButtons();
+  document.getElementById('cleaningModal').style.display = 'flex';
+}
+
+function closeCleaningModal() {
+  document.getElementById('cleaningModal').style.display = 'none';
+}
+
+function selectCleaningType(type) {
+  cleaningModalType = type;
+  if (type === 'daily') {
+    document.getElementById('cleaningGoalRow').style.display = 'none';
+  } else {
+    document.getElementById('cleaningGoalRow').style.display = 'block';
+  }
+  updateCleaningTypeButtons();
+}
+
+function updateCleaningTypeButtons() {
+  ['daily','weekly','monthly'].forEach(t => {
+    const btn = document.getElementById('ctype-' + t);
+    btn.style.borderColor = cleaningModalType === t ? '#c8a1c0' : '#e0d8cc';
+    btn.style.background = cleaningModalType === t ? '#fdf5f0' : '#fefcf7';
+    btn.style.fontWeight = cleaningModalType === t ? 'bold' : 'normal';
+  });
+}
+
+function saveCleaningFromModal() {
+  const name = document.getElementById('cleaningNameInput').value.trim();
+  if (!name) { alert('Введи название!'); return; }
+  
+  let goal;
+  if (cleaningModalType === 'daily') {
+    goal = 31;
+  } else {
+    goal = parseInt(document.getElementById('cleaningGoalInput').value);
+    if (isNaN(goal) || goal < 1) { alert('Введи количество раз!'); return; }
+    // Если weekly — умножаем на количество недель в месяце
+    if (cleaningModalType === 'weekly') {
+      const weeks = getWeekRanges(new Date(currentYear, currentMonth, 0).getDate()).length;
+      goal = goal * weeks;
+    }
+  }
+  
+  if (editingCleaningIndex === -1) {
+    cleaningDefs.push({ name, type: cleaningModalType, goal });
+  } else {
+    cleaningDefs[editingCleaningIndex] = { name, type: cleaningModalType, goal };
+  }
+  
+  saveAllDefs();
+  closeCleaningModal();
+  renderCleaningTracker();
+}
+
+// Переопределяем кнопки
+function addCleaning() { openCleaningModal(-1); }
+function editCleaning(ci) { openCleaningModal(ci); }
+
 // async — функция может использовать await (ждать интернет)
 async function init(){
   // Google Sheets временно отключены — используем только localStorage
@@ -2749,6 +3096,39 @@ function clearFutureMonths() {
   alert(`Очищено ${removed} записей! Сейчас страница обновится.`);
   location.reload(); // перезагрузить страницу
 }
+
+function copyToNextMonth() {
+  const nm = currentMonth === 12 ? 1 : currentMonth + 1;
+  const ny = currentMonth === 12 ? currentYear + 1 : currentYear;
+  
+  if (habitDefs.length > 0) {
+    localStorage.setItem('habitDefs_' + ny + '-' + nm, JSON.stringify(habitDefs));
+  }
+  if (beautyDefs.length > 0) {
+    localStorage.setItem('beautyDefs_' + ny + '-' + nm, JSON.stringify(beautyDefs));
+  }
+  if (cleaningDefs.length > 0) {
+    localStorage.setItem('cleaningDefs_' + ny + '-' + nm, JSON.stringify(cleaningDefs));
+  }
+  
+  alert('Трекеры скопированы в ' + MONTHS[nm-1] + ' ' + ny + '!');
+}
+
+function showCopyButtonIfLastWeek(containerId) {
+  const today = new Date();
+  const currentDay = today.getDate();
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const weeks = getWeekRanges(dim);
+  const lastWeek = weeks[weeks.length - 1];
+  
+  const container = document.getElementById(containerId);
+  if (currentDay >= lastWeek.start && currentDay <= lastWeek.end && currentMonth === today.getMonth() + 1 && currentYear === today.getFullYear()) {
+    container.innerHTML = `<button class="add-btn" onclick="copyToNextMonth()" style="background:#fdf5f0;border-color:#c8a1c0;color:#c8a1c0;">📋 Перенести на следующий месяц</button>`;
+  } else {
+    container.innerHTML = '';
+  }
+}
+
 init();
 
 </script>
