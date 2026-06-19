@@ -1231,6 +1231,28 @@
       margin-top:4px;
     }
 
+        /* КНОПКИ ГРАФИКА */
+    .graph-btn{
+      padding:6px 12px;
+      border:2px solid #e0d8cc;
+      border-radius:20px;
+      background:#fefcf7;
+      cursor:pointer;
+      font-family:Georgia,serif;
+      font-size:12px;
+      color:#8b7355;
+      transition:.2s;
+      white-space:nowrap;
+    }
+    .graph-btn:hover{
+      border-color:#c8a1c0;
+    }
+    .graph-btn.active{
+      border-color:var(--color);
+      background:var(--bg);
+      font-weight:bold;
+    }
+
 
 
   </style>
@@ -1457,13 +1479,22 @@
           <div class="garland-row" id="garlandRow"></div>
         </div>
        
-                <!-- Статистика настроений -->
-        <div class="section-title">📈 Статистика настроений</div>
-        <div id="moodStats" style="display:flex;align-items:flex-end;gap:4px;height:100px;margin-bottom:15px;padding:0 4px;"></div>
+                <!-- Статистика настроений Cкрыто -->
+      <div class="section-title" style="display:none;">📈 Статистика настроений</div>
+        <div id="moodStats" style="display:none;"></div>
+
+        <!-- График здоровья -->
+        <div class="section-title">💜 Здоровье</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;" id="graphButtons"></div>
+        <div id="healthGraph" style="background:#fefcf7;border-radius:12px;border:1px solid #f0e8d8;padding:10px;position:relative;overflow:visible;">
+          <svg id="healthSvg" width="100%" height="200" style="display:block;"></svg>
+        </div>
+        <div id="graphTooltip" style="position:absolute;background:#fffef9;border:1px solid #d4b896;border-radius:8px;padding:6px 10px;font-size:11px;color:#5a4a3a;display:none;pointer-events:none;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
 
         <!-- Статистика -->
-        <div class="section-title">💜 Здоровье</div>
+        <div class="section-title">📊 Статистика</div>
         <div id="healthStats" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+
       </div>  <!-- конец health -->
     </div>    <!-- конец center-col -->
   </div>      <!-- конец content -->
@@ -1513,8 +1544,17 @@
     <div style="font-size:18px;color:#5a4a3a;margin-bottom:15px;text-align:center;">💚 Здоровье</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <div><label style="font-size:12px;color:#8b7355;">😴 Часы сна</label><input type="number" id="healthSleep" step="0.5" min="0" max="24" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
-      <div><label style="font-size:12px;color:#8b7355;">✅ Выспалась?</label><select id="healthRested" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"><option value="">—</option><option value="yes">Да</option><option value="no">Нет</option></select></div>
-      <div><label style="font-size:12px;color:#8b7355;">🦶 Шаги</label><input type="number" id="healthSteps" min="0" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
+      <div>
+        <label style="font-size:12px;color:#8b7355;">✅ Выспалась?</label>
+        <div style="display:flex;gap:4px;margin-top:4px;">
+          <button onclick="document.getElementById('healthRested').value='yes'; this.style.background='#d9ead3'; this.nextElementSibling.style.background='#fefcf7';" 
+                  style="flex:1;padding:6px;border:1px solid #d4b896;border-radius:6px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:12px;">Да</button>
+          <button onclick="document.getElementById('healthRested').value='no'; this.style.background='#f4cccc'; this.previousElementSibling.style.background='#fefcf7';" 
+                  style="flex:1;padding:6px;border:1px solid #d4b896;border-radius:6px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:12px;">Нет</button>
+        </div>
+        <input type="hidden" id="healthRested" value="">
+      </div>
+            <div><label style="font-size:12px;color:#8b7355;">🦶 Шаги</label><input type="number" id="healthSteps" min="0" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
       <div><label style="font-size:12px;color:#8b7355;">📏 Км пройдено</label><input type="number" id="healthKm" step="0.1" min="0" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
       <div><label style="font-size:12px;color:#8b7355;">🔥 Сожжено ккал</label><input type="number" id="healthCalories" min="0" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
     </div>
@@ -3492,21 +3532,6 @@ function saveMood(val) {
   updateMoodCard();
 }
 
-function renderMoodMonth() {
-  const dim = new Date(currentYear, currentMonth, 0).getDate();
-  const container = document.getElementById('moodMonth');
-  container.innerHTML = '';
-  const emojis = ['','😢','😕','😐','🙂','😄'];
-  
-  for (let d = 1; d <= dim; d++) {
-    const key = `mood_${currentYear}-${currentMonth}-${d}`;
-    const val = localStorage.getItem(key);
-    const emoji = val ? emojis[val] : '·';
-    const bg = d === selectedDay ? '#fdf5f0' : 'transparent';
-    container.innerHTML += `<span style="font-size:18px;padding:2px;cursor:pointer;background:${bg};border-radius:4px;" onclick="event.stopPropagation(); this.classList.toggle('zoomed'){d}";loadDayData();buildCalendar();renderHealthPage();" title="${d} ${MONTHS[currentMonth-1]}">${emoji}</span>`;
-  }
-}
-
 function saveHealthField(field, value) {
   const key = `health_${currentYear}-${currentMonth}-${selectedDay}`;
   let data = JSON.parse(localStorage.getItem(key) || '{}');
@@ -3526,7 +3551,6 @@ function renderHealthPage() {
   document.getElementById('healthNotes').value = data.notes || '';
   document.getElementById('healthRested').checked = data.rested || false;
   
-  renderMoodMonth();
   renderMoodStats();
 }
 
@@ -3685,7 +3709,12 @@ function openHealthModal() {
   const data = JSON.parse(localStorage.getItem(key) || '{}');
   
   document.querySelector('#healthModal #healthSleep').value = data.sleep || '';
-  document.querySelector('#healthModal #healthRested').value = data.rested || '';
+  const rested = data.rested || '';
+  document.querySelector('#healthModal #healthRested').value = rested;
+  // Подсветка кнопок
+  const btns = document.querySelectorAll('#healthModal button');
+  if (rested === 'yes') { btns[0].style.background = '#d9ead3'; btns[1].style.background = '#fefcf7'; }
+  else if (rested === 'no') { btns[1].style.background = '#f4cccc'; btns[0].style.background = '#fefcf7'; }
   document.querySelector('#healthModal #healthSteps').value = data.steps || '';
   document.querySelector('#healthModal #healthKm').value = data.km || '';
   document.querySelector('#healthModal #healthCalories').value = data.calories || '';
@@ -3732,7 +3761,6 @@ function renderMoodStats() {
   const container = document.getElementById('moodStats');
   container.innerHTML = '';
   
-  // Считаем сколько дней было каждое настроение
   const counts = {};
   moods.forEach(m => counts[m.val] = 0);
   
@@ -3747,14 +3775,268 @@ function renderMoodStats() {
   
   moods.forEach(m => {
     const count = counts[m.val] || 0;
-    const height = (count / maxCount) * 100;
+    const heightPercent = Math.max(3, (count / maxCount) * 100);
     container.innerHTML += `
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-        <div class="mood-stat-bar" style="height:${height}px;background:${m.color};" title="${m.name}: ${count} дн."></div>
-        <div class="mood-stat-label">${count}</div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">
+        <div style="width:100%;height:${heightPercent}%;background:${m.color};border-radius:4px 4px 0 0;min-height:3px;" title="${m.name}: ${count} дн."></div>
+        <div style="font-size:7px;color:#8b7355;margin-top:2px;text-align:center;line-height:1.1;">${m.name.substring(0,4)}</div>
+        <div style="font-size:8px;color:#5a4a3a;font-weight:bold;">${count}</div>
       </div>
     `;
   });
+}
+
+// ГРАФИК ЗДОРОВЬЯ
+const graphMetrics = [
+  { id: 'sleep', name: 'Сон', btnName: '😴 Сон', color: '#7BA7D0', bg: '#eef4fa' },
+  { id: 'steps', name: 'Шаги', btnName: '🦶 Шаги', color: '#7BC67E', bg: '#eef7f0' },
+  { id: 'km', name: 'Км', btnName: '📏 Км', color: '#B39DDB', bg: '#f5f0fa' },
+  { id: 'calories', name: 'Ккал', btnName: '🔥 Ккал', color: '#FFA500', bg: '#fff5e6' },
+  { id: 'mood', name: 'Настроение', btnName: '😊 Настроение', color: '#FFB6C1', bg: '#fdf0f3' }
+];
+
+let activeGraphMetrics = ['sleep'];
+
+function renderGraphButtons() {
+  const container = document.getElementById('graphButtons');
+  container.innerHTML = '';
+  
+  graphMetrics.forEach(m => {
+    const active = activeGraphMetrics.includes(m.id);
+    container.innerHTML += `
+      <button class="graph-btn${active ? ' active' : ''}" 
+              style="--color:${m.color};--bg:${m.bg};"
+              onclick="toggleGraphMetric('${m.id}')">
+          ${m.btnName}
+      </button>
+    `;
+  });
+}
+
+function toggleGraphMetric(id) {
+  const idx = activeGraphMetrics.indexOf(id);
+  if (idx === -1) {
+    activeGraphMetrics.push(id);
+  } else if (activeGraphMetrics.length > 1) {
+    activeGraphMetrics.splice(idx, 1);
+  }
+  renderGraphButtons();
+  renderHealthGraph();
+}
+
+function getHealthData() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const result = [];
+  
+  for (let d = 1; d <= dim; d++) {
+    const hKey = `health_${currentYear}-${currentMonth}-${d}`;
+    const mKey = `mood_${currentYear}-${currentMonth}-${d}`;
+    const health = JSON.parse(localStorage.getItem(hKey) || '{}');
+    const moodSaved = JSON.parse(localStorage.getItem(mKey) || '[]');
+    const moodVals = Array.isArray(moodSaved) ? moodSaved : (moodSaved ? [moodSaved] : []);
+    
+    result.push({
+      day: d,
+      sleep: parseFloat(health.sleep) || 0,
+      rested: health.rested === 'yes',
+      steps: parseInt(health.steps) || 0,
+      km: parseFloat(health.km) || 0,
+      calories: parseInt(health.calories) || 0,
+      mood: moodVals.length > 0 ? Math.max(...moodVals.map(v => parseInt(v))) / 12 * 10 : 0
+    });
+  }
+  
+  return result;
+}
+
+function renderHealthGraph() {
+  const data = getHealthData();
+  const svg = document.getElementById('healthSvg');
+  
+  const width = svg.clientWidth || 700;
+  const height = 200;
+  const pad = { top: 10, right: 50, bottom: 30, left: 50 };
+  const w = width - pad.left - pad.right;
+  const h = height - pad.top - pad.bottom;
+  
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  
+  let html = '';
+  
+  // Сетка и подписи дней (общие)
+  html += `<line x1="${pad.left}" y1="${pad.top + h}" x2="${width - pad.right}" y2="${pad.top + h}" stroke="#d4b896" stroke-width="1"/>`;
+  
+  const step = data.length > 20 ? 5 : (data.length > 15 ? 3 : 1);
+  data.forEach((d, i) => {
+    if ((d.day - 1) % step === 0 || d.day === data.length) {
+      const x = pad.left + (w / (data.length - 1)) * i;
+      html += `<text x="${x}" y="${pad.top + h + 18}" text-anchor="middle" font-size="9" fill="#b8a590">${d.day}</text>`;
+    }
+  });
+  
+  // Для каждого показателя — своя шкала (нормализация)
+  activeGraphMetrics.forEach((id, idx) => {
+    const metric = graphMetrics.find(m => m.id === id);
+    
+    // Находим максимум для этого показателя
+    let maxVal = 0;
+    data.forEach(d => { if ((d[id] || 0) > maxVal) maxVal = d[id] || 0; });
+    if (maxVal === 0) maxVal = 1;
+    
+    // Метка шкалы справа
+    const labelX = width - pad.right + 5;
+    const labelY = pad.top + 15 + idx * 20;
+    html += `<rect x="${labelX - 3}" y="${labelY - 12}" width="10" height="10" rx="2" fill="${metric.color}"/>`;
+    html += `<text x="${labelX + 10}" y="${labelY - 2}" font-size="9" fill="#5a4a3a">${metric.name}</text>`;
+    
+    // Линия и точки
+    let linePath = '';
+    data.forEach((d, i) => {
+      const val = d[id] || 0;
+      const x = pad.left + (w / (data.length - 1)) * i;
+      const y = pad.top + h - (val / maxVal) * h;
+      
+      linePath += (i === 0 ? 'M' : 'L') + `${x},${y} `;
+      
+      let pointColor = metric.color;
+      if (id === 'sleep') {
+        pointColor = d.rested ? '#7BC67E' : '#E57373';
+      }
+      
+      html += `<circle cx="${x}" cy="${y}" r="5" fill="${pointColor}" stroke="white" stroke-width="1"/>`;
+    });
+    
+    html += `<path d="${linePath}" fill="none" stroke="${metric.color}" stroke-width="2" opacity="0.7"/>`;
+  });
+  
+  svg.innerHTML = html;
+
+  // Клик по точке — подсказка
+  svg.querySelectorAll('circle').forEach(circle => {
+    circle.style.cursor = 'pointer';
+    circle.addEventListener('click', function(e) {
+      const old = svg.querySelector('.graph-popup');
+      if (old) old.remove();
+      
+      const cx = parseFloat(circle.getAttribute('cx'));
+      const cy = parseFloat(circle.getAttribute('cy'));
+      
+      // Собираем данные
+      let text = '';
+      activeGraphMetrics.forEach(id => {
+        const day = Math.round((cx - 20) / ((svg.clientWidth - 40) / (getHealthData().length - 1))) + 1;
+        const allData = getHealthData();
+        const dayData = allData.find(d => d.day === day) || allData[0];
+        const m = graphMetrics.find(g => g.id === id);
+        const v = dayData[id] || 0;
+        let dv = v;
+        if (id === 'sleep') dv = v + 'ч';
+        else if (id === 'km') dv = v + 'км';
+        else if (id === 'steps') dv = v + 'ш';
+        else if (id === 'calories') dv = v + 'кк';
+        else if (id === 'mood') {
+          // Переводим число в название
+          const moodVal = Math.round(v / 10 * 12);
+          const moodObj = moods.find(m => m.val === moodVal);
+          dv = moodObj ? moodObj.name : '—';
+        }
+        text += `<div style="display:flex;justify-content:space-between;gap:8px;"><span>${m.name}</span><b>${dv}</b></div>`;
+      });
+      
+      const lines = activeGraphMetrics.length;
+      const popupH = 20 + lines * 18;
+      const popupY = cy < popupH + 10 ? cy + 15 : cy - popupH - 5;
+      
+      const foreign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+      foreign.setAttribute('x', cx - 60);
+      foreign.setAttribute('y', popupY);
+      foreign.setAttribute('width', 160);
+      foreign.setAttribute('height', popupH);
+      foreign.classList.add('graph-popup');
+      
+      const div = document.createElement('div');
+      div.innerHTML = `<div style="background:#fffef9;border:1px solid #d4b896;border-radius:8px;padding:6px 10px;font-size:10px;color:#5a4a3a;box-shadow:0 2px 8px rgba(0,0,0,0.1);">${text}</div>`;
+      foreign.appendChild(div);
+      svg.appendChild(foreign);
+      e.stopPropagation();
+    });
+  });
+  
+  svg.onclick = function(e) {
+    if (e.target.tagName === 'svg' || e.target.tagName === 'path') {
+      const old = svg.querySelector('.graph-popup');
+      if (old) old.remove();
+    }
+  };
+}
+
+function showGraphTooltip(e, day, name, val) {
+  const tooltip = document.getElementById('graphTooltip');
+  tooltip.innerHTML = `${day} число<br>${name}: <b>${val}</b>`;
+  tooltip.style.display = 'block';
+  tooltip.style.left = (e.clientX - 340) + 'px';
+  tooltip.style.top = (e.clientY - 450) + 'px';
+}
+
+function hideGraphTooltip() {
+  document.getElementById('graphTooltip').style.display = 'none';
+}
+
+function renderHealthPage() {
+  renderGarland();
+  renderGraphButtons();
+  renderHealthGraph();
+  
+  const key = `health_${currentYear}-${currentMonth}-${selectedDay}`;
+  const data = JSON.parse(localStorage.getItem(key) || '{}');
+  
+  // Статистика
+  renderHealthStats();
+}
+
+function renderHealthStats() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  let totalSleep = 0, sleepCount = 0, totalSteps = 0, stepsCount = 0;
+  let totalKm = 0, kmCount = 0, totalCal = 0, calCount = 0, restedCount = 0, healthDays = 0;
+  
+  for (let d = 1; d <= dim; d++) {
+    const key = `health_${currentYear}-${currentMonth}-${d}`;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    if (Object.keys(data).length > 0) healthDays++;
+    if (data.sleep) { totalSleep += parseFloat(data.sleep); sleepCount++; }
+    if (data.steps) { totalSteps += parseInt(data.steps); stepsCount++; }
+    if (data.km) { totalKm += parseFloat(data.km); kmCount++; }
+    if (data.calories) { totalCal += parseInt(data.calories); calCount++; }
+    if (data.rested === 'yes') restedCount++;
+  }
+  
+  const stats = document.getElementById('healthStats');
+  stats.innerHTML = `
+    <div style="background:#fefcf7;padding:12px;border-radius:10px;border:1px solid #f0e8d8;">
+      <div style="font-size:12px;color:#8b7355;">😴 Средний сон</div>
+      <div style="font-size:20px;font-weight:bold;color:#5a4a3a;">${sleepCount > 0 ? (totalSleep/sleepCount).toFixed(1) + ' ч' : '—'}</div>
+    </div>
+    <div style="background:#fefcf7;padding:12px;border-radius:10px;border:1px solid #f0e8d8;">
+      <div style="font-size:12px;color:#8b7355;">🦶 Шаги в среднем</div>
+      <div style="font-size:20px;font-weight:bold;color:#5a4a3a;">${stepsCount > 0 ? Math.round(totalSteps/stepsCount) : '—'}</div>
+    </div>
+    <div style="background:#fefcf7;padding:12px;border-radius:10px;border:1px solid #f0e8d8;">
+      <div style="font-size:12px;color:#8b7355;">📏 Км в среднем</div>
+      <div style="font-size:20px;font-weight:bold;color:#5a4a3a;">${kmCount > 0 ? (totalKm/kmCount).toFixed(1) : '—'}</div>
+    </div>
+    <div style="background:#fefcf7;padding:12px;border-radius:10px;border:1px solid #f0e8d8;">
+      <div style="font-size:12px;color:#8b7355;">🔥 Ккал в среднем</div>
+      <div style="font-size:20px;font-weight:bold;color:#5a4a3a;">${calCount > 0 ? Math.round(totalCal/calCount) : '—'}</div>
+    </div>
+    <div style="background:#fefcf7;padding:12px;border-radius:10px;border:1px solid #f0e8d8;">
+      <div style="font-size:12px;color:#8b7355;">✅ Выспалась</div>
+      <div style="font-size:20px;font-weight:bold;color:#5a4a3a;">${restedCount}/${healthDays || '—'}</div>
+    </div>
+    <div style="background:#fefcf7;padding:12px;border-radius:10px;border:1px solid #f0e8d8;">
+      <div style="font-size:12px;color:#8b7355;">📝 Дней с данными</div>
+      <div style="font-size:20px;font-weight:bold;color:#5a4a3a;">${healthDays}/${dim}</div>
+    </div>
+  `;
 }
 
 init();
