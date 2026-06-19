@@ -175,6 +175,7 @@
     .sticker:nth-child(3){background:#f4cccc}  /* Уход */
     .sticker:nth-child(4){background:#cfe2f3}  /* Тренировки */
     .sticker:nth-child(5){background:#fff2cc}  /* Уборка */
+    .sticker:nth-child(6){background:#fce4d6}  /*Здоровье*/
 
     /* :hover — когда мышка наведена
        transform:translateY(-4px) — сдвинуть вверх на 4 пикселя */
@@ -336,6 +337,7 @@
       color:#5a4a3a;
     }
     
+
     /* РАСКРЫВАЮЩИЕСЯ СЕКЦИИ */
     .daily-expandable{
       display:none;
@@ -1055,6 +1057,8 @@
       white-space:nowrap;
     }
     .notes-add-btn:hover{background:#b890b0;}
+    .task-move-btn{font-size:12px;color:#b8a590;cursor:pointer;background:none;border:none;margin-left:4px}
+    .task-move-btn:hover{color:#8b7355}
 
     /* ========== ПРАВИЛО: ЦИТАТА ========== */
     .quote-bar{
@@ -1104,6 +1108,131 @@
       .training-detail-item{font-size:10px}
     }
 
+        body{
+      font-family:'Georgia','Times New Roman',serif;
+      background:#f5f0e8;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:100vh;
+      padding:20px;
+      caret-color:transparent;
+    }
+    input, textarea{
+      caret-color:auto;
+    }
+
+        .mood-btn{
+      font-size:32px;
+      padding:12px;
+      border:2px solid #e0d8cc;
+      border-radius:15px;
+      background:#fefcf7;
+      cursor:pointer;
+      transition:.2s;
+      text-align:center;
+      line-height:1.2;
+    }
+    .mood-btn:hover{
+      transform:scale(1.1);
+      border-color:#c8a1c0;
+      background:#fdf5f0;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+    .mood-btn.selected{
+      border-color:#c8a1c0;
+      background:#f8e8f0;
+      box-shadow:0 0 0 3px rgba(200,161,192,0.3);
+    }
+
+    /* ГИРЛЯНДА НАСТРОЕНИЯ */
+   .garland-wrap{
+      position:relative;
+      margin:20px 0 30px;
+      padding-top:20px;
+    }
+    .garland-wire{
+      position:absolute;
+      top:10px;
+      left:0;
+      width:100%;
+      height:3px;
+      background:#c8b8a0;
+      border-radius:2px;
+    }
+    .garland-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:1;
+    }
+    .garland-bulb{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      cursor:pointer;
+      transition:.2s;
+      padding-top:var(--drop);
+    }
+    .garland-bulb:hover{
+      transform:scale(1.15);
+    }
+    .garland-bulb-wire{
+      width:2px;
+      height:15px;
+      background:#c8b8a0;
+    }
+    .garland-bulb-glass{
+      width:22px;
+      height:28px;
+      border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+      border:2px solid #b8a590;
+      background:#e8e0d8;
+      transition:.3s;
+      position:relative;
+    }
+    .garland-bulb-glass.on{
+      box-shadow:0 0 12px 3px var(--glow);
+    }
+    .garland-bulb-base{
+      width:10px;
+      height:6px;
+      background:#a09080;
+      border-radius:0 0 3px 3px;
+    }
+    .garland-bulb-num{
+      font-size:9px;
+      color:#8b7355;
+      margin-top:3px;
+    }
+    .garland-bulb:active{
+      transform:scale(5);
+      z-index:10;
+      transition:transform 0.5s;
+    }
+
+        .mood-stat-bar{
+      flex:1;
+      border-radius:4px 4px 0 0;
+      min-width:8px;
+      position:relative;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .mood-stat-bar:hover{
+      opacity:0.8;
+      transform:scaleY(1.05);
+    }
+    .mood-stat-label{
+      font-size:8px;
+      color:#8b7355;
+      text-align:center;
+      margin-top:4px;
+    }
+
+
+
   </style>
   <!-- КОНЕЦ БЛОКА СТИЛЕЙ -->
 
@@ -1135,6 +1264,7 @@
     <div class="sticker" data-page="beauty">Уход</div>
     <div class="sticker" data-page="training">Тренировки</div>
     <div class="sticker" data-page="cleaning">Уборка</div>
+    <div class="sticker" data-page="health">Здоровье</div>
   </div>
 
   <!-- Верхняя панель (месяц + стрелки) -->
@@ -1191,7 +1321,7 @@
       <input type="text" id="newMonthTask" placeholder="+ добавить..." 
       style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;"></div>
 
-             <div class="notes-block">
+          <div class="notes-block">
         <h4>📝 Заметки</h4>
         <div id="notesList"></div>
         <div class="notes-input-row">
@@ -1199,10 +1329,9 @@
           <button class="notes-add-btn" onclick="addNote()">✓</button>
         </div>
       </div>
-      </div>
-   
+    </div>
     <!-- Конец левой колонки -->
-
+     
     <!-- Центральная колонка (5 страниц) -->
     <div class="center-col">
 
@@ -1231,6 +1360,18 @@
             <div class="daily-card-icon">🧹</div>
             <div class="daily-card-title">Уборка</div>
             <div class="daily-card-progress" id="dailyCleaningCardProgress">0/0</div>
+          </div>
+          </div>
+          <div class="daily-cards-row">
+          <div class="daily-card" onclick="openMoodModal()">
+            <div class="daily-card-icon">😊</div>
+            <div class="daily-card-title">Настроение</div>
+            <div class="daily-card-progress" id="dailyMoodCardProgress"></div>
+          </div>
+          <div class="daily-card" onclick="openHealthModal()">
+            <div class="daily-card-icon">💚</div>
+            <div class="daily-card-title">Здоровье</div>
+            <div class="daily-card-progress" id="dailyHealthCardProgress"></div>
           </div>
         </div>
         
@@ -1306,21 +1447,39 @@
         <div id="cleaningCopyBtn" style="text-align:center;margin-top:15px;"></div>
       </div>
 
-    </div>
-    <!-- Конец центральной колонки -->
+          <!-- Страница 6: Здоровье -->
+      <div id="health" class="tracker-page">
+        <div class="tracker-section-header">💚 Настроение</div>
+        
+        <!-- Гирлянда настроения -->
+        <div class="garland-wrap">
+          <div class="garland-wire"></div>
+          <div class="garland-row" id="garlandRow"></div>
+        </div>
+       
+                <!-- Статистика настроений -->
+        <div class="section-title">📈 Статистика настроений</div>
+        <div id="moodStats" style="display:flex;align-items:flex-end;gap:4px;height:100px;margin-bottom:15px;padding:0 4px;"></div>
 
-  </div>
-  <!-- Конец content -->
+        <!-- Статистика -->
+        <div class="section-title">💜 Здоровье</div>
+        <div id="healthStats" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+      </div>  <!-- конец health -->
+    </div>    <!-- конец center-col -->
+  </div>      <!-- конец content -->
 
-  <!-- Всплывающий годовой календарь -->
+  <!-- Цитата внизу -->
+  <div class="quote-bar" id="quote"></div>
+
+<!-- Всплывающий годовой календарь -->
 <div id="yearOverlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:flex-start;padding-top:30px;">
   <div style="background:#fffef9;border-radius:15px;padding:30px;max-width:1100px;width:95%;max-height:90vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
     <div style="display:flex;justify-content:center;align-items:center;margin-bottom:15px;position:relative;">
-  <button onclick="changeEventYear(-1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;">◀</button>
-  <span id="eventYearTitle" style="font-size:22px;color:#5a4a3a;margin:0 20px;"></span>
-  <button onclick="changeEventYear(1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;">▶</button>
-  <button onclick="closeYearCalendar()" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;font-size:22px;cursor:pointer;color:#8b7355;">✕</button>
-</div>
+      <button onclick="changeEventYear(-1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;">◀</button>
+      <span id="eventYearTitle" style="font-size:22px;color:#5a4a3a;margin:0 20px;"></span>
+      <button onclick="changeEventYear(1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;">▶</button>
+      <button onclick="closeYearCalendar()" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;font-size:22px;cursor:pointer;color:#8b7355;">✕</button>
+    </div>
     <div id="yearCalendar"></div>
     <div id="eventForm" class="training-detail" style="display:none;margin-top:10px;">
       <div class="training-detail-date" id="eventDateTitle"></div>
@@ -1338,42 +1497,38 @@
   </div>
 </div>
 
-<!-- Всплывающее окно добавления уборки -->
-<div id="cleaningModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1001;justify-content:center;align-items:center;">
-  <div style="background:#fffef9;border-radius:15px;padding:25px;width:400px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
-    <div style="font-size:15px;color:#5a4a3a;margin-bottom:15px;" id="cleaningModalTitle">Новая задача</div>
-    <input type="text" id="cleaningNameInput" placeholder="Название задачи" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;margin-bottom:15px;font-family:Georgia;font-size:14px;">
-    <div style="display:flex;gap:8px;margin-bottom:15px;">
-      <button onclick="selectCleaningType('daily')" class="cleaning-type-btn" id="ctype-daily" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">📅 Ежедневно</button>
-      <button onclick="selectCleaningType('weekly')" class="cleaning-type-btn" id="ctype-weekly" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">📆 Еженедельно</button>
-      <button onclick="selectCleaningType('monthly')" class="cleaning-type-btn" id="ctype-monthly" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">🗓️ Ежемесячно</button>
-    </div>
-    <div id="cleaningGoalRow" style="display:none;margin-bottom:15px;">
-      <input type="number" id="cleaningGoalInput" placeholder="Сколько раз?" min="1" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;font-size:14px;text-align:center;">
-    </div>
-    <button onclick="saveCleaningFromModal()" style="width:100%;padding:12px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:15px;">✓ Сохранить</button>
-    <button onclick="closeCleaningModal()" style="width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;font-size:13px;margin-top:5px;">Отмена</button>
+<!-- Модальное окно Настроения -->
+<div id="moodModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1001;justify-content:center;align-items:center;">
+  <div style="background:#fffef9;border-radius:15px;padding:25px;width:420px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:18px;color:#5a4a3a;margin-bottom:15px;">Какое сегодня настроение?</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="moodButtonsGrid"></div>
+        <button onclick="saveMoodsToStorage()" style="width:100%;padding:10px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:14px;margin-top:10px;">✓ Сохранить</button>
+    <button onclick="closeMoodModal()" style="margin-top:15px;width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;">Отмена</button>
   </div>
 </div>
 
-  <!-- Цитата внизу -->
-<div class="quote-bar" id="quote"></div>
+<!-- Модальное окно Здоровья -->
+<div id="healthModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1001;justify-content:center;align-items:center;">
+  <div style="background:#fffef9;border-radius:15px;padding:25px;width:380px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:18px;color:#5a4a3a;margin-bottom:15px;text-align:center;">💚 Здоровье</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div><label style="font-size:12px;color:#8b7355;">😴 Часы сна</label><input type="number" id="healthSleep" step="0.5" min="0" max="24" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
+      <div><label style="font-size:12px;color:#8b7355;">✅ Выспалась?</label><select id="healthRested" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"><option value="">—</option><option value="yes">Да</option><option value="no">Нет</option></select></div>
+      <div><label style="font-size:12px;color:#8b7355;">🦶 Шаги</label><input type="number" id="healthSteps" min="0" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
+      <div><label style="font-size:12px;color:#8b7355;">📏 Км пройдено</label><input type="number" id="healthKm" step="0.1" min="0" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
+      <div><label style="font-size:12px;color:#8b7355;">🔥 Сожжено ккал</label><input type="number" id="healthCalories" min="0" style="width:100%;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;"></div>
+    </div>
+    <div style="margin-top:10px;"><label style="font-size:12px;color:#8b7355;">💊 Самочувствие / жалобы</label><textarea id="healthNotes" style="width:100%;min-height:50px;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;font-size:13px;color:#5a4a3a;"></textarea></div>
+    <button onclick="saveHealthData()" style="width:100%;padding:12px;margin-top:12px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:15px;">✓ Сохранить</button>
+    <button onclick="closeHealthModal()" style="width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;margin-top:5px;">Отмена</button>
+  </div>
+</div>
 
 </div>
 <!-- Конец notebook -->
 
-<!-- ============================================================
-БЛОК 3: JAVASCRIPT — ВСЯ ЛОГИКА
-JavaScript (JS) — язык, который "оживляет" страницу:
-реагирует на клики, сохраняет данные, обновляет текст
-
-Переменная (let) — как коробочка с именем, в которой можно хранить значение
-Функция (function) — набор действий, который можно вызвать по имени
-localStorage — "вечная память" браузера (не стирается при обновлении)
-============================================================ -->
-
 <script>
-
+  
 // ==================== GOOGLE SHEETS КОНФИГУРАЦИЯ ====================
 // API_KEY — ключ для доступа к Google Таблицам (как пароль)
 // SHEET_ID — ID твоей таблицы (взят из ссылки)
@@ -1421,7 +1576,37 @@ const QUOTES = [
   '"Будь добрее к себе — ты делаешь достаточно."',
   '"Порядок вокруг — порядок внутри."',
   '"Лучшее время начать — сейчас."',
-  '"Сначала забота о себе, потом всё остальное."'
+  '"Сначала забота о себе, потом всё остальное."',
+  '"Самое сложное — начать действовать, всё остальное зависит только от упорства."',
+  '"Не оглядывайся назад. Ты уже не та дорога, по которой шёл."',
+  '"Ты можешь опоздать на один поезд, но наверняка успеешь на следующий. Главное — не стоять на платформе вечно."',
+  '"Измени свою жизнь сегодня. Не играй наверняка, не жди чуда — управляй сам своей судьбой."',
+  '"Секрет перемен в том, чтобы направить всю свою энергию не на борьбу со старым, а на создание нового."',
+  '"Твоё тело способно на гораздо большее, чем ты думаешь. Твой мозг — единственное препятствие."',
+  '"Падать — это не страшно. Страшно — не подняться снова."',
+  '"Когда тебе кажется, что весь мир настроен против тебя, вспомни: самолёт взлетает против ветра."',
+  '"Алмаз — это кусочек угля, который справился с колоссальным давлением."',
+  '"Ты гораздо сильнее, чем ты думаешь, и способен на большее, чем себе представляешь."',
+  '"Будь тем, кто, проснувшись утром, вдохновляет свой телефон заряжаться до конца."',
+  '"Не сравнивай себя с другими. Сравнивай себя с тем, кем ты был вчера."',
+  '"Если ты умеешь мечтать, ты можешь воплотить свои мечты в реальность."',
+  '"Ты заслуживаешь того, чтобы получить всё, чего хочешь, даже если сейчас это кажется несбыточным."',
+  '"Никто не придёт и не построит тебе твоё счастье. Возьми молоток."',
+  '"Трава зеленее там, где ты её поливаешь."',
+  '"Не важно, как медленно ты идёшь, главное — не останавливаться."',
+  '"Твой предел — это небо, а не потолок твоей комнаты."',
+  '"Каждое утро у тебя есть два варианта: продолжать спать с мечтами или проснуться и претворять их в жизнь."',
+  '"Ты не обязан быть идеальным сегодня. Просто будь лучше, чем вчера."',
+  '"Магия существует. Но для этого нужно махнуть не палочкой, а рукавами."',
+  '"Делай сейчас. Вселенная любит дерзких."',
+  '"Всё, что тебе нужно, уже есть внутри тебя."',
+  '"Побеждают не лучшие, а те, кто не сдаётся."',
+  '"Один маленький шаг каждый день = огромный путь за год."',
+  '"Твоя жизнь — не репетиция. Играй на сцене."',
+  '"Действие убивает страх."',
+  '"Завтра начинается сегодня."',
+  '"Будь причиной своего пульса."',
+  '"Сначала они спросят "зачем?", потом спросят "как?". Просто начни."'
 ];
 
 
@@ -1808,6 +1993,15 @@ function loadDayData() {
   
   // Удаляем старые авто-события
   weekT = weekT.filter(t => !t.isEvent);
+
+    // Добавляем кнопки переноса к делам на сегодня
+  document.querySelectorAll('#dailyTasks .task-item').forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'task-move-btn';
+    btn.textContent = '↗';
+    btn.onclick = function(e) { e.stopPropagation(); showMoveModal('daily_', i); };
+    item.appendChild(btn);
+  });
   
   // Подгружаем события недели
   // Конец недели = понедельник + 6 дней
@@ -1835,6 +2029,15 @@ function loadDayData() {
     btn.onclick = function() { deleteWeekTask(i); };
     item.appendChild(btn);
   });
+
+  // Добавляем кнопки переноса к делам на неделю
+  document.querySelectorAll('#weekTasks .task-item').forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'task-move-btn';
+    btn.textContent = '↗';
+    btn.onclick = function(e) { e.stopPropagation(); showMoveModal('week_', i); };
+    item.appendChild(btn);
+  });
   
   // --- Заметки ---
     renderNotes();
@@ -1857,14 +2060,25 @@ function loadDayData() {
   
   localStorage.setItem('month_'+mk, JSON.stringify(monthT));
   document.getElementById('monthTasks').innerHTML=monthT.map((t,i)=>`<div class="task-item"><input type="checkbox" id="mt${i}" ${t.done?'checked':''} onchange="saveMonthTask(${i},this.checked)"><label for="mt${i}">${t.text}</label></div>`).join('');
+  
   // Добавляем кнопки удаления
   document.querySelectorAll('#monthTasks .task-item').forEach((item,i)=>{const btn=document.createElement('button');btn.className='task-del-btn';btn.textContent='✕';btn.onclick=function(){deleteMonthTask(i);};item.appendChild(btn);});
   
+  // Добавляем кнопки переноса к делам на месяц
+  document.querySelectorAll('#monthTasks .task-item').forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'task-move-btn';
+    btn.textContent = '↗';
+    btn.onclick = function(e) { e.stopPropagation(); showMoveModal('month_', i); };
+    item.appendChild(btn);
+  });
+
   // Отрисовать секции
   renderDailyHabits();
   renderDailyBeauty();
   renderDailyTraining();
   renderDailyCleaning();
+  updateDailyCards();
 }
 
 // ОТРИСОВАТЬ ПРИВЫЧКИ В ЕЖЕДНЕВНИКЕ
@@ -2535,6 +2749,13 @@ function renderTrainingTracker() {
       </div>`;
       d++;
     }
+   // Добиваем пустыми ячейками последнюю строку
+    const remaining = 7 - (html.split('<div class="training-day-cell').length - 1) % 7;
+    if (remaining < 7) {
+      for (let i = 0; i < remaining; i++) {
+        html += '<div class="training-day-cell empty"></div>';
+      }
+    }
     html += '</div>';
   }
   
@@ -2733,6 +2954,7 @@ function refreshCurrentPage() {
   else if (currentPage === 'beauty') renderBeautyTracker();
   else if (currentPage === 'training') renderTrainingTracker();
   else if (currentPage === 'cleaning') renderCleaningTracker();
+  else if (currentPage === 'health') renderHealthPage();
 }
 
 // Переключить страницу
@@ -3043,7 +3265,8 @@ async function init(){
     habits: 'Привычки',
     beauty: 'Уход',
     training: 'Тренировки',
-    cleaning: 'Уборка'
+    cleaning: 'Уборка',
+    health: 'Здоровье'
   };
   
   document.querySelectorAll('.sticker').forEach(s => {
@@ -3057,6 +3280,17 @@ async function init(){
     document.getElementById('leftCol').classList.add('hidden');
     refreshCurrentPage();
   }
+    if (currentPage !== 'daily') {
+    document.getElementById('leftCol').classList.add('hidden');
+    refreshCurrentPage();
+  }
+  
+  // Убираем фокус с невидимых полей
+  document.addEventListener('click', function(e) {
+    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+      document.activeElement.blur();
+    }
+  });
 }
 
 // ЗАПУСК! Всё начинается здесь
@@ -3127,6 +3361,400 @@ function showCopyButtonIfLastWeek(containerId) {
   } else {
     container.innerHTML = '';
   }
+}
+
+// ПЕРЕНОС ДЕЛ
+let moveTaskType = ''; // 'daily', 'week', 'month'
+let moveTaskIndex = -1;
+
+function showMoveModal(type, idx) {
+  moveTaskType = type;
+  moveTaskIndex = idx;
+  
+  const modal = document.createElement('div');
+  modal.id = 'moveModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1002;display:flex;justify-content:center;align-items:center;';
+  
+  let optionsHTML = '';
+  
+  if (type === 'daily_') {
+    const tomorrow = new Date(currentYear, currentMonth-1, selectedDay+1);
+    const ts = tomorrow.getFullYear()+'-'+(tomorrow.getMonth()+1)+'-'+tomorrow.getDate();
+    optionsHTML += `<button onclick="moveTaskTo('${ts}')" style="display:block;width:100%;padding:12px;margin-bottom:8px;border:1px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;color:#5a4a3a;">📅 На завтра (${tomorrow.getDate()} ${MONTHS[tomorrow.getMonth()].toLowerCase()})</button>`;
+  }
+  
+  if (type === 'week_') {
+    const nextMonday = new Date(currentYear, currentMonth-1, selectedDay+7);
+    const ms = nextMonday.getFullYear()+'-'+(nextMonday.getMonth()+1)+'-'+nextMonday.getDate();
+    optionsHTML += `<button onclick="moveTaskToWeek('${ms}')" style="display:block;width:100%;padding:12px;margin-bottom:8px;border:1px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;color:#5a4a3a;">📆 На следующую неделю</button>`;
+  }
+  
+  if (type === 'month_') {
+    const nm = currentMonth === 12 ? 1 : currentMonth+1;
+    const ny = currentMonth === 12 ? currentYear+1 : currentYear;
+    const mk = ny+'-'+nm;
+    optionsHTML += `<button onclick="moveTaskToMonth('${mk}')" style="display:block;width:100%;padding:12px;margin-bottom:8px;border:1px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;color:#5a4a3a;">🗓️ На следующий месяц (${MONTHS[nm-1]})</button>`;
+  }
+  
+  optionsHTML += `<div style="display:flex;gap:8px;margin-top:8px;">
+    <input type="date" id="moveDateInput" style="flex:1;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;">
+    <button onclick="moveTaskToDate()" style="padding:8px 16px;background:#c8a1c0;color:white;border:none;border-radius:8px;cursor:pointer;font-family:Georgia;">📌 Перенести</button>
+  </div>`;
+  
+  modal.innerHTML = `<div style="background:#fffef9;border-radius:15px;padding:25px;width:380px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:17px;color:#5a4a3a;margin-bottom:15px;text-align:center;">Перенести дело</div>
+    ${optionsHTML}
+    <button onclick="closeMoveModal()" style="display:block;width:100%;padding:10px;margin-top:10px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;">Отмена</button>
+  </div>`;
+  
+  document.body.appendChild(modal);
+}
+
+function closeMoveModal() {
+  const modal = document.getElementById('moveModal');
+  if (modal) modal.remove();
+}
+
+function moveTaskTo(dateStr) {
+  // Приводим дату к формату 2026-6-4 (без нулей)
+  const d = new Date(dateStr);
+  const fixedDateStr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  
+  const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
+  const tasks = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
+  const task = tasks[moveTaskIndex];
+  if (!task) return;
+  tasks.splice(moveTaskIndex, 1);
+  localStorage.setItem('daily_' + dk, JSON.stringify(tasks));
+  
+  const targetTasks = JSON.parse(localStorage.getItem('daily_' + fixedDateStr) || '[]');
+  targetTasks.push(task);
+  localStorage.setItem('daily_' + fixedDateStr, JSON.stringify(targetTasks));
+  
+  closeMoveModal();
+  loadDayData();
+}
+
+function moveTaskToWeek(ws) {
+  const d = new Date(ws);
+  const fixedWs = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  
+  const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
+  const tasks = JSON.parse(localStorage.getItem('week_' + dk) || '[]');
+  const task = tasks[moveTaskIndex];
+  if (!task) return;
+  tasks.splice(moveTaskIndex, 1);
+  localStorage.setItem('week_' + dk, JSON.stringify(tasks));
+  
+  const targetTasks = JSON.parse(localStorage.getItem('week_' + fixedWs) || '[]');
+  targetTasks.push(task);
+  localStorage.setItem('week_' + fixedWs, JSON.stringify(targetTasks));
+  
+  closeMoveModal();
+  loadDayData();
+}
+
+function moveTaskToMonth(mk) {
+  const dk = `${currentYear}-${currentMonth}`;
+  const tasks = JSON.parse(localStorage.getItem('month_' + dk) || '[]');
+  const task = tasks[moveTaskIndex];
+  if (!task) return;
+  tasks.splice(moveTaskIndex, 1);
+  localStorage.setItem('month_' + dk, JSON.stringify(tasks));
+  
+  // mk уже в формате "2026-7", используем как есть
+  const targetTasks = JSON.parse(localStorage.getItem('month_' + mk) || '[]');
+  targetTasks.push(task);
+  localStorage.setItem('month_' + mk, JSON.stringify(targetTasks));
+  
+  closeMoveModal();
+  loadDayData();
+}
+
+function moveTaskToDate() {
+  const dateStr = document.getElementById('moveDateInput').value;
+  if (!dateStr) { alert('Выбери дату!'); return; }
+  
+  if (moveTaskType === 'daily_') {
+    moveTaskTo(dateStr);
+  } else if (moveTaskType === 'week_') {
+    moveTaskToWeek(dateStr);
+  } else if (moveTaskType === 'month_') {
+    moveTaskToMonth(dateStr);
+  }
+}
+
+// ЗДОРОВЬЕ
+function saveMood(val) {
+  const key = `mood_${currentYear}-${currentMonth}-${selectedDay}`;
+  localStorage.setItem(key, val);
+  closeMoodModal();
+  updateMoodCard();
+}
+
+function renderMoodMonth() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const container = document.getElementById('moodMonth');
+  container.innerHTML = '';
+  const emojis = ['','😢','😕','😐','🙂','😄'];
+  
+  for (let d = 1; d <= dim; d++) {
+    const key = `mood_${currentYear}-${currentMonth}-${d}`;
+    const val = localStorage.getItem(key);
+    const emoji = val ? emojis[val] : '·';
+    const bg = d === selectedDay ? '#fdf5f0' : 'transparent';
+    container.innerHTML += `<span style="font-size:18px;padding:2px;cursor:pointer;background:${bg};border-radius:4px;" onclick="event.stopPropagation(); this.classList.toggle('zoomed'){d}";loadDayData();buildCalendar();renderHealthPage();" title="${d} ${MONTHS[currentMonth-1]}">${emoji}</span>`;
+  }
+}
+
+function saveHealthField(field, value) {
+  const key = `health_${currentYear}-${currentMonth}-${selectedDay}`;
+  let data = JSON.parse(localStorage.getItem(key) || '{}');
+  data[field] = value;
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function renderHealthPage() {
+  renderGarland();
+  const key = `health_${currentYear}-${currentMonth}-${selectedDay}`;
+  const data = JSON.parse(localStorage.getItem(key) || '{}');
+  
+  document.getElementById('healthSleep').value = data.sleep || '';
+  document.getElementById('healthSteps').value = data.steps || '';
+  document.getElementById('healthCalories').value = data.calories || '';
+  document.getElementById('healthKm').value = data.km || '';
+  document.getElementById('healthNotes').value = data.notes || '';
+  document.getElementById('healthRested').checked = data.rested || false;
+  
+  renderMoodMonth();
+  renderMoodStats();
+}
+
+// НАСТРОЕНИЕ (цвета)
+const moods = [
+  { name: 'Прекрасно',   color: '#FFD700', val: 12 },
+  { name: 'Романтично',  color: '#FFB6C1', val: 11 },
+  { name: 'Весело',      color: '#7BC67E', val: 10 },
+  { name: 'Игриво',      color: '#FFA500', val: 9 },
+  { name: 'Спокойно',    color: '#B5D6B2', val: 8 },
+  { name: 'Никак',       color: '#D0D0D0', val: 7 },
+  { name: 'Грустно',     color: '#7BA7D0', val: 6 },
+  { name: 'Устала',      color: '#888888', val: 5 },
+  { name: 'Напряжённо',  color: '#D9647B', val: 4 },
+  { name: 'Тревожно',    color: '#B39DDB', val: 3 },
+  { name: 'Злюсь',       color: '#E57373', val: 2 },
+  { name: 'Выжата',      color: '#8E3B46', val: 1 }
+];
+
+let selectedMoods = [];
+
+function openMoodModal() {
+  const key = `mood_${currentYear}-${currentMonth}-${selectedDay}`;
+  const saved = JSON.parse(localStorage.getItem(key) || '[]');
+  selectedMoods = Array.isArray(saved) ? [...saved] : (saved ? [saved] : []);
+  
+  const grid = document.getElementById('moodButtonsGrid');
+  grid.innerHTML = '';
+  
+  moods.forEach(m => {
+    const selected = selectedMoods.includes(m.val);
+    grid.innerHTML += `
+      <button onclick="toggleMood(${m.val})" id="moodbtn-${m.val}"
+              style="padding:10px 6px;border:2px solid ${selected ? m.color : '#e0d8cc'};border-radius:12px;background:${selected ? m.color+'33' : '#fefcf7'};cursor:pointer;transition:.2s;">
+        <div style="width:30px;height:30px;border-radius:50%;background:${m.color};margin:0 auto 4px;box-shadow:0 0 8px ${m.color};"></div>
+        <div style="font-size:10px;color:#5a4a3a;">${m.name}</div>
+      </button>
+    `;
+  });
+  
+  document.getElementById('moodModal').style.display = 'flex';
+}
+
+function toggleMood(val) {
+  const idx = selectedMoods.indexOf(val);
+  if (idx === -1) {
+    selectedMoods.push(val);
+  } else {
+    selectedMoods.splice(idx, 1);
+  }
+  
+  const btn = document.getElementById('moodbtn-' + val);
+  const mood = moods.find(m => m.val === val);
+  if (idx === -1) {
+    btn.style.borderColor = mood.color;
+    btn.style.background = mood.color + '33';
+  } else {
+    btn.style.borderColor = '#e0d8cc';
+    btn.style.background = '#fefcf7';
+  }
+}
+
+function saveMoodsToStorage() {
+  const key = `mood_${currentYear}-${currentMonth}-${selectedDay}`;
+  if (selectedMoods.length > 0) {
+    localStorage.setItem(key, JSON.stringify(selectedMoods));
+  } else {
+    localStorage.removeItem(key);
+  }
+  closeMoodModal();
+  updateMoodCard();
+}
+
+function toggleMoodSelection(moodId) {
+  const idx = selectedMoods.indexOf(moodId);
+  if (idx === -1) {
+    selectedMoods.push(moodId);
+  } else {
+    selectedMoods.splice(idx, 1);
+  }
+  
+  // Обновляем подсветку кнопки
+  const btn = document.getElementById('moodbtn-' + moodId);
+  const mood = moods.find(m => m.id === moodId);
+  if (idx === -1) {
+    btn.style.borderColor = mood.color;
+    btn.style.background = mood.color + '33';
+  } else {
+    btn.style.borderColor = '#e0d8cc';
+    btn.style.background = '#fefcf7';
+  }
+}
+
+function saveMoodsToStorage() {
+  const key = `mood_${currentYear}-${currentMonth}-${selectedDay}`;
+  if (selectedMoods.length > 0) {
+    localStorage.setItem(key, JSON.stringify(selectedMoods));
+  } else {
+    localStorage.removeItem(key);
+  }
+  closeMoodModal();
+  updateMoodCard();
+}
+
+function updateMoodCard() {
+  const key = `mood_${currentYear}-${currentMonth}-${selectedDay}`;
+  const saved = JSON.parse(localStorage.getItem(key) || '[]');
+  const count = Array.isArray(saved) ? saved.length : (saved ? 1 : 0);
+  document.getElementById('dailyMoodCardProgress').textContent = count > 0 ? '✔️' : '—';
+}
+
+// ГИРЛЯНДА
+const garlandDrops = [6,14,8,18,3,16,10,20,5,12,7,15,4,17,9,13,2,19,11,6,8,14,3,16,10,5,12,18,7,9,4];
+
+function renderGarland() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const row = document.getElementById('garlandRow');
+  row.innerHTML = '';
+  
+  for (let d = 1; d <= dim; d++) {
+    const key = `mood_${currentYear}-${currentMonth}-${d}`;
+    const saved = JSON.parse(localStorage.getItem(key) || '[]');
+    const vals = Array.isArray(saved) ? saved : (saved ? [saved] : []);
+    const activeMoods = vals.map(v => moods.find(m => m.val === v)).filter(Boolean);
+    
+    const drop = garlandDrops[(d-1) % garlandDrops.length];
+    
+    // Цвет лампочки
+    let bg = '#e8e0d8';
+    let glow = 'transparent';
+    if (activeMoods.length === 1) {
+      bg = activeMoods[0].color;
+      glow = activeMoods[0].color;
+    } else if (activeMoods.length > 1) {
+      const colors = activeMoods.map(m => m.color).join(', ');
+      bg = `linear-gradient(to bottom, ${colors})`;
+      glow = activeMoods[0].color;
+    }
+    
+    row.innerHTML += `
+      <div class="garland-bulb" style="--drop:${drop}px;--glow:${glow};"
+           ondblclick="selectedDay=${d};switchPage('daily', document.querySelector('[data-page=daily]'));"
+           title="${d} ${MONTHS[currentMonth-1]}${activeMoods.length > 0 ? ': ' + activeMoods.map(m => m.name).join(', ') : ''}">
+        <div class="garland-bulb-wire"></div>
+        <div class="garland-bulb-glass${activeMoods.length > 0 ? ' on' : ''}" style="background:${bg};"></div>
+        <div class="garland-bulb-base"></div>
+        <div class="garland-bulb-num">${d}</div>
+      </div>
+    `;
+  }
+}
+
+// ЗДОРОВЬЕ
+function openHealthModal() {
+  const key = `health_${currentYear}-${currentMonth}-${selectedDay}`;
+  const data = JSON.parse(localStorage.getItem(key) || '{}');
+  
+  document.querySelector('#healthModal #healthSleep').value = data.sleep || '';
+  document.querySelector('#healthModal #healthRested').value = data.rested || '';
+  document.querySelector('#healthModal #healthSteps').value = data.steps || '';
+  document.querySelector('#healthModal #healthKm').value = data.km || '';
+  document.querySelector('#healthModal #healthCalories').value = data.calories || '';
+  document.querySelector('#healthModal #healthNotes').value = data.notes || ''; 
+  document.getElementById('healthModal').style.display = 'flex';
+}
+
+function closeHealthModal() {
+  document.getElementById('healthModal').style.display = 'none';
+}
+function saveHealthData() {
+  const data = {
+    sleep: document.querySelector('#healthModal #healthSleep').value,
+    rested: document.querySelector('#healthModal #healthRested').value,
+    steps: document.querySelector('#healthModal #healthSteps').value,
+    km: document.querySelector('#healthModal #healthKm').value,
+    calories: document.querySelector('#healthModal #healthCalories').value,
+    notes: document.querySelector('#healthModal #healthNotes').value
+  };
+  const key = `health_${currentYear}-${currentMonth}-${selectedDay}`;
+  localStorage.setItem(key, JSON.stringify(data));
+  closeHealthModal();
+  updateHealthCard();
+}
+
+function updateHealthCard() {
+  const key = `health_${currentYear}-${currentMonth}-${selectedDay}`;
+  const data = JSON.parse(localStorage.getItem(key) || '{}');
+  const filled = Object.values(data).filter(v => v !== '' && v !== false && v !== null).length;
+  document.getElementById('dailyHealthCardProgress').textContent = filled > 0 ? '✔️' : '—';
+}
+
+// Обновляем карточки при загрузке дня
+function updateDailyCards() {
+  updateMoodCard();
+  updateHealthCard();
+}
+
+function closeMoodModal() {
+  document.getElementById('moodModal').style.display = 'none';
+}
+function renderMoodStats() {
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const container = document.getElementById('moodStats');
+  container.innerHTML = '';
+  
+  // Считаем сколько дней было каждое настроение
+  const counts = {};
+  moods.forEach(m => counts[m.val] = 0);
+  
+  for (let d = 1; d <= dim; d++) {
+    const key = `mood_${currentYear}-${currentMonth}-${d}`;
+    const saved = JSON.parse(localStorage.getItem(key) || '[]');
+    const vals = Array.isArray(saved) ? saved : (saved ? [saved] : []);
+    vals.forEach(v => { if (counts[v] !== undefined) counts[v]++; });
+  }
+  
+  const maxCount = Math.max(1, ...Object.values(counts));
+  
+  moods.forEach(m => {
+    const count = counts[m.val] || 0;
+    const height = (count / maxCount) * 100;
+    container.innerHTML += `
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div class="mood-stat-bar" style="height:${height}px;background:${m.color};" title="${m.name}: ${count} дн."></div>
+        <div class="mood-stat-label">${count}</div>
+      </div>
+    `;
+  });
 }
 
 init();
