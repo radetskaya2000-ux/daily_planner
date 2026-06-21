@@ -1327,7 +1327,31 @@
       .daily-expandable{display:none!important;}
     }
 
-
+      .garland-bulb-glass{
+        width:9px!important;
+        height:13px!important;
+      }
+      .garland-bulb-base{
+        width:4px!important;
+        height:2px!important;
+      }
+      .garland-bulb-num{
+        font-size:5px!important;
+        margin-top:1px!important;
+      }
+      .garland-bulb-wire{
+        width:0.8px!important;
+      }
+      .garland-row{
+        gap:0!important;
+        padding:0 1px!important;
+      }
+      .garland-bulb{
+        width:10px!important;
+      }
+      .garland-wrap{
+        margin:15px -10px 10px!important;
+      }
 
   </style>
   <!-- КОНЕЦ БЛОКА СТИЛЕЙ -->
@@ -1707,6 +1731,50 @@
     <div style="margin-top:10px;"><label style="font-size:12px;color:#8b7355;">💊 Самочувствие / жалобы</label><textarea id="healthNotes" style="width:100%;min-height:50px;padding:8px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;font-size:13px;color:#5a4a3a;"></textarea></div>
     <button onclick="saveHealthData()" style="width:100%;padding:12px;margin-top:12px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:15px;">✓ Сохранить</button>
     <button onclick="closeHealthModal()" style="width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;margin-top:5px;">Отмена</button>
+  </div>
+</div>
+
+<!-- Всплывающее окно добавления уборки -->
+<div id="cleaningModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1001;justify-content:center;align-items:center;">
+  <div style="background:#fffef9;border-radius:15px;padding:25px;width:400px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:15px;color:#5a4a3a;margin-bottom:15px;" id="cleaningModalTitle">Новая задача</div>
+    <input type="text" id="cleaningNameInput" placeholder="Название задачи" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;margin-bottom:15px;font-family:Georgia;font-size:14px;">
+    <div style="display:flex;gap:8px;margin-bottom:15px;">
+      <button onclick="selectCleaningType('daily')" class="cleaning-type-btn" id="ctype-daily" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">📅 Ежедневно</button>
+      <button onclick="selectCleaningType('weekly')" class="cleaning-type-btn" id="ctype-weekly" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">📆 Еженедельно</button>
+      <button onclick="selectCleaningType('monthly')" class="cleaning-type-btn" id="ctype-monthly" style="flex:1;padding:12px;border:2px solid #e0d8cc;border-radius:10px;background:#fefcf7;cursor:pointer;font-family:Georgia;font-size:13px;color:#5a4a3a;">🗓️ Ежемесячно</button>
+    </div>
+    <div id="cleaningGoalRow" style="display:none;margin-bottom:15px;">
+      <input type="number" id="cleaningGoalInput" placeholder="Сколько раз?" min="1" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;font-size:14px;text-align:center;">
+    </div>
+    <button onclick="saveCleaningFromModal()" style="width:100%;padding:12px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:15px;">✓ Сохранить</button>
+    <button onclick="closeCleaningModal()" style="width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;font-size:13px;margin-top:5px;">Отмена</button>
+  </div>
+</div>
+
+<!-- Модальное окно Привычки -->
+<div id="habitModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1001;justify-content:center;align-items:center;">
+  <div style="background:#fffef9;border-radius:15px;padding:25px;width:380px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:17px;color:#5a4a3a;margin-bottom:15px;" id="habitModalTitle">Новая привычка</div>
+    <input type="text" id="habitNameInput" placeholder="Название привычки" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;margin-bottom:15px;font-family:Georgia;font-size:14px;">
+    <div style="margin-bottom:15px;">
+      <input type="number" id="habitGoalInput" placeholder="Цель (количество раз в месяц)" min="1" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;font-size:14px;text-align:center;">
+    </div>
+    <button onclick="saveHabitFromModal()" style="width:100%;padding:12px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:15px;">✓ Сохранить</button>
+    <button onclick="closeHabitModal()" style="width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;font-size:13px;margin-top:5px;">Отмена</button>
+  </div>
+</div>
+
+<!-- Модальное окно Ухода -->
+<div id="beautyModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1001;justify-content:center;align-items:center;">
+  <div style="background:#fffef9;border-radius:15px;padding:25px;width:380px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:17px;color:#5a4a3a;margin-bottom:15px;" id="beautyModalTitle">Новая процедура</div>
+    <input type="text" id="beautyNameInput" placeholder="Название процедуры" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;margin-bottom:15px;font-family:Georgia;font-size:14px;">
+    <div style="margin-bottom:15px;">
+      <input type="number" id="beautyGoalInput" placeholder="Цель (раз в неделю)" min="1" style="width:100%;padding:10px;border:1px dashed #d4b896;border-radius:8px;font-family:Georgia;font-size:14px;text-align:center;">
+    </div>
+    <button onclick="saveBeautyFromModal()" style="width:100%;padding:12px;background:#c8a1c0;color:white;border:none;border-radius:10px;cursor:pointer;font-family:Georgia;font-size:15px;">✓ Сохранить</button>
+    <button onclick="closeBeautyModal()" style="width:100%;padding:8px;background:transparent;color:#b8a590;border:none;cursor:pointer;font-family:Georgia;font-size:13px;margin-top:5px;">Отмена</button>
   </div>
 </div>
 
@@ -3831,7 +3899,7 @@ function renderGarland() {
     const activeMoods = vals.map(v => moods.find(m => m.val === v)).filter(Boolean);
     
     const drop = garlandDrops[(d-1) % garlandDrops.length];
-    
+    const mobileDrop = window.innerWidth <= 768 ? drop * 3.5 : drop;    
     // Цвет лампочки
     let bg = '#e8e0d8';
     let glow = 'transparent';
@@ -3845,7 +3913,7 @@ function renderGarland() {
     }
     
     row.innerHTML += `
-      <div class="garland-bulb" style="--drop:${drop}px;--glow:${glow};"
+      <div class="garland-bulb" style="--drop:${mobileDrop}px;--glow:${glow};"
            ondblclick="selectedDay=${d};switchPage('daily', document.querySelector('[data-page=daily]'));"
            title="${d} ${MONTHS[currentMonth-1]}${activeMoods.length > 0 ? ': ' + activeMoods.map(m => m.name).join(', ') : ''}">
         <div class="garland-bulb-wire"></div>
@@ -4305,25 +4373,44 @@ function renderHabitsMobile() {
 function renderBeautyMobile() {
   const container = document.getElementById('beautyCardsContainer');
   const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const fd = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const so = fd === 0 ? 7 : fd;
+  const availableWidth = window.innerWidth - 60;
+  const dotSize = Math.max(16, Math.floor(availableWidth / 35));
   
   container.innerHTML = '';
   
   beautyDefs.forEach((b, bi) => {
     let totalDone = 0;
-    for (let w = 1; w <= 5; w++) {
-      totalDone += (beautyData[`beauty_week_${currentYear}-${currentMonth}-w${w}-b${bi}`] || []).length;
-    }
     const weeks = getWeekRanges(dim);
+    weeks.forEach(wr => {
+      totalDone += (beautyData[`beauty_week_${currentYear}-${currentMonth}-w${wr.w}-b${bi}`] || []).length;
+    });
     const totalGoal = b.goal * weeks.length;
     const pct = Math.round((totalDone / totalGoal) * 100);
     
-    let miniGrid = '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-top:4px;">';
-    for (let d = 1; d <= dim; d++) {
-      const w = getWeekForDay(d);
-      const checked = (beautyData[`beauty_week_${currentYear}-${currentMonth}-w${w.w}-b${bi}`] || []).includes(d);
-      miniGrid += `<div style="width:8px;height:8px;border-radius:2px;background:${checked ? WCOLORS[bi % 5] : '#e8e0d8'};" title="${d}"></div>`;
+    let calHTML = `<div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;width:100%;">`;
+    let day = 1;
+    let firstRow = true;
+    
+    while (day <= dim) {
+      calHTML += `<div style="display:flex;gap:5px;justify-content:space-between;width:100%;">`;
+      for (let col = 1; col <= 7; col++) {
+        if (firstRow && col < so) {
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;flex-shrink:0;"></div>`;
+        } else if (day <= dim) {
+          const w = getWeekForDay(day);
+          const checked = (beautyData[`beauty_week_${currentYear}-${currentMonth}-w${w.w}-b${bi}`] || []).includes(day);
+          calHTML += `<div onclick="toggleBeautyDay(${bi},${w.w},${day})" style="width:${dotSize}px;height:${dotSize}px;border-radius:50%;flex-shrink:0;background:${checked ? WCOLORS[bi % 5] : '#e8e0d8'};cursor:pointer;" title="${day}"></div>`;
+          day++;
+        } else {
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;flex-shrink:0;"></div>`;
+        }
+      }
+      calHTML += `</div>`;
+      firstRow = false;
     }
-    miniGrid += '</div>';
+    calHTML += `</div>`;
     
     container.innerHTML += `
       <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[bi % 5]};">
@@ -4332,9 +4419,9 @@ function renderBeautyMobile() {
           <span style="font-size:11px;color:#8b7355;">${totalDone}/${totalGoal}</span>
         </div>
         <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
-          <div style="height:100%;width:${pct}%;background:${WCOLORS[bi % 5]};border-radius:3px;"></div>
+          <div style="height:100%;width:${Math.min(pct, 100)}%;background:${WCOLORS[bi % 5]};border-radius:3px;"></div>
         </div>
-        ${miniGrid}
+        ${calHTML}
       </div>
     `;
   });
@@ -4343,6 +4430,10 @@ function renderBeautyMobile() {
 function renderCleaningMobile() {
   const container = document.getElementById('cleaningCardsContainer');
   const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const fd = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const so = fd === 0 ? 7 : fd;
+  const availableWidth = window.innerWidth - 60;
+  const dotSize = Math.max(16, Math.floor(availableWidth / 35));
   
   container.innerHTML = '';
   
@@ -4353,12 +4444,27 @@ function renderCleaningMobile() {
     }
     const pct = Math.round((totalDone / c.goal) * 100);
     
-    let miniGrid = '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-top:4px;">';
-    for (let d = 1; d <= dim; d++) {
-      const done = cleaningData[getCKey(ci, d)];
-      miniGrid += `<div style="width:8px;height:8px;border-radius:2px;background:${done ? WCOLORS[ci % 5] : '#e8e0d8'};" title="${d}"></div>`;
+    let calHTML = `<div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;width:100%;">`;
+    let day = 1;
+    let firstRow = true;
+    
+    while (day <= dim) {
+      calHTML += `<div style="display:flex;gap:5px;justify-content:space-between;width:100%;">`;
+      for (let col = 1; col <= 7; col++) {
+        if (firstRow && col < so) {
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;flex-shrink:0;"></div>`;
+        } else if (day <= dim) {
+          const done = cleaningData[getCKey(ci, day)];
+          calHTML += `<div onclick="toggleMobileCleaning(${ci},${day})" style="width:${dotSize}px;height:${dotSize}px;border-radius:50%;flex-shrink:0;background:${done ? WCOLORS[ci % 5] : '#e8e0d8'};cursor:pointer;" title="${day}"></div>`;
+          day++;
+        } else {
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;flex-shrink:0;"></div>`;
+        }
+      }
+      calHTML += `</div>`;
+      firstRow = false;
     }
-    miniGrid += '</div>';
+    calHTML += `</div>`;
     
     container.innerHTML += `
       <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[ci % 5]};">
@@ -4367,9 +4473,9 @@ function renderCleaningMobile() {
           <span style="font-size:11px;color:#8b7355;">${totalDone}/${c.goal}</span>
         </div>
         <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
-          <div style="height:100%;width:${pct}%;background:${WCOLORS[ci % 5]};border-radius:3px;"></div>
+          <div style="height:100%;width:${Math.min(pct, 100)}%;background:${WCOLORS[ci % 5]};border-radius:3px;"></div>
         </div>
-        ${miniGrid}
+        ${calHTML}
       </div>
     `;
   });
@@ -4386,6 +4492,74 @@ function toggleMobileHabit(hi, day) {
   }
   if (selectedDay === day) renderDailyHabits();
 }
+
+function toggleMobileCleaning(ci, day) {
+  const v = !cleaningData[getCKey(ci, day)];
+  cleaningData[getCKey(ci, day)] = v;
+  localStorage.setItem(getCKey(ci, day), v ? 'true' : 'false');
+  if (window.innerWidth <= 768) {
+    renderCleaningMobile();
+  } else {
+    renderCleaningTracker();
+  }
+  if (selectedDay === day) renderDailyCleaning();
+}
+
+// МОДАЛЬНОЕ ОКНО ПРИВЫЧКИ
+let editingHabitIndex = -1;
+
+function openHabitModal(idx = -1) {
+  editingHabitIndex = idx;
+  document.getElementById('habitModalTitle').textContent = idx === -1 ? 'Новая привычка' : 'Изменить привычку';
+  document.getElementById('habitNameInput').value = idx === -1 ? '' : habitDefs[idx].name;
+  document.getElementById('habitGoalInput').value = idx === -1 ? '' : habitDefs[idx].goal;
+  document.getElementById('habitModal').style.display = 'flex';
+}
+
+function closeHabitModal() { document.getElementById('habitModal').style.display = 'none'; }
+
+function saveHabitFromModal() {
+  const name = document.getElementById('habitNameInput').value.trim();
+  if (!name) { alert('Введи название!'); return; }
+  const goal = parseInt(document.getElementById('habitGoalInput').value);
+  if (isNaN(goal) || goal < 1) { alert('Введи цель!'); return; }
+  if (editingHabitIndex === -1) habitDefs.push({ name, goal });
+  else habitDefs[editingHabitIndex] = { name, goal };
+  saveAllDefs();
+  closeHabitModal();
+  renderHabitsTracker();
+}
+
+function addHabit() { openHabitModal(-1); }
+function editHabit(hi) { openHabitModal(hi); }
+
+// МОДАЛЬНОЕ ОКНО УХОДА
+let editingBeautyIndex = -1;
+
+function openBeautyModal(idx = -1) {
+  editingBeautyIndex = idx;
+  document.getElementById('beautyModalTitle').textContent = idx === -1 ? 'Новая процедура' : 'Изменить процедуру';
+  document.getElementById('beautyNameInput').value = idx === -1 ? '' : beautyDefs[idx].name;
+  document.getElementById('beautyGoalInput').value = idx === -1 ? '' : beautyDefs[idx].goal;
+  document.getElementById('beautyModal').style.display = 'flex';
+}
+
+function closeBeautyModal() { document.getElementById('beautyModal').style.display = 'none'; }
+
+function saveBeautyFromModal() {
+  const name = document.getElementById('beautyNameInput').value.trim();
+  if (!name) { alert('Введи название!'); return; }
+  const goal = parseInt(document.getElementById('beautyGoalInput').value);
+  if (isNaN(goal) || goal < 1) { alert('Введи цель!'); return; }
+  if (editingBeautyIndex === -1) beautyDefs.push({ name, goal });
+  else beautyDefs[editingBeautyIndex] = { name, goal };
+  saveAllDefs();
+  closeBeautyModal();
+  renderBeautyTracker();
+}
+
+function addBeauty() { openBeautyModal(-1); }
+function editBeauty(bi) { openBeautyModal(bi); }
 
 init();
 
