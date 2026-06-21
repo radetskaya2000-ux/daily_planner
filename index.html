@@ -4254,7 +4254,9 @@ function renderHealthStats() {
 function renderHabitsMobile() {
   const container = document.getElementById('habitsCardsContainer');
   const dim = new Date(currentYear, currentMonth, 0).getDate();
-  const weeks = getWeekRanges(dim);
+  const fd = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const so = fd === 0 ? 7 : fd;
+  const dotSize = Math.max(14, Math.floor((window.innerWidth - 60) / (dim > 25 ? 30 : 24)));
   
   container.innerHTML = '';
   
@@ -4262,12 +4264,27 @@ function renderHabitsMobile() {
     const dc = cntHD(hi);
     const pct = Math.round((dc / h.goal) * 100);
     
-    let miniGrid = '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-top:4px;">';
-    for (let d = 1; d <= dim; d++) {
-      const done = getHD(hi, d);
-      miniGrid += `<div style="width:8px;height:8px;border-radius:2px;background:${done ? WCOLORS[hi % 5] : '#e8e0d8'};" title="${d}"></div>`;
+    let calHTML = `<div style="display:flex;flex-direction:column;gap:4px;margin-top:8px;">`;
+    let day = 1;
+    let firstRow = true;
+    
+    while (day <= dim) {
+      calHTML += `<div style="display:flex;gap:4px;">`;
+      for (let col = 1; col <= 7; col++) {
+        if (firstRow && col < so) {
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;"></div>`;
+        } else if (day <= dim) {
+          const done = getHD(hi, day);
+          calHTML += `<div onclick="toggleMobileHabit(${hi},${day})" style="width:${dotSize}px;height:${dotSize}px;border-radius:50%;background:${done ? WCOLORS[hi % 5] : '#e8e0d8'};cursor:pointer;" title="${day}"></div>`;
+          day++;
+        } else {
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;"></div>`;
+        }
+      }
+      calHTML += `</div>`;
+      firstRow = false;
     }
-    miniGrid += '</div>';
+    calHTML += `</div>`;
     
     container.innerHTML += `
       <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[hi % 5]};">
@@ -4278,12 +4295,10 @@ function renderHabitsMobile() {
         <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
           <div style="height:100%;width:${pct}%;background:${WCOLORS[hi % 5]};border-radius:3px;"></div>
         </div>
-        ${miniGrid}
+        ${calHTML}
       </div>
     `;
   });
-  
-  document.getElementById('habitsCardsContainer').style.display = 'block';
 }
 
 function renderBeautyMobile() {
@@ -4357,6 +4372,18 @@ function renderCleaningMobile() {
       </div>
     `;
   });
+}
+
+function toggleMobileHabit(hi, day) {
+  const v = !getHD(hi, day);
+  habitsData[getHKey(hi, day)] = v;
+  localStorage.setItem(getHKey(hi, day), v ? 'true' : 'false');
+  if (window.innerWidth <= 768) {
+    renderHabitsMobile();
+  } else {
+    renderHabitsTracker();
+  }
+  if (selectedDay === day) renderDailyHabits();
 }
 
 init();
