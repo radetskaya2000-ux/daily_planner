@@ -968,6 +968,43 @@
     .task-item label{font-size:15px;color:#5a4a3a;cursor:pointer}
     .task-item input:checked+label{text-decoration:line-through;color:#c8b8a8;opacity:.6}
 
+        /* КАРТОЧКИ ДЕЛ */
+    .task-card{
+      background:#faf5ed;
+      border:1px solid #e8d8c0;
+      border-radius:8px;
+      padding:8px 12px;
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:14px;
+      color:#5a4a3a;
+    }
+    .task-card input[type="checkbox"]{
+      width:18px;
+      height:18px;
+      accent-color:#c8a1c0;
+      cursor:pointer;
+      flex-shrink:0;
+    }
+    .task-card label{
+      flex:1;
+      cursor:pointer;
+    }
+    .task-card input:checked+label{
+      text-decoration:line-through;
+      color:#c8b8a8;
+    }
+    .task-card .task-del-btn{
+      font-size:14px;
+      color:#c09090;
+      cursor:pointer;
+      background:none;
+      border:none;
+      flex-shrink:0;
+    }
+
     /* ========== ПРАВИЛО: ЗАМЕТКИ ==========
     resize:vertical — можно растягивать только по высоте
     ::placeholder — стиль подсказки внутри поля */
@@ -1282,6 +1319,14 @@
       .center-col .daily-cards-row{display:none!important;}
     }
 
+        .daily-sections-phone{display:none!important;}
+    .daily-expandable-phone{display:none;margin-top:12px;padding:12px;background:#fefcf7;border-radius:12px;border:1px solid #f0e8d8;}
+    
+    @media(max-width:768px){
+      .daily-sections-phone{display:block!important;}
+      .daily-expandable{display:none!important;}
+    }
+
 
 
   </style>
@@ -1389,28 +1434,60 @@
         </div>
       </div>
 
+            <!-- Секции трекеров для телефона -->
+      <div class="daily-sections-phone" style="display:none;">
+        <div class="daily-expandable-phone" id="dailyHabitsSectionPhone">
+          <div class="section-title">✅ Привычки</div>
+          <div class="daily-habits-row">
+            <div class="daily-habits-list" id="dailyHabitsListPhone"></div>
+            <div class="daily-progress-bar-wrap">
+              <span class="label" id="dailyProgressLabelPhone">0%</span>
+              <div class="daily-progress-bar"><div class="daily-progress-fill" id="dailyProgressFillPhone" style="height:0%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="daily-expandable-phone" id="beautySectionPhone">
+          <div class="section-title">🌸 Уход</div>
+          <div id="dailyBeautyPhone"></div>
+        </div>
+        <div class="daily-expandable-phone" id="dailyTrainingSectionPhone">
+          <div class="section-title">🏋️ Тренировка</div>
+          <div id="dailyTrainingPhone"></div>
+        </div>
+        <div class="daily-expandable-phone" id="cleaningSectionPhone">
+          <div class="section-title">🧹 Уборка</div>
+          <div id="dailyCleaningPhone"></div>
+        </div>
+      </div>
+
       <!-- Дела на сегодня -->
       <div class="tasks-block">
         <h4>Дела на сегодня</h4>
         <div id="dailyTasks"></div>
-        <!-- input — поле ввода. placeholder — серая подсказка -->
-        <input type="text" id="newDailyTask" placeholder="+ добавить..."
-               style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;">
+        <div class="notes-input-row">
+          <textarea id="newDailyTask" placeholder="Напиши дело..." rows="1"></textarea>
+          <button class="notes-add-btn" onclick="addDailyTask()">✓</button>
+        </div>
       </div>
 
       <!-- Дела на неделю -->
       <div class="tasks-block">
         <h4>Дела на неделю</h4>
         <div id="weekTasks"></div>
-        <input type="text" id="newWeekTask" placeholder="+ добавить..."
-               style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;">
-        <!-- Заметки (внутри блока дел на неделю) -->
-       
+        <div class="notes-input-row">
+          <textarea id="newWeekTask" placeholder="Напиши дело..." rows="1"></textarea>
+          <button class="notes-add-btn" onclick="addWeekTask()">✓</button>
+        </div>
       </div>
-       <div class="tasks-block">
-      <h4>Дела на месяц</h4><div id="monthTasks"></div>
-      <input type="text" id="newMonthTask" placeholder="+ добавить..." 
-      style="width:100%;border:1px dashed #d4b896;padding:6px;border-radius:8px;margin-top:8px;font-family:Georgia;background:transparent;font-size:14px;"></div>
+
+      <div class="tasks-block">
+        <h4>Дела на месяц</h4>
+        <div id="monthTasks"></div>
+        <div class="notes-input-row">
+          <textarea id="newMonthTask" placeholder="Напиши дело..." rows="1"></textarea>
+          <button class="notes-add-btn" onclick="addMonthTask()">✓</button>
+        </div>
+      </div>
 
           <div class="notes-block">
         <h4>📝 Заметки</h4>
@@ -2085,121 +2162,68 @@ function changeMonth(dir) {
 function loadDayData() {
   const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
   
-   // --- Дела на сегодня ---
+  // --- Дела на сегодня ---
   let dailyT = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
-  
-  // Удаляем старые авто-события
   dailyT = dailyT.filter(t => !t.isEvent);
-  
-  // Подгружаем события дня
-  const dayEvents = getEventsForPeriod(dk, dk);
-  dayEvents.forEach(ev => {
-    dailyT.push({ text: `${ev.name}`, done: false, isEvent: true });
+  getEventsForPeriod(dk, dk).forEach(ev => {
+    dailyT.push({ text: ev.name, done: false, isEvent: true });
   });
-  
   localStorage.setItem('daily_' + dk, JSON.stringify(dailyT));
   document.getElementById('dailyTasks').innerHTML = dailyT.map((t, i) => `
-    <div class="task-item">
-      <input type="checkbox" id="dt${i}" ${t.done ? 'checked' : ''} onchange="saveDailyTask(${i}, this.checked)">
-      <label for="dt${i}">${t.text}</label>
+    <div class="task-card">
+      <input type="checkbox" ${t.done ? 'checked' : ''} onchange="saveDailyTask(${i}, this.checked)">
+      <label>${t.text}</label>
+      <button class="task-edit-btn" onclick="editDailyTask(${i})" style="font-size:12px;color:#b8a590;cursor:pointer;background:none;border:none;">✎</button>
+      <button class="task-del-btn" onclick="deleteDailyTask(${i})">✕</button>
+      <button class="task-move-btn" onclick="event.stopPropagation();showMoveModal('daily_',${i})">↗</button>
     </div>
   `).join('');
-
-  // Добавляем кнопки удаления к делам на сегодня
-  document.querySelectorAll('#dailyTasks .task-item').forEach((item, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'task-del-btn';
-    btn.textContent = '✕';
-    btn.onclick = function() { deleteDailyTask(i); };
-    item.appendChild(btn);
-  });
   
-    // --- Дела на неделю ---
+  // --- Дела на неделю ---
   const ws = getMonday(dk);
   let weekT = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
-  
-  // Удаляем старые авто-события
   weekT = weekT.filter(t => !t.isEvent);
-
-    // Добавляем кнопки переноса к делам на сегодня
-  document.querySelectorAll('#dailyTasks .task-item').forEach((item, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'task-move-btn';
-    btn.textContent = '↗';
-    btn.onclick = function(e) { e.stopPropagation(); showMoveModal('daily_', i); };
-    item.appendChild(btn);
-  });
-  
-  // Подгружаем события недели
-  // Конец недели = понедельник + 6 дней
   const we = new Date(ws);
   we.setDate(we.getDate() + 6);
   const weStr = we.getFullYear() + '-' + (we.getMonth() + 1) + '-' + we.getDate();
-  const weekEvents = getEventsForPeriod(ws, weStr);
-  weekEvents.forEach(ev => {
+  getEventsForPeriod(ws, weStr).forEach(ev => {
     weekT.push({ text: `${getDayName(ev.dow)} — ${ev.name}`, done: false, isEvent: true });
   });
-  
   localStorage.setItem('week_' + ws, JSON.stringify(weekT));
   document.getElementById('weekTasks').innerHTML = weekT.map((t, i) => `
-    <div class="task-item">
-      <input type="checkbox" id="wt${i}" ${t.done ? 'checked' : ''} onchange="saveWeekTask(${i}, this.checked)">
-      <label for="wt${i}">${t.text}</label>
+    <div class="task-card">
+      <input type="checkbox" ${t.done ? 'checked' : ''} onchange="saveWeekTask(${i}, this.checked)">
+      <label>${t.text}</label>
+      <button class="task-edit-btn" onclick="editWeekTask(${i})" style="font-size:12px;color:#b8a590;cursor:pointer;background:none;border:none;">✎</button>
+      <button class="task-del-btn" onclick="deleteWeekTask(${i})">✕</button>
+      <button class="task-move-btn" onclick="event.stopPropagation();showMoveModal('week_',${i})">↗</button>
     </div>
   `).join('');
-
-  // Добавляем кнопки удаления к делам на неделю
-  document.querySelectorAll('#weekTasks .task-item').forEach((item, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'task-del-btn';
-    btn.textContent = '✕';
-    btn.onclick = function() { deleteWeekTask(i); };
-    item.appendChild(btn);
-  });
-
-  // Добавляем кнопки переноса к делам на неделю
-  document.querySelectorAll('#weekTasks .task-item').forEach((item, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'task-move-btn';
-    btn.textContent = '↗';
-    btn.onclick = function(e) { e.stopPropagation(); showMoveModal('week_', i); };
-    item.appendChild(btn);
-  });
   
-  // --- Заметки ---
-    renderNotes();
-  
-   // Дела на месяц
-  const mk=`${currentYear}-${currentMonth}`;
-  let monthT=JSON.parse(localStorage.getItem('month_'+mk)||'[]');
-  
-  // Удаляем старые авто-события
+  // --- Дела на месяц ---
+  const mk = `${currentYear}-${currentMonth}`;
+  let monthT = JSON.parse(localStorage.getItem('month_' + mk) || '[]');
   monthT = monthT.filter(t => !t.isEvent);
-  
-  // Подгружаем события месяца
-  const monthEvents = getEventsForPeriod(
+  getEventsForPeriod(
     `${currentYear}-${currentMonth}-1`,
     `${currentYear}-${currentMonth}-${new Date(currentYear, currentMonth, 0).getDate()}`
-  );
-  monthEvents.forEach(ev => {
+  ).forEach(ev => {
     monthT.push({ text: `${ev.day} число — ${ev.name}`, done: false, isEvent: true });
   });
+  localStorage.setItem('month_' + mk, JSON.stringify(monthT));
+  document.getElementById('monthTasks').innerHTML = monthT.map((t, i) => `
+    <div class="task-card">
+      <input type="checkbox" ${t.done ? 'checked' : ''} onchange="saveMonthTask(${i}, this.checked)">
+      <label>${t.text}</label>
+      <button class="task-edit-btn" onclick="editMonthTask(${i})" style="font-size:12px;color:#b8a590;cursor:pointer;background:none;border:none;">✎</button>
+      <button class="task-del-btn" onclick="deleteMonthTask(${i})">✕</button>
+      <button class="task-move-btn" onclick="event.stopPropagation();showMoveModal('month_',${i})">↗</button>
+    </div>
+  `).join('');
   
-  localStorage.setItem('month_'+mk, JSON.stringify(monthT));
-  document.getElementById('monthTasks').innerHTML=monthT.map((t,i)=>`<div class="task-item"><input type="checkbox" id="mt${i}" ${t.done?'checked':''} onchange="saveMonthTask(${i},this.checked)"><label for="mt${i}">${t.text}</label></div>`).join('');
+  // --- Заметки ---
+  renderNotes();
   
-  // Добавляем кнопки удаления
-  document.querySelectorAll('#monthTasks .task-item').forEach((item,i)=>{const btn=document.createElement('button');btn.className='task-del-btn';btn.textContent='✕';btn.onclick=function(){deleteMonthTask(i);};item.appendChild(btn);});
-  
-  // Добавляем кнопки переноса к делам на месяц
-  document.querySelectorAll('#monthTasks .task-item').forEach((item, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'task-move-btn';
-    btn.textContent = '↗';
-    btn.onclick = function(e) { e.stopPropagation(); showMoveModal('month_', i); };
-    item.appendChild(btn);
-  });
-
   // Отрисовать секции
   renderDailyHabits();
   renderDailyBeauty();
@@ -2232,6 +2256,11 @@ function renderDailyHabits() {
   const pct = Math.round((done / habitDefs.length) * 100);
   document.getElementById('dailyProgressFill').style.height = pct + '%';
   document.getElementById('dailyProgressLabel').textContent = pct + '%';
+
+    // Дублируем для телефона
+  document.getElementById('dailyHabitsListPhone').innerHTML = document.getElementById('dailyHabitsList').innerHTML;
+  document.getElementById('dailyProgressFillPhone').style.height = document.getElementById('dailyProgressFill').style.height;
+  document.getElementById('dailyProgressLabelPhone').textContent = document.getElementById('dailyProgressLabel').textContent;
 }
 
 // ОТРИСОВАТЬ УХОД В ЕЖЕДНЕВНИКЕ
@@ -2261,6 +2290,7 @@ function renderDailyBeauty() {
     }
     document.getElementById('dailyBeautyCardProgress').textContent = beautyDone + '/' + beautyTotal;
   });
+    document.getElementById('dailyBeautyPhone').innerHTML = container.innerHTML;
 }
 
 // Отметка дня в трекере ухода (клик по кружочку)
@@ -2316,6 +2346,7 @@ function renderDailyTraining() {
       `;
     }).join('');
   document.getElementById('dailyTrainingCardProgress').textContent = trainingDone + '/' + trainingTotal;
+  document.getElementById('dailyTrainingPhone').innerHTML = document.getElementById('dailyTraining').innerHTML;
 }
 
 // ОТРИСОВАТЬ УБОРКУ В ЕЖЕДНЕВНИКЕ
@@ -2324,10 +2355,11 @@ function renderDailyCleaning() {
   container.innerHTML = '';
   
   let cleaningDone = 0;
-  let cleaningTotal = 0;
+  let cleaningTotal = cleaningDefs.length;
+  
+  const wr = getWeekForDay(selectedDay);
   
   cleaningDefs.forEach((c, ci) => {
-    cleaningTotal++;
     const ch = cleaningData[getCKey(ci, selectedDay)];
     if (ch) cleaningDone++;
     
@@ -2339,6 +2371,7 @@ function renderDailyCleaning() {
   });
   
   document.getElementById('dailyCleaningCardProgress').textContent = cleaningDone + '/' + cleaningTotal;
+  document.getElementById('dailyCleaningPhone').innerHTML = container.innerHTML;
 }
 
 // Отметить ежедневную уборку
@@ -2547,7 +2580,10 @@ function renderHabitsTracker() {
   
   // Блоки "требуют внимания" и "лучшие"
   renderInsightBlocks();
-
+  // Компактный вид для МВ
+  if (window.innerWidth <= 768) {
+    renderHabitsMobile();
+  }
   showCopyButtonIfLastWeek('habitsCopyBtn');
 }
 
@@ -2736,6 +2772,7 @@ function renderBeautyTracker() {
     });
     return totalGoal > 0 ? Math.round((totalDone / totalGoal) * 100) : 0;
   });
+  if (window.innerWidth <= 768) renderBeautyMobile();
   showCopyButtonIfLastWeek('beautyCopyBtn');
 }
 
@@ -2995,6 +3032,7 @@ function renderCleaningTracker() {
     });
     return t > 0 ? Math.round((f / t) * 100) : 0;
   });
+    if (window.innerWidth <= 768) renderCleaningMobile();
   showCopyButtonIfLastWeek('cleaningCopyBtn');
 }
 
@@ -3064,14 +3102,27 @@ function deleteCleaning(ci) {
 
 // Свернуть/развернуть секцию
 function toggleSection(id) {
-  const el = document.getElementById(id);
+  const phoneEl = document.getElementById(id + 'Phone');
+  const desktopEl = document.getElementById(id);
+  
+  // Проверяем, какой элемент ВИДИМ на странице, а не ширину экрана
+  const isPhone = phoneEl && window.getComputedStyle(document.querySelector('.daily-sections-phone')).display !== 'none';
+  const el = isPhone ? phoneEl : desktopEl;
   if (!el) return;
-  if (el.classList.contains('open')) {
-    el.classList.remove('open');
+  
+  // Закрываем все
+  document.querySelectorAll('.daily-expandable-phone').forEach(sec => sec.style.display = 'none');
+  document.querySelectorAll('.daily-expandable').forEach(sec => sec.classList.remove('open'));
+  
+  // Переключаем текущую
+  if (isPhone) {
+    el.style.display = el.style.display === 'block' ? 'none' : 'block';
   } else {
-    // Закрыть все остальные секции
-    document.querySelectorAll('.daily-expandable').forEach(sec => sec.classList.remove('open'));
-    el.classList.add('open');
+    if (el.classList.contains('open')) {
+      el.classList.remove('open');
+    } else {
+      el.classList.add('open');
+    }
   }
 }
 
@@ -3753,6 +3804,18 @@ function updateMoodCard() {
   document.getElementById('dailyMoodCardProgress').textContent = count > 0 ? '✔️' : '—';
 }
 
+function addMonthTask() {
+  const textarea = document.getElementById('newMonthTask');
+  const text = textarea.value.trim();
+  if (!text) return;
+  const mk = `${currentYear}-${currentMonth}`;
+  const t = JSON.parse(localStorage.getItem('month_' + mk) || '[]');
+  t.push({ text: text, done: false });
+  localStorage.setItem('month_' + mk, JSON.stringify(t));
+  textarea.value = '';
+  loadDayData();
+}
+
 // ГИРЛЯНДА
 const garlandDrops = [6,14,8,18,3,16,10,20,5,12,7,15,4,17,9,13,2,19,11,6,8,14,3,16,10,5,12,18,7,9,4];
 
@@ -3940,6 +4003,16 @@ function getHealthData() {
   return result;
 }
 
+function editWeekTask(idx) {
+  const ws = getMonday(`${currentYear}-${currentMonth}-${selectedDay}`);
+  const t = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
+  const newText = prompt('Редактировать дело:', t[idx].text);
+  if (newText === null || !newText.trim()) return;
+  t[idx].text = newText.trim();
+  localStorage.setItem('week_' + ws, JSON.stringify(t));
+  loadDayData();
+}
+
 function renderHealthGraph() {
   const data = getHealthData();
   const svg = document.getElementById('healthSvg');
@@ -4085,6 +4158,54 @@ function renderHealthPage() {
   renderHealthStats();
 }
 
+
+
+function addDailyTask() {
+  const textarea = document.getElementById('newDailyTask');
+  const text = textarea.value.trim();
+  if (!text) return;
+  const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
+  const t = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
+  t.push({ text: text, done: false });
+  localStorage.setItem('daily_' + dk, JSON.stringify(t));
+  textarea.value = '';
+  loadDayData();
+}
+
+function addWeekTask() {
+  const textarea = document.getElementById('newWeekTask');
+  const text = textarea.value.trim();
+  if (!text) return;
+  const ws = getMonday(`${currentYear}-${currentMonth}-${selectedDay}`);
+  const t = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
+  t.push({ text: text, done: false });
+  localStorage.setItem('week_' + ws, JSON.stringify(t));
+  textarea.value = '';
+  loadDayData();
+}
+
+function addWeekTask() {
+  const textarea = document.getElementById('newWeekTask');
+  const text = textarea.value.trim();
+  if (!text) return;
+  const ws = getMonday(`${currentYear}-${currentMonth}-${selectedDay}`);
+  const t = JSON.parse(localStorage.getItem('week_' + ws) || '[]');
+  t.push({ text: text, done: false });
+  localStorage.setItem('week_' + ws, JSON.stringify(t));
+  textarea.value = '';
+  loadDayData();
+}
+
+function editDailyTask(idx) {
+  const dk = `${currentYear}-${currentMonth}-${selectedDay}`;
+  const t = JSON.parse(localStorage.getItem('daily_' + dk) || '[]');
+  const newText = prompt('Редактировать дело:', t[idx].text);
+  if (newText === null || !newText.trim()) return;
+  t[idx].text = newText.trim();
+  localStorage.setItem('daily_' + dk, JSON.stringify(t));
+  loadDayData();
+}
+
 function renderHealthStats() {
   const dim = new Date(currentYear, currentMonth, 0).getDate();
   let totalSleep = 0, sleepCount = 0, totalSteps = 0, stepsCount = 0;
@@ -4128,6 +4249,114 @@ function renderHealthStats() {
       <div style="font-size:20px;font-weight:bold;color:#5a4a3a;">${healthDays}/${dim}</div>
     </div>
   `;
+}
+
+function renderHabitsMobile() {
+  const container = document.getElementById('habitsCardsContainer');
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  const weeks = getWeekRanges(dim);
+  
+  container.innerHTML = '';
+  
+  habitDefs.forEach((h, hi) => {
+    const dc = cntHD(hi);
+    const pct = Math.round((dc / h.goal) * 100);
+    
+    let miniGrid = '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-top:4px;">';
+    for (let d = 1; d <= dim; d++) {
+      const done = getHD(hi, d);
+      miniGrid += `<div style="width:8px;height:8px;border-radius:2px;background:${done ? WCOLORS[hi % 5] : '#e8e0d8'};" title="${d}"></div>`;
+    }
+    miniGrid += '</div>';
+    
+    container.innerHTML += `
+      <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[hi % 5]};">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:13px;color:#5a4a3a;">${h.name}</span>
+          <span style="font-size:11px;color:#8b7355;">${dc}/${h.goal}</span>
+        </div>
+        <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${WCOLORS[hi % 5]};border-radius:3px;"></div>
+        </div>
+        ${miniGrid}
+      </div>
+    `;
+  });
+  
+  document.getElementById('habitsCardsContainer').style.display = 'block';
+}
+
+function renderBeautyMobile() {
+  const container = document.getElementById('beautyCardsContainer');
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  
+  container.innerHTML = '';
+  
+  beautyDefs.forEach((b, bi) => {
+    let totalDone = 0;
+    for (let w = 1; w <= 5; w++) {
+      totalDone += (beautyData[`beauty_week_${currentYear}-${currentMonth}-w${w}-b${bi}`] || []).length;
+    }
+    const weeks = getWeekRanges(dim);
+    const totalGoal = b.goal * weeks.length;
+    const pct = Math.round((totalDone / totalGoal) * 100);
+    
+    let miniGrid = '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-top:4px;">';
+    for (let d = 1; d <= dim; d++) {
+      const w = getWeekForDay(d);
+      const checked = (beautyData[`beauty_week_${currentYear}-${currentMonth}-w${w.w}-b${bi}`] || []).includes(d);
+      miniGrid += `<div style="width:8px;height:8px;border-radius:2px;background:${checked ? WCOLORS[bi % 5] : '#e8e0d8'};" title="${d}"></div>`;
+    }
+    miniGrid += '</div>';
+    
+    container.innerHTML += `
+      <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[bi % 5]};">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:13px;color:#5a4a3a;">${b.name}</span>
+          <span style="font-size:11px;color:#8b7355;">${totalDone}/${totalGoal}</span>
+        </div>
+        <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${WCOLORS[bi % 5]};border-radius:3px;"></div>
+        </div>
+        ${miniGrid}
+      </div>
+    `;
+  });
+}
+
+function renderCleaningMobile() {
+  const container = document.getElementById('cleaningCardsContainer');
+  const dim = new Date(currentYear, currentMonth, 0).getDate();
+  
+  container.innerHTML = '';
+  
+  cleaningDefs.forEach((c, ci) => {
+    let totalDone = 0;
+    for (let d = 1; d <= dim; d++) {
+      if (cleaningData[getCKey(ci, d)]) totalDone++;
+    }
+    const pct = Math.round((totalDone / c.goal) * 100);
+    
+    let miniGrid = '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-top:4px;">';
+    for (let d = 1; d <= dim; d++) {
+      const done = cleaningData[getCKey(ci, d)];
+      miniGrid += `<div style="width:8px;height:8px;border-radius:2px;background:${done ? WCOLORS[ci % 5] : '#e8e0d8'};" title="${d}"></div>`;
+    }
+    miniGrid += '</div>';
+    
+    container.innerHTML += `
+      <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[ci % 5]};">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:13px;color:#5a4a3a;">${c.name}</span>
+          <span style="font-size:11px;color:#8b7355;">${totalDone}/${c.goal}</span>
+        </div>
+        <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${WCOLORS[ci % 5]};border-radius:3px;"></div>
+        </div>
+        ${miniGrid}
+      </div>
+    `;
+  });
 }
 
 init();
