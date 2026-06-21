@@ -4256,7 +4256,8 @@ function renderHabitsMobile() {
   const dim = new Date(currentYear, currentMonth, 0).getDate();
   const fd = new Date(currentYear, currentMonth - 1, 1).getDay();
   const so = fd === 0 ? 7 : fd;
-  const dotSize = Math.max(14, Math.floor((window.innerWidth - 60) / (dim > 25 ? 30 : 24)));
+  const availableWidth = window.innerWidth - 60;
+  const dotSize = Math.max(16, Math.floor(availableWidth / 35));
   
   container.innerHTML = '';
   
@@ -4264,21 +4265,21 @@ function renderHabitsMobile() {
     const dc = cntHD(hi);
     const pct = Math.round((dc / h.goal) * 100);
     
-    let calHTML = `<div style="display:flex;flex-direction:column;gap:4px;margin-top:8px;">`;
+    let calHTML = `<div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;width:100%;">`;
     let day = 1;
     let firstRow = true;
     
     while (day <= dim) {
-      calHTML += `<div style="display:flex;gap:4px;">`;
+      calHTML += `<div style="display:flex;gap:5px;justify-content:space-between;width:100%;">`;
       for (let col = 1; col <= 7; col++) {
         if (firstRow && col < so) {
-          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;"></div>`;
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;flex-shrink:0;"></div>`;
         } else if (day <= dim) {
           const done = getHD(hi, day);
-          calHTML += `<div onclick="toggleMobileHabit(${hi},${day})" style="width:${dotSize}px;height:${dotSize}px;border-radius:50%;background:${done ? WCOLORS[hi % 5] : '#e8e0d8'};cursor:pointer;" title="${day}"></div>`;
+          calHTML += `<div onclick="toggleMobileHabit(${hi},${day})" style="width:${dotSize}px;height:${dotSize}px;border-radius:50%;flex-shrink:0;background:${done ? WCOLORS[hi % 5] : '#e8e0d8'};cursor:pointer;" title="${day}"></div>`;
           day++;
         } else {
-          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;"></div>`;
+          calHTML += `<div style="width:${dotSize}px;height:${dotSize}px;flex-shrink:0;"></div>`;
         }
       }
       calHTML += `</div>`;
