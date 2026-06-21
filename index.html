@@ -1205,26 +1205,19 @@
     }
 
     /* ГИРЛЯНДА НАСТРОЕНИЯ */
-   .garland-wrap{
+    .garland-wrap{
       position:relative;
-      margin:20px 0 30px;
-      padding-top:20px;
-    }
-    .garland-wire{
-      position:absolute;
-      top:10px;
-      left:0;
-      width:100%;
-      height:3px;
-      background:#c8b8a0;
-      border-radius:2px;
+      margin:20px 0 10px;
+      padding:0;
     }
     .garland-row{
       display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:1px;
+      padding:0 2px;
       position:relative;
-      z-index:1;
+      z-index:2;
     }
     .garland-bulb{
       display:flex;
@@ -1232,43 +1225,48 @@
       align-items:center;
       cursor:pointer;
       transition:.2s;
-      padding-top:var(--drop);
-    }
-    .garland-bulb:hover{
-      transform:scale(1.15);
-    }
-    .garland-bulb-wire{
-      width:2px;
-      height:15px;
-      background:#c8b8a0;
-    }
-    .garland-bulb-glass{
-      width:22px;
-      height:28px;
-      border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-      border:2px solid #b8a590;
-      background:#e8e0d8;
-      transition:.3s;
+      width:20px;
       position:relative;
     }
+    .garland-bulb:hover{
+      transform:scale(1.3);
+      z-index:5;
+    }
+    .garland-bulb-glass{
+      width:11px;
+      height:14px;
+      border-radius:50%;
+      border:1.5px solid rgba(0,0,0,0.15);
+      transition:.3s;
+      box-shadow:inset 0 -3px 6px rgba(0,0,0,0.1), 0 2px 3px rgba(0,0,0,0.1);
+    }
     .garland-bulb-glass.on{
-      box-shadow:0 0 12px 3px var(--glow);
+      box-shadow:inset 0 -3px 6px rgba(0,0,0,0.1), 0 0 12px 3px var(--glow);
     }
     .garland-bulb-base{
-      width:10px;
-      height:6px;
-      background:#a09080;
+      width:7px;
+      height:4px;
+      background:linear-gradient(to bottom,#a09080,#8a7a6a);
       border-radius:0 0 3px 3px;
+      margin-top:-1px;
     }
     .garland-bulb-num{
-      font-size:9px;
+      font-size:6px;
       color:#8b7355;
-      margin-top:3px;
+      margin-top:2px;
+      text-align:center;
     }
-    .garland-bulb:active{
-      transform:scale(5);
-      z-index:10;
-      transition:transform 0.5s;
+    @media(max-width:768px){
+      .garland-bulb{
+        width:18px;
+      }
+      .garland-bulb-glass{
+        width:10px;
+        height:13px;
+      }
+      .garland-bulb-num{
+        font-size:5px;
+      }
     }
 
         .mood-stat-bar{
@@ -1326,17 +1324,6 @@
       .daily-sections-phone{display:block!important;}
       .daily-expandable{display:none!important;}
     }
-
-      .garland-row{
-        gap:0!important;
-        padding:0 1px!important;
-      }
-      .garland-bulb{
-        width:16px!important;
-      }
-       .garland-wrap{
-        margin:15px -5px 10px!important;
-      }
 
   </style>
   <!-- КОНЕЦ БЛОКА СТИЛЕЙ -->
@@ -1630,7 +1617,6 @@
         
         <!-- Гирлянда настроения -->
         <div class="garland-wrap">
-          <div class="garland-wire"></div>
           <div class="garland-row" id="garlandRow"></div>
         </div>
        
@@ -3874,8 +3860,34 @@ const garlandDrops = [6,14,8,18,3,16,10,20,5,12,7,15,4,17,9,13,2,19,11,6,8,14,3,
 
 function renderGarland() {
   const dim = new Date(currentYear, currentMonth, 0).getDate();
-  const row = document.getElementById('garlandRow');
-  row.innerHTML = '';
+  const container = document.getElementById('garlandRow');
+  container.innerHTML = '';
+  
+  const isMobile = window.innerWidth <= 768;
+  const width = (container.clientWidth || 700) + 30;
+  const height = isMobile ? 160 : 120;
+  const rows = isMobile ? 3 : 2;
+  const r = isMobile ? 12 : 11;
+  const perRow = Math.ceil(dim / rows);
+  
+  let svgHTML = `<svg viewBox="-10 0 ${width} ${height}" style="width:100%;height:${height}px;">`;
+  
+  // Провода для каждого ряда
+  const rowY = [20, isMobile ? 70 : 75, isMobile ? 120 : null].filter(y => y !== null);
+  
+  rowY.forEach((baseY, rowIdx) => {
+    const start = rowIdx * perRow + 1;
+    const end = Math.min((rowIdx + 1) * perRow, dim);
+    const count = end - start + 1;
+    
+    let pathD = `M-5,${baseY} `;
+    for (let i = 0; i < count; i++) {
+      const x = (i / (count - 1 || 1)) * (width - 30);
+      const y = baseY + Math.sin(i * 0.7) * 8;
+      pathD += `L${x},${y} `;
+    }
+    svgHTML += `<path d="${pathD}" stroke="#c8b8a0" stroke-width="1.5" fill="none"/>`;
+  });
   
   for (let d = 1; d <= dim; d++) {
     const key = `mood_${currentYear}-${currentMonth}-${d}`;
@@ -3883,32 +3895,37 @@ function renderGarland() {
     const vals = Array.isArray(saved) ? saved : (saved ? [saved] : []);
     const activeMoods = vals.map(v => moods.find(m => m.val === v)).filter(Boolean);
     
-    const baseDrop = garlandDrops[(d-1) % garlandDrops.length];
-    const drop = window.innerWidth <= 768 ? baseDrop * 4 : baseDrop;
+    const rowIdx = Math.floor((d - 1) / perRow);
+    const baseY = rowY[rowIdx];
+    const i = (d - 1) % perRow;
+    const count = Math.min(perRow, dim - rowIdx * perRow);
+    const x = count > 1 ? (i / (count - 1)) * (width - 30) : (width - 30) / 2;
+    const y = baseY + Math.sin(i * 0.7) * 8;
     
-    // Цвет лампочки
     let bg = '#e8e0d8';
-    let glow = 'transparent';
-    if (activeMoods.length === 1) {
-      bg = activeMoods[0].color;
-      glow = activeMoods[0].color;
-    } else if (activeMoods.length > 1) {
-      const colors = activeMoods.map(m => m.color).join(', ');
-      bg = `linear-gradient(to bottom, ${colors})`;
-      glow = activeMoods[0].color;
-    }
+    if (activeMoods.length === 1) bg = activeMoods[0].color;
+    else if (activeMoods.length > 1) bg = activeMoods.map(m => m.color).join(', ');
     
-    row.innerHTML += `
-      <div class="garland-bulb" style="--drop:${drop}px;--glow:${glow};"
-           ondblclick="selectedDay=${d};switchPage('daily', document.querySelector('[data-page=daily]'));"
-           title="${d} ${MONTHS[currentMonth-1]}${activeMoods.length > 0 ? ': ' + activeMoods.map(m => m.name).join(', ') : ''}">
-        <div class="garland-bulb-wire"></div>
-        <div class="garland-bulb-glass${activeMoods.length > 0 ? ' on' : ''}" style="background:${bg};"></div>
-        <div class="garland-bulb-base"></div>
-        <div class="garland-bulb-num">${d}</div>
-      </div>
-    `;
+    const glow = activeMoods.length > 0 ? activeMoods[0].color : 'transparent';
+    
+    svgHTML += `
+      <circle cx="${x}" cy="${y}" r="${r}" fill="${activeMoods.length > 1 ? 'url(#grad'+d+')' : bg}" 
+              stroke="white" stroke-width="2" style="cursor:pointer;${activeMoods.length > 0 ? 'filter:drop-shadow(0 0 6px '+glow+');' : ''}"
+              ondblclick="selectedDay=${d};switchPage('daily', document.querySelector('[data-page=daily]'));"
+              title="${d} ${MONTHS[currentMonth-1]}${activeMoods.length > 0 ? ': ' + activeMoods.map(m => m.name).join(', ') : ''}">
+      </circle>
+      <text x="${x}" y="${y + r + 10}" text-anchor="middle" font-size="7" fill="#8b7355">${d}</text>`;
+    
+    if (activeMoods.length > 1) {
+      const stops = activeMoods.map((m, i) => 
+        `<stop offset="${(i / activeMoods.length) * 100}%" stop-color="${m.color}"/>`
+      ).join('');
+      svgHTML += `<defs><linearGradient id="grad${d}" x1="0" y1="0" x2="0" y2="1">${stops}</linearGradient></defs>`;
+    }
   }
+  
+  svgHTML += `</svg>`;
+  container.innerHTML = svgHTML;
 }
 
 // ЗДОРОВЬЕ
