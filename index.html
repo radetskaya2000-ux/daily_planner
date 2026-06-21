@@ -1327,31 +1327,29 @@
       .daily-expandable{display:none!important;}
     }
 
-      .garland-bulb-glass{
-        width:9px!important;
-        height:13px!important;
+          .garland-bulb-glass{
+        width:12px!important;
+        height:16px!important;
       }
       .garland-bulb-base{
-        width:4px!important;
-        height:2px!important;
+        width:5px!important;
+        height:3px!important;
       }
       .garland-bulb-num{
-        font-size:5px!important;
-        margin-top:1px!important;
+        font-size:6px!important;
       }
       .garland-bulb-wire{
-        width:0.8px!important;
+        width:1px!important;
       }
       .garland-row{
         gap:0!important;
-        padding:0 1px!important;
+        padding:0 2px!important;
       }
       .garland-bulb{
-        width:10px!important;
+        width:14px!important;
       }
-      .garland-wrap{
-        margin:15px -10px 10px!important;
-      }
+
+
 
   </style>
   <!-- КОНЕЦ БЛОКА СТИЛЕЙ -->
@@ -3899,7 +3897,8 @@ function renderGarland() {
     const activeMoods = vals.map(v => moods.find(m => m.val === v)).filter(Boolean);
     
     const drop = garlandDrops[(d-1) % garlandDrops.length];
-    const mobileDrop = window.innerWidth <= 768 ? drop * 3.5 : drop;    
+    const mobileDrop = window.innerWidth <= 768 ? drop * 2.5 : drop;
+    
     // Цвет лампочки
     let bg = '#e8e0d8';
     let glow = 'transparent';
