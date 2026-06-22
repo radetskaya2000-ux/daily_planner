@@ -4362,8 +4362,12 @@ function renderHabitsMobile() {
       <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[hi % 5]};">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
           <span style="font-size:13px;color:#5a4a3a;">${h.name}</span>
-          <span style="font-size:11px;color:#8b7355;">${dc}/${h.goal}</span>
-        </div>
+          <span style="font-size:11px;color:#8b7355;">
+            ${dc}/${h.goal}
+            <button onclick="event.stopPropagation();openHabitModal(${hi})" style="font-size:10px;background:none;border:none;cursor:pointer;color:#b8a590;">✎</button>
+            <button onclick="event.stopPropagation();deleteHabit(${hi})" style="font-size:10px;background:none;border:none;cursor:pointer;color:#c09090;">✕</button>
+          </span>        
+          </div>
         <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
           <div style="height:100%;width:${pct}%;background:${WCOLORS[hi % 5]};border-radius:3px;"></div>
         </div>
@@ -4419,8 +4423,12 @@ function renderBeautyMobile() {
       <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[bi % 5]};">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
           <span style="font-size:13px;color:#5a4a3a;">${b.name}</span>
-          <span style="font-size:11px;color:#8b7355;">${totalDone}/${totalGoal}</span>
-        </div>
+          <span style="font-size:11px;color:#8b7355;">
+            ${totalDone}/${totalGoal}
+            <button onclick="event.stopPropagation();openBeautyModal(${bi})" style="font-size:10px;background:none;border:none;cursor:pointer;color:#b8a590;">✎</button>
+            <button onclick="event.stopPropagation();deleteBeauty(${bi})" style="font-size:10px;background:none;border:none;cursor:pointer;color:#c09090;">✕</button>
+          </span>        
+          </div>
         <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
           <div style="height:100%;width:${Math.min(pct, 100)}%;background:${WCOLORS[bi % 5]};border-radius:3px;"></div>
         </div>
@@ -4473,8 +4481,12 @@ function renderCleaningMobile() {
       <div style="background:#fefcf7;border-radius:10px;padding:10px;margin-bottom:8px;border-left:4px solid ${WCOLORS[ci % 5]};">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
           <span style="font-size:13px;color:#5a4a3a;">${c.name}</span>
-          <span style="font-size:11px;color:#8b7355;">${totalDone}/${c.goal}</span>
-        </div>
+          <span style="font-size:11px;color:#8b7355;">
+            ${totalDone}/${c.goal}
+            <button onclick="event.stopPropagation();openCleaningModal(${ci})" style="font-size:10px;background:none;border:none;cursor:pointer;color:#b8a590;">✎</button>
+            <button onclick="event.stopPropagation();deleteCleaning(${ci})" style="font-size:10px;background:none;border:none;cursor:pointer;color:#c09090;">✕</button>
+          </span>        
+          </div>
         <div style="height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;">
           <div style="height:100%;width:${Math.min(pct, 100)}%;background:${WCOLORS[ci % 5]};border-radius:3px;"></div>
         </div>
